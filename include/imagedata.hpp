@@ -7,31 +7,29 @@
 #include <string>
 #include <fstream>
 
+#include "types.hpp"
 #include "bassert.hpp"
-#include "bmpinfo.hpp"
 
 namespace Bite
 	{
 
-
 	class ImageData
 		{
 		public:
-		typedef char Uint8;
-		typedef unsigned int Uint32;
-		typedef int Int32;
-
-		ImageData( std::string path );
+		ImageData();
 		~ImageData();
 
-		void Load( std::string path );
-		void LoadBMP( std::string path );
+		template<class T>
+		void PixAt( Uint32 x, Uint32 y, T& ret );
+		void ClearData() throw();
 
-		void PixAt( Uint32 x, Uint32 y, void* ret );
+		// Drops ownership of the pixel map without deleting it.
+		// Returns a pointer to it's heap location.
+		void* DropPixels() throw();
 
-		void ClearData();
+		void* pixels; // Yay, pixels!
 
-		void* pixels;
+		// Metadata:
 		Uint32 width;
 		Uint32 height;
 		Uint32 bitpp; // bit per pixel
@@ -48,6 +46,22 @@ namespace Bite
 			} mask;
 
 		};
+	
+
+
+	// This template allows the return value to be any size the user needs.
+	// Should work just as well with 32bit as 64bit colors.
+	// However, it does not guarantee that the 64bit value is valid if used
+	// on a 32bit image. It's up to the user to use the appropriate return type.
+	template<class T> void
+	ImageData::PixAt( Uint32 x, Uint32 y, T& ret )
+		{
+		memcpy( 
+			(Uint8*)&ret,
+			((Uint8*)pixels) + x * bytepp + y * width * bytepp, // Fetch the right pixel
+			sizeof(T) ); // Makes sure it doesn't outbound
+		}
+
 	}
 
 #endif // BITE_IMAGEDATA_HPP

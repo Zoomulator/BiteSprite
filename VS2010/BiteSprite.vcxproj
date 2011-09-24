@@ -63,6 +63,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\bite.cpp" />
+    <ClCompile Include="..\src\bmpload.cpp" />
     <ClCompile Include="..\src\imagedata.cpp" />
     <ClCompile Include="..\src\imageloader.cpp" />
   </ItemGroup>
@@ -70,9 +71,11 @@
     <ClInclude Include="..\include\bassert.hpp" />
     <ClInclude Include="..\include\bite.hpp" />
     <ClInclude Include="..\include\biteimage.hpp" />
+    <ClInclude Include="..\include\bmpload.hpp" />
     <ClInclude Include="..\include\imagedata.hpp" />
+    <ClInclude Include="..\include\imageloadbase.hpp" />
     <ClInclude Include="..\include\imageloader.hpp" />
-    <ClInclude Include="..\src\bmpinfo.hpp" />
+    <ClInclude Include="..\include\types.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

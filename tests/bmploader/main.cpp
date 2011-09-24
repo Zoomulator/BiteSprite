@@ -1,10 +1,7 @@
 #include <iostream>
+#include <fstream>
 #include "imagedata.hpp"
-
-
-typedef Bite::ImageData::Uint32 Uint32;
-typedef Bite::ImageData::Uint8 Uint8;
-
+#include "bmpload.hpp"
 
 
 void PrintColor( Uint32 val, const Bite::ImageData& image )
@@ -18,25 +15,33 @@ void PrintColor( Uint32 val, const Bite::ImageData& image )
 
 int main()
 	{
-	Bite::ImageData image("Test.bmp");
+	std::fstream file( "Test.bmp", std::ios::binary | std::ios::in );
+	if( !file.good() )
+		{
+		std::cout << "Failed to open file.";
+		return 1;
+		}
+	
+	Bite::ImageData image;
+	Bite::BMP()( file, image );
 
 	Uint32 pixVal;
 	std::cout << "First pixel value:" << std::endl;
 	
 	pixVal = 0;
-	image.PixAt( 0,0, &pixVal );
+	image.PixAt( 0,0, pixVal );
 	std::cout << std::hex << pixVal << std::endl;
 	PrintColor( pixVal, image );
 
 	pixVal = 0;
 	std::cout << "Second pixel:" << std::endl;
-	image.PixAt( 1,0, &pixVal );
+	image.PixAt( 1,0, pixVal );
 	std::cout << std::hex << pixVal << std::endl;
 	PrintColor( pixVal, image );
 
 	pixVal=0;
 	std::cout << "Last pixel value:" << std::endl;
-	image.PixAt(63,63, &pixVal );
+	image.PixAt(63,63, pixVal );
 	std::cout << std::hex << pixVal << std::endl;
 	PrintColor( pixVal, image );
 

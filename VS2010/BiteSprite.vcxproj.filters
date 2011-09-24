@@ -24,6 +24,9 @@
     <ClCompile Include="..\src\imagedata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\bmpload.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\biteimage.hpp">
@@ -38,10 +41,16 @@
     <ClInclude Include="..\include\bite.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\bmpinfo.hpp">
+    <ClInclude Include="..\include\bassert.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\bassert.hpp">
+    <ClInclude Include="..\include\imageloadbase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\types.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\bmpload.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

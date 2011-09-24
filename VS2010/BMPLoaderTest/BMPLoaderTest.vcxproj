@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\bmpload.cpp" />
     <ClCompile Include="..\..\src\imagedata.cpp" />
     <ClCompile Include="..\..\tests\bmploader\main.cpp" />
   </ItemGroup>
