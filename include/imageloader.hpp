@@ -3,10 +3,13 @@
 
 
 #include <map>
+#include <fstream>
+#include <iostream>
 
 #include "GL/glew.h"
 #include "biteimage.hpp"
-
+#include "imageloadbase.hpp"
+#include "bmpload.hpp"
 
 
 namespace Bite
@@ -31,10 +34,10 @@ namespace Load
 
 	// Returns the loaded image and names it. Will not load the same image twice
 	const Bite::Image
-	ImageFromFile( std::string path, std::string name );
+	ImageFromFile( const std::string& path, const std::string& name );
 
 	const Bite::Image
-	Image( std::stream imgData, std::string name );
+	Image( std::istream& imgData, const std::string& name, ImageLoadBase& loadType  );
 
 	// Gets the image with this name.
 	const Bite::Image

@@ -10,7 +10,7 @@ namespace Bite
 	class ImageStorage
 		{
 		public:
-		~ImageStorage;
+		~ImageStorage();
 		void Clear();
 
 		typedef std::map<std::string, Image> NameImageMap;
@@ -18,7 +18,7 @@ namespace Bite
 		};
 
 
-----// ImageStorage implementation:
+//--ImageStorage implementation:
 
 	ImageStorage::~ImageStorage()
 		{
@@ -28,7 +28,9 @@ namespace Bite
 
 	void
 	ImageStorage::Clear()
+		{
 		//---
+		}
 
 
 	ImageStorage* imageStorage = 0; // The singleton.
@@ -54,26 +56,44 @@ namespace Unload
 	void
 	AllImages()
 		{
-		GL::imageStorage.Clear();
+		Bite::imageStorage->Clear();
 		}
 
 
 	void
 	Image()
+		{
 		//---
+		}
 	} // namespace Unload
 
 
 namespace Load
 	{
 	const Bite::Image
-	ImageFromFile( std::string path, std::string name ) 
-		//---
+	ImageFromFile( const std::string& path, const std::string& name ) 
+		{
+		std::ifstream file( path, std::ios_base::binary | std::ios_base::in );
+
+		if( !file.good() )
+			{
+			// TODO: Throw exception here.
+			std::cout << "Could not open file: " << path << std::endl;
+			return Bite::Image();
+			}
+
+		// TODO: Determine load type from suffix.
+		Bite::Image image = Load::Image( file, name, BMP() );
+
+		return image;
+		}
 
 
 	const Bite::Image
-	Image( std::stream imgData, std::string name )
+	Image( std::istream& imgData, const std::string& name, ImageLoadBase& loadType )
+		{
 		//---
+		}
 
 
 	const Bite::Image

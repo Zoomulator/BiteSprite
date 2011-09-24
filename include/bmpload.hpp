@@ -8,7 +8,7 @@
 
 namespace Bite
 	{
-	class BMP
+	class BMP : public ImageLoadBase
 		{
 		enum Offsets
 			{

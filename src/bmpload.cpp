@@ -71,7 +71,6 @@ namespace Bite
 					B_ASSERT( pOffset*4 <= data.Size() );
 
 					pixAllocation[pOffset] = pixel;
-
 					}
 				}
 
