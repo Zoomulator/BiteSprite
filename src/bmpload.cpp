@@ -4,11 +4,12 @@
 namespace Bite
 	{
 
+
 	void
 	BMP::operator () ( std::istream& stream, ImageData& data ) const
 		{
 		// Exception safety: This function serves the basic guarantee.
-		Uint8* pixAllocation = 0;
+		Uint32* pixAllocation = 0;
 		
 		try
 			{
@@ -28,17 +29,21 @@ namespace Bite
 			stream.seekg( BMP::PixHeight );
 			stream.read( (Uint8*)&data.height, 4 );
 
+			Uint32 bitpp;
+			Uint32 bytepp;
 			stream.seekg( BMP::BPP );
-			stream.read( (Uint8*)&data.bitpp, 4 );
-			data.bytepp = data.bitpp / 8; // 8 bits per byte.
+			stream.read( (Uint8*)&bitpp, 4 );
+			bytepp = bitpp / 8; // 8 bits per byte.
 
-			stream.seekg( BMP::BitmaskR );
-			stream.read( (Uint8*)&data.mask, 16 ); // Read all masks in one swoop (4bytes*4).
+			ColorMask BMPmask;
+			BMPmask.r = 0x00FF0000;
+			BMPmask.g = 0x0000FF00;
+			BMPmask.b = 0x000000FF;
+			BMPmask.a = 0xFF000000;
 
-			Uint32 bmpRowWidth = ( data.bitpp * data.width / 32 ) * 4; // Row bytes wide in stream with possible padding
-			data.pixelDataSize = data.width * data.height * data.bytepp;
-		
-			pixAllocation = new Uint8[ data.pixelDataSize ];
+			Uint32 bmpRowWidth = ( bitpp * data.width / 32 ) * 4; // Row bytes wide in stream with possible padding
+					
+			pixAllocation = new Uint32[ data.width * data.height ]; // 4 bytes per Uint32
 
 			// Now we know everything but the pixel data itself.
 			// Lets create an array that will fit it.
@@ -48,18 +53,25 @@ namespace Bite
 				{
 				for( Uint32 x = 0; x < data.width; ++x )
 					{
+					// Read the pixel from the stream.
 					Uint32 fOffset = 
 						pixDataOffset + 
 						bmpRowWidth * y + 
-						data.bytepp * x;
+						bytepp * x;
 					stream.seekg( fOffset );
-					// Read each pixel from the stream and place it at the inverted
-					// row place in the data class. X position remains the same.
-					Uint32 pOffset = 
-						x * data.bytepp + 
-						(data.height - y) * (data.width - 1) * data.bytepp;
-					B_ASSERT( pOffset <= data.pixelDataSize );
-					stream.read( pixAllocation + pOffset, data.bytepp );
+				
+					Uint32 rawPixel = 0;
+					stream.read( (char*)&rawPixel, bytepp );
+
+					// Convert it to BiteSprite's internal pixel format.
+					Uint32 pixel = ConvertColor( rawPixel, BMPmask, internalMask );
+					
+					//Uint32 pOffset = x + (data.height - y - 1) * (data.width - 1);
+					Uint32 pOffset = x + (data.width-y-1) * data.width;
+					B_ASSERT( pOffset*4 <= data.Size() );
+
+					pixAllocation[pOffset] = pixel;
+
 					}
 				}
 
@@ -71,7 +83,7 @@ namespace Bite
 			delete[] pixAllocation;
 			throw;
 			}
-
 	}
+
 
 	} // namespace Bite

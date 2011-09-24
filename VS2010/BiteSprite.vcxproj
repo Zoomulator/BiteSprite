@@ -72,6 +72,7 @@
     <ClInclude Include="..\include\bite.hpp" />
     <ClInclude Include="..\include\biteimage.hpp" />
     <ClInclude Include="..\include\bmpload.hpp" />
+    <ClInclude Include="..\include\colormask.hpp" />
     <ClInclude Include="..\include\imagedata.hpp" />
     <ClInclude Include="..\include\imageloadbase.hpp" />
     <ClInclude Include="..\include\imageloader.hpp" />

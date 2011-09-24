@@ -10,10 +10,7 @@ namespace Bite
 	ImageData::ImageData() :
 		pixels( 0 ),
 			width( 0 ),
-			height( 0 ),
-			bitpp( 0 ),
-			bytepp( 0 ),
-			pixelDataSize( 0 )
+			height( 0 )
 		{}
 
 
@@ -23,12 +20,19 @@ namespace Bite
 		}
 
 
-	void*
+	Uint32*
 	ImageData::DropPixels()
 		{
-		void* ret = pixels;
+		Uint32* ret = pixels;
 		pixels = 0;
 		return ret;
+		}
+
+
+	Uint32
+	ImageData::PixAt( Uint32 x, Uint32 y )
+		{
+		return pixels[ x + y*width ];
 		}
 
 
@@ -39,13 +43,13 @@ namespace Bite
 		pixels = 0;
 		width = 0;
 		height = 0;
-		bitpp = 0;
-		bytepp = 0;
-		pixelDataSize = 0;
-		mask.r = 0;
-		mask.g = 0;
-		mask.b = 0;
-		mask.a = 0;
+		}
+
+
+	Uint32
+	ImageData::Size() const
+		{
+		return width * height * 4; // 4bytes per pix
 		}
 
 	} // namespace Bite

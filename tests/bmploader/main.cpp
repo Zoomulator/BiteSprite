@@ -7,9 +7,9 @@
 void PrintColor( Uint32 val, const Bite::ImageData& image )
 	{
 	std::cout << std::dec <<
-		"R: "  << ((val & 0x00FF0000) >> 16 ) <<
+		"R: "  << ((val & 0x000000FF) ) <<
 		" G: " << ((val & 0x0000FF00) >> 8) <<
-		" B: " << ((val & 0x000000FF)) << std::endl;
+		" B: " << ((val & 0x00FF0000) >> 16 ) << std::endl;
 	}
 
 
@@ -29,19 +29,17 @@ int main()
 	std::cout << "First pixel value:" << std::endl;
 	
 	pixVal = 0;
-	image.PixAt( 0,0, pixVal );
+	pixVal = image.PixAt( 0,0 );
 	std::cout << std::hex << pixVal << std::endl;
 	PrintColor( pixVal, image );
 
-	pixVal = 0;
+	pixVal = image.PixAt( 1,0 );
 	std::cout << "Second pixel:" << std::endl;
-	image.PixAt( 1,0, pixVal );
 	std::cout << std::hex << pixVal << std::endl;
 	PrintColor( pixVal, image );
 
-	pixVal=0;
+	pixVal=image.PixAt(63,63);
 	std::cout << "Last pixel value:" << std::endl;
-	image.PixAt(63,63, pixVal );
 	std::cout << std::hex << pixVal << std::endl;
 	PrintColor( pixVal, image );
 
