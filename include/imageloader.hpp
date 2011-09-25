@@ -10,6 +10,7 @@
 #include "biteimage.hpp"
 #include "imageloadbase.hpp"
 #include "bmpload.hpp"
+#include "bassert.hpp"
 
 
 namespace Bite

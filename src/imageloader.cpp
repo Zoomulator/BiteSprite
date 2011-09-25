@@ -114,6 +114,8 @@ namespace Load
 	const Bite::Image
 	ImageFromFile( const std::string& path, const std::string& name ) 
 		{
+		B_ASSERT( imageStorage != 0 );
+
 		if( imageStorage->Has( name ) )
 			{
 			return imageStorage->Get( name );
@@ -143,6 +145,8 @@ namespace Load
 	const Bite::Image
 	Image( std::istream& imgData, const std::string& name, ImageLoadBase& loadType )
 		{
+		B_ASSERT( imageStorage != 0 );
+
 		if( imageStorage->Has( name ) )
 			{
 			return imageStorage->Get( name );
@@ -170,6 +174,7 @@ namespace Load
 	const Bite::Image
 	Image( const std::string& name )
 		{
+		B_ASSERT( imageStorage != 0 );
 		return imageStorage->Get( name );
 		}
 
