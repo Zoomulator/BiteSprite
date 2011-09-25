@@ -32,7 +32,9 @@ namespace Unload
 namespace Load 
 	{
 
-	// Returns the loaded image and names it. Will not load the same image twice
+	// Returns the loaded image and names it.
+	// If the name already exist, that is returned. It will
+	// duplicate paths with different names however.
 	const Bite::Image
 	ImageFromFile( const std::string& path, const std::string& name );
 
@@ -41,7 +43,7 @@ namespace Load
 
 	// Gets the image with this name.
 	const Bite::Image
-	Image( std::string name );
+	Image( const std::string& name );
 
 	} // namespace Load
 	} // namespace Bite

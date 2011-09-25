@@ -3,16 +3,21 @@
 
 
 
+#include "types.hpp"
+
 
 namespace Bite
 	{
 
-	
+	// Holds some information about texture loaded to GL
 	class Image
 		{
+		public:
 		GLuint textureID;
-		std::string filepath;
 		std::string name;
+
+		Uint32 width;
+		Uint32 height;
 		};
 	
 

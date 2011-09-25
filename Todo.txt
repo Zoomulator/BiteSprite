@@ -1,3 +1,4 @@
 Make BiteSprite logo. Bitten off sprite? Omnom
 
 BMP bitmask information currently broken and simply not used. 32bit ARGB mask is assumed
+
