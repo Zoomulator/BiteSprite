@@ -62,13 +62,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\batch.cpp" />
     <ClCompile Include="..\src\bite.cpp" />
     <ClCompile Include="..\src\bmpload.cpp" />
     <ClCompile Include="..\src\imagedata.cpp" />
     <ClCompile Include="..\src\imageloader.cpp" />
+    <ClCompile Include="..\src\sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\bassert.hpp" />
+    <ClInclude Include="..\include\batch.hpp" />
     <ClInclude Include="..\include\bite.hpp" />
     <ClInclude Include="..\include\biteimage.hpp" />
     <ClInclude Include="..\include\bmpload.hpp" />
@@ -76,7 +79,11 @@
     <ClInclude Include="..\include\imagedata.hpp" />
     <ClInclude Include="..\include\imageloadbase.hpp" />
     <ClInclude Include="..\include\imageloader.hpp" />
+    <ClInclude Include="..\include\sprite.hpp" />
+    <ClInclude Include="..\include\spritesheet.hpp" />
+    <ClInclude Include="..\include\spritetemplate.hpp" />
     <ClInclude Include="..\include\types.hpp" />
+    <ClInclude Include="..\src\spritesheet.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

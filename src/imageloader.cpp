@@ -62,6 +62,7 @@ namespace Bite
 	const Bite::Image
 	ImageStorage::Get( const std::string& name ) const
 		{
+		// TODO: Throw exception if image not loaded.
 		return nameToImage[ name ];
 		}
 
