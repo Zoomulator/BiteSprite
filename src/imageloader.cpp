@@ -62,8 +62,10 @@ namespace Bite
 	const Bite::Image
 	ImageStorage::Get( const std::string& name ) const
 		{
-		// TODO: Throw exception if image not loaded.
-		return static_cast<const NameImageMap>(nameToImage)[ name ];
+		NameImageMap::const_iterator it = nameToImage.find( name );
+
+		if( it == nameToImage.end() ) throw BadImageName( name );
+		else return it->second;
 		}
 
 
@@ -116,30 +118,18 @@ namespace Load
 	ImageFromFile( const std::string& path, const std::string& name ) 
 		{
 		BASSERT( imageStorage != 0 );
-
-		if( imageStorage->Has( name ) )
-			{
-			return imageStorage->Get( name );
-			}
+		
 		// Load the file if the name isn't already loaded.
 		std::ifstream file( path, std::ios_base::binary | std::ios_base::in );
 
 		if( !file.good() )
 			{
-			// TODO: Throw exception here.
-			std::cout << "Could not open file: " << path << std::endl;
-			return Bite::Image();
+			throw FileError( path );
 			}
 
 		// TODO: Determine image type from suffix.
 		return Load::Image( file, name, BMP() );
 		}
-
-
-	// Note: Yes, both the function above and the one below does the name check,
-	// but it's not a very expensive check for a function that's not called much.
-	// I think it's better to call it twice than opening the file each time
-	// ImageToFile is called with the same name only to return what's already loaded.
 
 
 	// Interprets a data stream as the given image type and uploads it to OpenGL.
@@ -148,9 +138,12 @@ namespace Load
 		{
 		BASSERT( imageStorage != 0 );
 
+		// Do not allow duplicates.
 		if( imageStorage->Has( name ) )
 			{
-			return imageStorage->Get( name );
+			// Throw exception because user could have tried to load different
+			// files to the same name, so returning the image could lead to bugs.
+			throw NameAlreadyInUse( name );
 			}
 
 		ImageData data;

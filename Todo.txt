@@ -2,3 +2,7 @@ Make BiteSprite logo. Bitten off sprite? Omnom
 
 BMP bitmask information currently broken and simply not used. 32bit ARGB mask is assumed
 
+Use an FBO to simulate lower resolutions. Could call it pixel size or what ever.
+Also an option of turning it off so that it writes directly to context buffer.
+
+Have an alpha buffer that can be read from the shader to blend transparency independently of z-depth order.

@@ -10,6 +10,7 @@
 #include "biteimage.hpp"
 #include "imageloadbase.hpp"
 #include "bmpload.hpp"
+#include "bexception.hpp"
 #include "bassert.hpp"
 
 
@@ -47,6 +48,29 @@ namespace Load
 	Image( const std::string& name );
 
 	} // namespace Load
+
+
+	class BadImageName : public Exception
+		{
+		public:
+		BadImageName( const std::string& name )
+			{
+			errstr =
+				"Bad image name: " + name;
+			}
+		};
+
+
+	class NameAlreadyInUse : public BadImageName
+		{
+		public:
+		NameAlreadyInUse( const std::string& name )
+			{
+			errstr = 
+				"Image name already in use: " + name;
+			}
+		};
+
 	} // namespace Bite
 
 
