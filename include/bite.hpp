@@ -1,10 +1,10 @@
-#include BITESPRITE_MAIN_HPP
-#include BITESPRITE_MAIN_HPP
+#ifndef BITESPRITE_MAIN_HPP
+#define BITESPRITE_MAIN_HPP
 
 
 
 #include "imageloader.hpp"
-
+#include "spritesheet_shaders.hpp"
 
 namespace Bite
 	{

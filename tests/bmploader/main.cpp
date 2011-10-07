@@ -4,7 +4,7 @@
 #include "bmpload.hpp"
 
 
-void PrintColor( Uint32 val, const Bite::ImageData& image )
+void PrintColor( Bite::Uint32 val, const Bite::ImageData& image )
 	{
 	std::cout << std::dec <<
 		"R: "  << ((val & 0x000000FF) ) <<
@@ -25,7 +25,7 @@ int main()
 	Bite::ImageData image;
 	Bite::BMP()( file, image );
 
-	Uint32 pixVal;
+	Bite::Uint32 pixVal;
 	std::cout << "First pixel value:" << std::endl;
 	
 	pixVal = 0;

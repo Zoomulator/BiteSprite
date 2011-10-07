@@ -63,7 +63,7 @@ namespace Bite
 	ImageStorage::Get( const std::string& name ) const
 		{
 		// TODO: Throw exception if image not loaded.
-		return nameToImage[ name ];
+		return static_cast<const NameImageMap>(nameToImage)[ name ];
 		}
 
 
@@ -115,7 +115,7 @@ namespace Load
 	const Bite::Image
 	ImageFromFile( const std::string& path, const std::string& name ) 
 		{
-		B_ASSERT( imageStorage != 0 );
+		BASSERT( imageStorage != 0 );
 
 		if( imageStorage->Has( name ) )
 			{
@@ -146,7 +146,7 @@ namespace Load
 	const Bite::Image
 	Image( std::istream& imgData, const std::string& name, ImageLoadBase& loadType )
 		{
-		B_ASSERT( imageStorage != 0 );
+		BASSERT( imageStorage != 0 );
 
 		if( imageStorage->Has( name ) )
 			{
@@ -175,7 +175,7 @@ namespace Load
 	const Bite::Image
 	Image( const std::string& name )
 		{
-		B_ASSERT( imageStorage != 0 );
+		BASSERT( imageStorage != 0 );
 		return imageStorage->Get( name );
 		}
 

@@ -17,14 +17,13 @@ namespace Bite
 	class ImageLoadBase
 		{
 		protected:
-		ImageLoadBase();
-		virtual ~ImageLoadBase();
+		virtual ~ImageLoadBase() {};
 
 		public:
 		
 		// Load into existing ImageData object.
 		virtual void
-		operator() (std::istream& stream, ImageData& target) const;
+		operator() (std::istream& stream, ImageData& target) const = 0;
 
 		// Creates a new heap ImageData object and load the file into it.
 		// Merely a convinience.

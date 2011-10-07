@@ -42,7 +42,7 @@ namespace Bite
 		Clear();
 
 		private:
-		std::set<Batch*> BatchContainer;
+		typedef std::set<Batch*> BatchContainer;
 		BatchContainer batches;
 		};
 
