@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\bassert.hpp" />
     <ClInclude Include="..\include\batch.hpp" />
+    <ClInclude Include="..\include\bexception.hpp" />
     <ClInclude Include="..\include\bite.hpp" />
     <ClInclude Include="..\include\biteimage.hpp" />
     <ClInclude Include="..\include\bmpload.hpp" />

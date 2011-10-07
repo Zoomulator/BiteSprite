@@ -12,9 +12,13 @@ namespace Bite
 
 	class Exception : public std::exception
 		{
+		protected:
 		std::string errstr;
 
 		public:
+		Exception()
+			{}
+
 		Exception( const std::string& str )
 			{
 			errstr = str;

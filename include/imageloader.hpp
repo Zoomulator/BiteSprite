@@ -58,6 +58,9 @@ namespace Load
 			errstr =
 				"Bad image name: " + name;
 			}
+
+		protected:
+			BadImageName() {}
 		};
 
 
