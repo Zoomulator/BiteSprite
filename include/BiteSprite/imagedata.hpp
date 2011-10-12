@@ -7,9 +7,9 @@
 #include <string>
 #include <fstream>
 
-#include "types.hpp"
-#include "colormask.hpp"
-#include "bassert.hpp"
+#include "BiteSprite/types.hpp"
+#include "BiteSprite/colormask.hpp"
+#include "BiteSprite/bassert.hpp"
 
 namespace Bite
 	{

@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "imageloadbase.hpp"
-#include "bassert.hpp"
+#include "BiteSprite/imageloadbase.hpp"
+#include "BiteSprite/bassert.hpp"
 
 namespace Bite
 	{

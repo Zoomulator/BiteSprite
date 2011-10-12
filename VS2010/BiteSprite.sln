@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BiteSprite", "BiteSprite.vc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BMPLoaderTest", "BMPLoaderTest\BMPLoaderTest.vcxproj", "{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL_DisplayTest", "SDL_DisplayTest\SDL_DisplayTest.vcxproj", "{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}.Debug|Win32.Build.0 = Debug|Win32
 		{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}.Release|Win32.ActiveCfg = Release|Win32
 		{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}.Release|Win32.Build.0 = Release|Win32
+		{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}.Debug|Win32.Build.0 = Debug|Win32
+		{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}.Release|Win32.ActiveCfg = Release|Win32
+		{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

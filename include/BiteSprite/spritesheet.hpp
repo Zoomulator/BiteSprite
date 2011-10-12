@@ -8,17 +8,19 @@
 
 #include <GL/glew.h>
 
-#include "bassert.hpp"
-#include "types.hpp"
-#include "imageloader.hpp"
-#include "biteimage.hpp"
-#include "batch.hpp"
-#include "spritetemplate.hpp"
-#include "sprite.hpp"
-#include "spritesheet_shaders.hpp"
-#include "projection.hpp"
-#include "view.hpp"
-#include "idgenerator.hpp"
+#include "BiteSprite\bexception.hpp"
+#include "BiteSprite\bassert.hpp"
+#include "BiteSprite\types.hpp"
+#include "BiteSprite\imageloader.hpp"
+#include "BiteSprite\biteimage.hpp"
+#include "BiteSprite\batch.hpp"
+#include "BiteSprite\spritetemplate.hpp"
+#include "BiteSprite\sprite.hpp"
+#include "BiteSprite\spritesheet_shaders.hpp"
+#include "BiteSprite\projection.hpp"
+#include "BiteSprite\view.hpp"
+#include "BiteSprite\idgenerator.hpp"
+#include "BiteSprite\checkglerror.hpp"
 
 namespace Bite
 	{
@@ -52,12 +54,6 @@ namespace Bite
 		typedef std::vector<Sprite> Sprites; // Unused?
 		typedef std::vector<GLuint> BufferUint;
 		typedef std::vector<GLfloat> BufferFloat;
-	
-		void
-		GLLoadShaders();
-
-		void
-		GLUnloadShaders();
 
 		void
 		GLBufferSetup();
@@ -74,18 +70,16 @@ namespace Bite
 		// GL buffer (gluffer) names
 		GLuint glufferVertex; // x,y,z
 		GLuint glufferTemplateID;
+		GLuint glufferFlag;
 		GLuint glufferFrameTBO; // Stores all the template's frames in ID order
 		
 		// GL textures
 		GLuint texFrameTBO; // Texture for glufferFrameTBO to bind to
-		
-		// Matrices
-		GLfloat projection[16];
-		GLfloat view[16];
 
 		// SpriteTemplate IDs are the same as the index in this vector.
 		Templates templates;
 		IDGenerator idGenTemplate;
+		BufferUint frames;
 		StringID nameToTemplateID;
 
 		IDGenerator idGenSprite;
@@ -97,6 +91,30 @@ namespace Bite
 		BufferUint	spriteTemplateID;
 		};
 
+
+	class BadTemplateName : public Exception
+		{
+		public:
+		BadTemplateName( const std::string& name )
+			{
+			errstr =
+				"Bad template name: " + name;
+			}
+
+		protected:
+		BadTemplateName() {}
+		};
+
+
+	class TemplateNameAlreadyInUse : public BadTemplateName
+		{
+		public:
+		TemplateNameAlreadyInUse( const std::string& name )
+			{
+			errstr =
+				"Template name already in use: " + name;
+			}
+		};
 
 	} // namespace Bite
 

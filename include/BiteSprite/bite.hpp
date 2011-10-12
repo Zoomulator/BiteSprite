@@ -2,9 +2,9 @@
 #define BITESPRITE_MAIN_HPP
 
 
-
-#include "imageloader.hpp"
-#include "spritesheet_shaders.hpp"
+#include "GL/glew.h"
+#include "BiteSprite/imageloader.hpp"
+#include "BiteSprite/spritesheet.hpp"
 
 namespace Bite
 	{

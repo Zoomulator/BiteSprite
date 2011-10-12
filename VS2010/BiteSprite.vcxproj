@@ -21,7 +21,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
@@ -36,18 +36,34 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)_d</TargetName>
+    <OutDir>$(SolutionDir)..\lib\</OutDir>
+    <LibraryPath>D:\dev\lib\glew-1.7.0\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\lib</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\dev\lib\glew-1.7.0\include;$(SolutionDir)../include;$(SolutionDir)../src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\dev\lib\glew-1.7.0\include;$(SolutionDir)../include/;$(SolutionDir)../src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <PreprocessorDefinitions>_MBCS;GLEW_STATIC;BITE_GL_ERRORS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <ProjectReference />
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -72,29 +88,30 @@
     <ClCompile Include="..\src\imageloader.cpp" />
     <ClCompile Include="..\src\projection.cpp" />
     <ClCompile Include="..\src\sprite.cpp" />
+    <ClCompile Include="..\src\spritesheet.cpp" />
     <ClCompile Include="..\src\spritesheet_shaders.cpp" />
     <ClCompile Include="..\src\view.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\bassert.hpp" />
-    <ClInclude Include="..\include\batch.hpp" />
-    <ClInclude Include="..\include\bexception.hpp" />
-    <ClInclude Include="..\include\bite.hpp" />
-    <ClInclude Include="..\include\biteimage.hpp" />
-    <ClInclude Include="..\include\bmpload.hpp" />
-    <ClInclude Include="..\include\colormask.hpp" />
-    <ClInclude Include="..\include\idgenerator.hpp" />
-    <ClInclude Include="..\include\imagedata.hpp" />
-    <ClInclude Include="..\include\imageloadbase.hpp" />
-    <ClInclude Include="..\include\imageloader.hpp" />
-    <ClInclude Include="..\include\projection.hpp" />
-    <ClInclude Include="..\include\sprite.hpp" />
-    <ClInclude Include="..\include\spritesheet.hpp" />
-    <ClInclude Include="..\include\spritetemplate.hpp" />
-    <ClInclude Include="..\include\types.hpp" />
-    <ClInclude Include="..\include\view.hpp" />
-    <ClInclude Include="..\src\spritesheet.cpp" />
-    <ClInclude Include="..\src\spritesheet_shaders.hpp" />
+    <ClInclude Include="..\include\BiteSprite\bassert.hpp" />
+    <ClInclude Include="..\include\BiteSprite\batch.hpp" />
+    <ClInclude Include="..\include\BiteSprite\bexception.hpp" />
+    <ClInclude Include="..\include\BiteSprite\bite.hpp" />
+    <ClInclude Include="..\include\BiteSprite\biteimage.hpp" />
+    <ClInclude Include="..\include\BiteSprite\bmpload.hpp" />
+    <ClInclude Include="..\include\BiteSprite\checkglerror.hpp" />
+    <ClInclude Include="..\include\BiteSprite\colormask.hpp" />
+    <ClInclude Include="..\include\BiteSprite\idgenerator.hpp" />
+    <ClInclude Include="..\include\BiteSprite\imagedata.hpp" />
+    <ClInclude Include="..\include\BiteSprite\imageloadbase.hpp" />
+    <ClInclude Include="..\include\BiteSprite\imageloader.hpp" />
+    <ClInclude Include="..\include\BiteSprite\projection.hpp" />
+    <ClInclude Include="..\include\BiteSprite\sprite.hpp" />
+    <ClInclude Include="..\include\BiteSprite\spritesheet.hpp" />
+    <ClInclude Include="..\include\BiteSprite\spritesheet_shaders.hpp" />
+    <ClInclude Include="..\include\BiteSprite\spritetemplate.hpp" />
+    <ClInclude Include="..\include\BiteSprite\types.hpp" />
+    <ClInclude Include="..\include\BiteSprite\view.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

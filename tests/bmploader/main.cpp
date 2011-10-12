@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "imagedata.hpp"
-#include "bmpload.hpp"
+#include "BiteSprite/imagedata.hpp"
+#include "BiteSprite/bmpload.hpp"
 
 
 void PrintColor( Bite::Uint32 val, const Bite::ImageData& image )

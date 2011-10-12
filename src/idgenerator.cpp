@@ -1,4 +1,4 @@
-#include "idgenerator.hpp"
+#include "BiteSprite\idgenerator.hpp"
 
 
 
@@ -22,7 +22,8 @@ namespace Bite
 
 		if( recycleBin.empty() )
 			{
-			id = ++top;
+			id = top;
+			++top;
 			}
 		else
 			{

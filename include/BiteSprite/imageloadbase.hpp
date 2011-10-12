@@ -8,7 +8,7 @@
 //different load types inherits from the ImageLoadBase class
 
 #include <istream>
-#include "imagedata.hpp"
+#include "BiteSprite/imagedata.hpp"
 
 namespace Bite
 	{

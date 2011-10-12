@@ -7,11 +7,11 @@
 #include <iostream>
 
 #include "GL/glew.h"
-#include "biteimage.hpp"
-#include "imageloadbase.hpp"
-#include "bmpload.hpp"
-#include "bexception.hpp"
-#include "bassert.hpp"
+#include "BiteSprite/biteimage.hpp"
+#include "BiteSprite/imageloadbase.hpp"
+#include "BiteSprite/bmpload.hpp"
+#include "BiteSprite/bexception.hpp"
+#include "BiteSprite/bassert.hpp"
 
 
 namespace Bite
@@ -64,10 +64,10 @@ namespace Load
 		};
 
 
-	class NameAlreadyInUse : public BadImageName
+	class ImageNameAlreadyInUse : public BadImageName
 		{
 		public:
-		NameAlreadyInUse( const std::string& name )
+		ImageNameAlreadyInUse( const std::string& name )
 			{
 			errstr = 
 				"Image name already in use: " + name;

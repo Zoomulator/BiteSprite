@@ -3,7 +3,7 @@
 
 
 
-#include "types.hpp"
+#include "BiteSprite/types.hpp"
 
 
 namespace Bite

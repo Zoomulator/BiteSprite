@@ -3,8 +3,8 @@
 
 
 
-#include "types.hpp"
-#include "idgenerator.hpp"
+#include "BiteSprite/types.hpp"
+#include "BiteSprite/idgenerator.hpp"
 
 
 

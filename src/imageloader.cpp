@@ -1,4 +1,4 @@
-#include "imageloader.hpp"
+#include "BiteSprite\imageloader.hpp"
 
 
 
@@ -82,6 +82,7 @@ namespace Bite
 	void
 	InitImageLoader()
 		{
+		BASSERT( imageStorage == 0 );
 		imageStorage = new ImageStorage();
 		}
 
@@ -120,9 +121,9 @@ namespace Load
 		BASSERT( imageStorage != 0 );
 		
 		// Load the file if the name isn't already loaded.
-		std::ifstream file( path, std::ios_base::binary | std::ios_base::in );
+		std::fstream file( path, std::ios_base::binary | std::ios_base::in );
 
-		if( !file.good() )
+		if( !file.is_open() || !file.good() )
 			{
 			throw FileError( path );
 			}
@@ -143,7 +144,7 @@ namespace Load
 			{
 			// Throw exception because user could have tried to load different
 			// files to the same name, so returning the image could lead to bugs.
-			throw NameAlreadyInUse( name );
+			throw ImageNameAlreadyInUse( name );
 			}
 
 		ImageData data;
@@ -154,12 +155,17 @@ namespace Load
 		glGenTextures( 1, &image.textureID );
 		glBindTexture( GL_TEXTURE_2D, image.textureID );
 
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, data.width, data.height, 0,
-			GL_RGBA, GL_UNSIGNED_INT, data.pixels );
+			GL_RGBA, GL_UNSIGNED_BYTE, data.pixels );
 
 		image.name = name;
 		image.width = data.width;
 		image.height = data.height;
+
+		imageStorage->Add( image );
 
 		return image;
 		}

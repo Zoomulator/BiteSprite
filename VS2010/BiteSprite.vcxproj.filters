@@ -45,63 +45,66 @@
     <ClCompile Include="..\src\idgenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\spritesheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\biteimage.hpp">
+    <ClInclude Include="..\include\BiteSprite\bassert.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\imagedata.hpp">
+    <ClInclude Include="..\include\BiteSprite\batch.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\imageloader.hpp">
+    <ClInclude Include="..\include\BiteSprite\bexception.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\bite.hpp">
+    <ClInclude Include="..\include\BiteSprite\bite.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\bassert.hpp">
+    <ClInclude Include="..\include\BiteSprite\biteimage.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\imageloadbase.hpp">
+    <ClInclude Include="..\include\BiteSprite\bmpload.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\types.hpp">
+    <ClInclude Include="..\include\BiteSprite\colormask.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\bmpload.hpp">
+    <ClInclude Include="..\include\BiteSprite\idgenerator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\colormask.hpp">
+    <ClInclude Include="..\include\BiteSprite\imagedata.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\batch.hpp">
+    <ClInclude Include="..\include\BiteSprite\imageloadbase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\spritesheet.hpp">
+    <ClInclude Include="..\include\BiteSprite\imageloader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\spritesheet.cpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\spritetemplate.hpp">
+    <ClInclude Include="..\include\BiteSprite\projection.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\sprite.hpp">
+    <ClInclude Include="..\include\BiteSprite\sprite.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\spritesheet_shaders.hpp">
+    <ClInclude Include="..\include\BiteSprite\spritesheet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\projection.hpp">
+    <ClInclude Include="..\include\BiteSprite\spritesheet_shaders.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\view.hpp">
+    <ClInclude Include="..\include\BiteSprite\spritetemplate.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\idgenerator.hpp">
+    <ClInclude Include="..\include\BiteSprite\types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\bexception.hpp">
+    <ClInclude Include="..\include\BiteSprite\view.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BiteSprite\checkglerror.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

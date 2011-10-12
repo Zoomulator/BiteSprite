@@ -1,4 +1,4 @@
-#include "spritesheet_shaders.hpp"
+#include "BiteSprite/spritesheet_shaders.hpp"
 
 
 
@@ -8,29 +8,75 @@ namespace Shader
 	{
 	#define NULL 0
 
-	GLuint _glsProgSprite = 0;
-	GLuint _unilocProjection = 0;
-	GLuint _unilocView = 0;
-	GLuint _unilocSpriteSheet = 0;
-	GLuint _unilocSpriteFrame = 0;
+	GLint _glsProgSprite = 0;
+	GLint _unilocProjection = 0;
+	GLint _unilocView = 0;
+	GLint _unilocSpriteSheet = 0;
+	GLint _unilocSpriteFrame = 0;
 
 	const GLuint attriblocVertex = 0;
 	const GLuint attriblocTemplateID = 1;
 	const GLuint attriblocFlags = 2;
 
-	const GLuint& glsProgSprite = _glsProgSprite;
-	const GLuint& unilocProjection = _unilocProjection;
-	const GLuint& unilocView = _unilocView;
-	const GLuint& unilocSpriteSheet = _unilocSpriteSheet;
-	const GLuint& unilocSpriteFrame = _unilocSpriteFrame;
+	const GLint& glsProgSprite = _glsProgSprite;
+	const GLint& unilocProjection = _unilocProjection;
+	const GLint& unilocView = _unilocView;
+	const GLint& unilocSpriteSheet = _unilocSpriteSheet;
+	const GLint& unilocSpriteFrame = _unilocSpriteFrame;
 
 
 namespace Source
 	{
 
+	const char * vertexPassthrough =
+		"#version 330\n"
+		"\n"
+		"in vec4 vertex;"
+		"\n"
+		"void main(void)\n"
+		"	{\n"
+		"	gl_Position = vertex;\n"
+		"	}"
+		; // vertexPassthrough
+
+	const char * geometryPassthrough =
+		"#version 330\n"
+		"\n"
+		"layout (points) in;\n"
+		"layout (triangle_strip) out;\n"
+		"layout (max_vertices = 4) out;"
+		"\n"
+		"void main(void)\n"
+		"	{\n"
+		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( -0.1, -0.1 );\n"
+		"	EmitVertex();\n"
+		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( 0.1, -0.1 );\n"
+		"	EmitVertex();\n"
+		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( 0.1, 0.1 );\n"
+		"	EmitVertex();\n"
+		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( -0.1, 0.1 );\n"
+		"	EmitVertex();\n"
+		"	EndPrimitive();\n"
+		"	}"
+		; // geometryPassthrough
+
+
+	const char* fragmentPassthrough =
+		"#version 330\n"
+		"\n"
+		"out vec4 fragColor;\n"
+		"\n"
+		"void main(void)\n"
+		"	{\n"
+		"	fragColor = vec4(0.8, 0.1, 0.1, 1.0);\n"
+		"	}"
+		; // fragmentPassthrough
+
 	const char * vertex =
 		"#version 330\n"
 		"\n"
+		"uniform sampler2D spriteSheet;\n"
+		"uniform samplerBuffer spriteFrame;\n"
 		"uniform mat4 projection;\n"
 		"uniform mat4 view;\n"
 		"\n"
@@ -43,9 +89,9 @@ namespace Source
 		"\n"
 		"void main(void)\n"
 		"	{\n"
-		"	gID = ID;\n"
+		"	gID = templateID;\n"
 		"	gFlags = flags;\n"
-		"	gl_Position = projection * view * vertex;\n"
+		"	gl_Position = vec4(0,0,0,1); //projection * view * vertex;\n"
 		"	}\n"
 		; // vertex end
 
@@ -53,43 +99,47 @@ namespace Source
 	const char* geometry =
 		"#version 330\n"
 		"\n"
-		"layout (point) in;\n"
+		"layout (points) in;\n"
 		"layout (triangle_strip) out;\n"
 		"layout (max_vertices = 4) out;"
 		"\n"
-		"in uint gID;\n"
-		"in uint gFlags;\n"
-		"out uint fID;\n"
-		"out uint fFlags;\n"
+		"in uint gID[];\n"
+		"in uint gFlags[];\n"
+		"flat out uint fID;\n"
+		"flat out uint fFlags;\n"
 		"smooth out vec2 texCoord;\n"
 		"\n"
 		"uniform samplerBuffer spriteFrame;\n"
 		"\n"
 		"void main(void)\n"
 		"	{\n"
-		"	fID = gID;\n"
-		"	fFlags = gFlags;\n"
-		"	if( glFlags & 1 ) // is visibility bit set?\n"
+		"	fID = gID[0];\n"
+		"	fFlags = gFlags[0];\n"
+		//"	if( bool(gFlags[0] & 1u) ) // is visibility bit set?\n"
 		"		{\n"
-		"		Vec4 frame = texelFetch( spriteFrame, ID );\n"
-		"		Vec2 size = frame.wz;\n"
+		"		vec4 frame = texelFetch( spriteFrame, int(gID[0]) );\n"
+		"		vec2 size = frame.wz;\n"
 
-		"		gl_Position.xy = gl_in[0].xy - (size.xy / 2.0 );\n"
+		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( -0.1, 0.1 );\n"
+		//"		gl_Position.xy = gl_in[0].gl_Position.xy - (size.xy / 2.0 );\n"
 		"		texCoord = vec2( 0, 0 );\n"
 		"		EmitVertex();\n"
 
-		"		gl_Position.x = gl_in[0].x + size.x / 2.0;\n"
-		"		gl_Position.y = gl_in[0].y - size.y / 2.0;\n"
+		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( -0.1, -0.1 );\n"
+		//"		gl_Position.x = gl_in[0].gl_Position.x + size.x / 2.0;\n"
+		//"		gl_Position.y = gl_in[0].gl_Position.y - size.y / 2.0;\n"
+		"		texCoord = vec2( 0, 1 );\n"
+		"		EmitVertex();\n"
+
+		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( 0.1, 0.1 );\n"
+		//"		gl_Position.xy = gl_in[0].gl_Position.xy + (size.xy / 2.0f);\n"
 		"		texCoord = vec2( 1, 0 );\n"
 		"		EmitVertex();\n"
 
-		"		gl_Position.xy = gl_in[0].xy + (size.xy / 2.0f);\n"
+		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( 0.1, -0.1 );\n"
+		//"		gl_Position.x = gl_in[0].gl_Position.x - size.x/2.0f;\n"
+		//"		gl_Position.y = gl_in[0].gl_Position.y + size.y/2.0f;\n"
 		"		texCoord = vec2( 1, 1 );\n"
-		"		EmitVertex();\n"
-
-		"		gl_Position.x = gl_in[0].x - size.x/2.0f;\n"
-		"		gl_Position.y = gl_in[0].y + size.y/2.0f;\n"
-		"		texCoord = vec2( 0, 1 );\n"
 		"		EmitVertex();\n"
 
 		"		EndPrimitive();\n"
@@ -103,17 +153,18 @@ namespace Source
 		"uniform sampler2D spriteSheet;\n"
 		"uniform samplerBuffer spriteFrame;\n"
 		"\n"
-		"in uint fID;\n"
-		"in uint fFlags;\n"
+		"flat in uint fID;\n"
+		"flat in uint fFlags;\n"
 		"in vec2 texCoord;\n"
 		"out vec4 fragColor;\n"
 		"\n"
 		"void main(void)\n"
 		"	{\n"
-		"	Vec2 sheetSize = textureSize( spriteSheet, 0 );\n"
-		"	Vec4 frame = texelFetch( spriteFrame, fID );\n"
-		"	Vec2 spriteCoord = (frame.xy + texCoord * frame.zw) / sheetSize;\n"
-		"	fragColor = texture( spriteSheet, spriteCoord );\n"
+		"	vec2 sheetSize = textureSize( spriteSheet, 0 );\n"
+		"	vec4 frame = texelFetch( spriteFrame, int(fID) );\n"
+		"	vec2 spriteCoord = (frame.xy + texCoord * frame.zw) / sheetSize;\n"
+		"	fragColor = texture( spriteSheet, texCoord );//spriteCoord );\n"
+		//"	fragColor.rg = texCoord;"
 		"	\n"
 		"	}"
 		; // fragment end
@@ -122,9 +173,38 @@ namespace Source
 
 
 	void
+	CheckShader( GLuint shader )
+		{
+		GLint shaderInfo = 0;
+		glGetShaderiv( shader, GL_COMPILE_STATUS, &shaderInfo );
+
+		if( shaderInfo == GL_FALSE )
+			{
+			char infoLog[1024];
+			glGetShaderInfoLog( shader, 1024, NULL, infoLog );
+			throw ShaderCompileError( infoLog );
+			}
+		}
+
+
+	void
+	CheckLink( GLuint program )
+		{
+		GLint programInfo = 0;
+		glGetProgramiv( program, GL_LINK_STATUS, &programInfo );
+
+		if( programInfo == GL_FALSE )
+			{
+			char infoLog[1024];
+			glGetProgramInfoLog( program, 1024, NULL, infoLog );
+			throw ShaderLinkError( infoLog );
+			}
+		}
+
+
+	void
 	Init()
 		{
-		// TODO: Error checking
 		GLuint glsVertex = glCreateShader( GL_VERTEX_SHADER );
 		GLuint glsGeometry = glCreateShader( GL_GEOMETRY_SHADER );
 		GLuint glsFragment = glCreateShader( GL_FRAGMENT_SHADER );
@@ -133,32 +213,49 @@ namespace Source
 		glShaderSource( glsVertex, 1, &Source::vertex, NULL );
 		glShaderSource( glsGeometry, 1, &Source::geometry, NULL );
 		glShaderSource( glsFragment, 1, &Source::fragment, NULL );
+	
+		try
+			{
+			glCompileShader( glsVertex );
+			CheckShader( glsVertex );
+			glCompileShader( glsGeometry );
+			CheckShader( glsGeometry );
+			glCompileShader( glsFragment );
+			CheckShader( glsFragment );
 
-		glCompileShader( glsVertex );
-		glCompileShader( glsGeometry );
-		glCompileShader( glsFragment );
+			glAttachShader( glsProgSprite, glsVertex );
+			glAttachShader( glsProgSprite, glsGeometry );
+			glAttachShader( glsProgSprite, glsFragment );
+			CHECK_GL_ERRORS( "Shader attachment." )
 
-		glAttachShader( glsProgSprite, glsVertex );
-		glAttachShader( glsProgSprite, glsGeometry );
-		glAttachShader( glsProgSprite, glsFragment );
+			glBindAttribLocation( glsProgSprite, attriblocVertex, "vertex" );
+			glBindAttribLocation( glsProgSprite, attriblocTemplateID, "templateID" );
+			glBindAttribLocation( glsProgSprite, attriblocFlags, "flags" );
+			CHECK_GL_ERRORS( "Attribute binding." )
 
-		glBindAttribLocation( glsProgSprite, attriblocVertex, "vertex" );
-		glBindAttribLocation( glsProgSprite, attriblocTemplateID, "templateID" );
-		glBindAttribLocation( glsProgSprite, attriblocFlags, "flags" );
+			glLinkProgram( glsProgSprite );
 
-		glLinkProgram( glsProgSprite );
-
-		// Cleanup shader sources
-		glDeleteShader( glsVertex );
-		glDeleteShader( glsGeometry );
-
-		glDeleteShader( glsFragment );
-
+			CheckLink( glsProgSprite );
+			}
+		catch( ShaderError& error )
+			{
+			glDeleteShader( glsVertex );
+			glDeleteShader( glsGeometry );
+			glDeleteShader( glsFragment );
+			glDeleteProgram( glsProgSprite );
+			throw;
+			}
+	
 		// Find locations of uniforms:
 		_unilocProjection = glGetUniformLocation( glsProgSprite, "projection" );
 		_unilocView = glGetUniformLocation( glsProgSprite, "view" );
 		_unilocSpriteSheet = glGetUniformLocation( glsProgSprite, "spriteSheet" );
 		_unilocSpriteFrame = glGetUniformLocation( glsProgSprite, "spriteFrame" );
+
+		// Cleanup shader sources
+		glDeleteShader( glsVertex );
+		glDeleteShader( glsGeometry );
+		glDeleteShader( glsFragment );
 		}
 
 

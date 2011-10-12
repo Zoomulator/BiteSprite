@@ -1,4 +1,4 @@
-#include "bmpload.hpp"
+#include "BiteSprite\bmpload.hpp"
 
 
 namespace Bite
@@ -34,6 +34,7 @@ namespace Bite
 			stream.seekg( BMP::BPP );
 			stream.read( (Uint8*)&bitpp, 4 );
 			bytepp = bitpp / 8; // 8 bits per byte.
+			BASSERT( bytepp == 3 || bytepp == 4 )
 
 			ColorMask BMPmask;
 			BMPmask.r = 0x00FF0000;

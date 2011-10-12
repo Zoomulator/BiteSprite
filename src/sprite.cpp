@@ -1,7 +1,7 @@
-#include "sprite.hpp"
+#include "BiteSprite\sprite.hpp"
 
 
-#include "spritesheet.hpp"
+#include "BiteSprite\spritesheet.hpp"
 
 
 
