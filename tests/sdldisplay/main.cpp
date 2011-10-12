@@ -37,7 +37,7 @@ void Run()
 		sprite.ZIndex( 0 );
 		sprite.Visible( true );
 
-		//Bite::SetResolution( width, height );
+		Bite::SetResolution( width, height );
 
 		glPointSize( 10.0f );
 		glDisable( GL_CULL_FACE );

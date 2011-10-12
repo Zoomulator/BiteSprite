@@ -48,7 +48,7 @@ namespace Bite
 		glUniform1i( Shader::unilocSpriteFrame, 1 );
 		CHECK_GL_ERRORS( "Bind frameTBO, SpriteSheet::Render" )
 
-		glUniformMatrix4fv( Shader::unilocProjection, 1, GL_TRUE, Projection::matrix );
+		glUniformMatrix4fv( Shader::unilocProjection, 1, GL_FALSE, Projection::matrix );
 		glUniformMatrix4fv( Shader::unilocView, 1, GL_TRUE, View::matrix );
 		CHECK_GL_ERRORS( "Set uniform matrices, SpriteSheet::Render" );
 
