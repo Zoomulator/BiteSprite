@@ -76,7 +76,7 @@ namespace Source
 		"#version 330\n"
 		"\n"
 		"uniform sampler2D spriteSheet;\n"
-		"uniform samplerBuffer spriteFrame;\n"
+		"uniform usamplerBuffer spriteFrame;\n"
 		"uniform mat4 projection;\n"
 		"uniform mat4 view;\n"
 		"\n"
@@ -92,6 +92,7 @@ namespace Source
 		"	gID = templateID;\n"
 		"	gFlags = flags;\n"
 		"	gl_Position = vertex;//projection * view * vertex;\n"
+		"	gl_Position.w = 1;\n"
 		"	}\n"
 		; // vertex end
 
@@ -109,7 +110,7 @@ namespace Source
 		"flat out uint fFlags;\n"
 		"smooth out vec2 texCoord;\n"
 		"\n"
-		"uniform samplerBuffer spriteFrame;\n"
+		"uniform usamplerBuffer spriteFrame;\n"
 		"uniform mat4 projection;\n"
 		"uniform mat4 view;\n"
 		"\n"
@@ -120,31 +121,30 @@ namespace Source
 		//"	if( bool(gFlags[0] & 1u) ) // is visibility bit set?\n"
 		"		{\n"
 		"		vec4 frame = texelFetch( spriteFrame, int(gID[0]) );\n"
-		"		vec2 size = frame.wz;\n"
+		"		vec2 size = frame.zw;\n"
 
-		"	gl_Position = gl_in[0].gl_Position + vec4( -320, 240, 0, 1 );\n"
-		"	gl_Position = projection * gl_Position;\n"
-		//"		gl_Position.xy = gl_in[0].gl_Position.xy - (size.xy / 2.0 );\n"
+		"		gl_Position = gl_in[0].gl_Position;"
+		"		gl_Position.xy += vec2( -size.x / 2.0, size.y / 2.0 );\n"
+		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 0, 0 );\n"
 		"		EmitVertex();\n"
 
-		"	gl_Position = gl_in[0].gl_Position + vec4( -320, -240, 0, 1 );\n"
-		"	gl_Position = projection * gl_Position;\n"
-		//"		gl_Position.x = gl_in[0].gl_Position.x + size.x / 2.0;\n"
-		//"		gl_Position.y = gl_in[0].gl_Position.y - size.y / 2.0;\n"
+		
+		"		gl_Position = gl_in[0].gl_Position;"
+		"		gl_Position.xy += -size/2.0;\n"
+		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 0, 1 );\n"
 		"		EmitVertex();\n"
 
-		"	gl_Position = gl_in[0].gl_Position + vec4( 320, 240, 0, 1 );\n"
-		"	gl_Position = projection * gl_Position;\n"
-		//"		gl_Position.xy = gl_in[0].gl_Position.xy + (size.xy / 2.0f);\n"
+		"		gl_Position = gl_in[0].gl_Position;\n"
+		"		gl_Position.xy += size/2.0;"
+		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 1, 0 );\n"
 		"		EmitVertex();\n"
 
-		"	gl_Position = gl_in[0].gl_Position + vec4( 320, -240, 0, 1 );\n"
-		"	gl_Position = projection * gl_Position;\n"
-		//"		gl_Position.x = gl_in[0].gl_Position.x - size.x/2.0f;\n"
-		//"		gl_Position.y = gl_in[0].gl_Position.y + size.y/2.0f;\n"
+		"		gl_Position = gl_in[0].gl_Position;"
+		"		gl_Position.xy += vec2( size.x/2.0f, -size.y/2.0f );\n"
+		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 1, 1 );\n"
 		"		EmitVertex();\n"
 
@@ -157,7 +157,7 @@ namespace Source
 	const char* fragment =
 		"#version 330\n"
 		"uniform sampler2D spriteSheet;\n"
-		"uniform samplerBuffer spriteFrame;\n"
+		"uniform usamplerBuffer spriteFrame;\n"
 		"uniform mat4 projection;\n"
 		"uniform mat4 view;\n"
 		"\n"
@@ -169,16 +169,15 @@ namespace Source
 		"void main(void)\n"
 		"	{\n"
 		"	vec2 sheetSize = textureSize( spriteSheet, 0 );\n"
-		"	vec4 frame = texelFetch( spriteFrame, int(fID) );\n"
+		"	vec4 frame = texelFetch( spriteFrame, 0 );\n"
 		"	vec2 spriteCoord = (frame.xy + texCoord * frame.zw) / sheetSize;\n"
-		"	fragColor = texture( spriteSheet, texCoord );//spriteCoord );\n"
-		//"	fragColor = projection[2];"
+		"	fragColor = texture( spriteSheet, spriteCoord );\n"
 		"	\n"
 		"	}"
 		; // fragment end
 
 	} // namespace Source
-
+	
 
 	void
 	CheckShader( GLuint shader )
@@ -237,7 +236,9 @@ namespace Source
 			CHECK_GL_ERRORS( "Shader attachment." )
 
 			glBindAttribLocation( glsProgSprite, attriblocVertex, "vertex" );
+			CHECK_GL_ERRORS( "Attribute binding." )
 			glBindAttribLocation( glsProgSprite, attriblocTemplateID, "templateID" );
+			CHECK_GL_ERRORS( "Attribute binding." )
 			glBindAttribLocation( glsProgSprite, attriblocFlags, "flags" );
 			CHECK_GL_ERRORS( "Attribute binding." )
 

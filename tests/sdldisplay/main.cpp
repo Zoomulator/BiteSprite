@@ -29,11 +29,11 @@ void Run()
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
 		Bite::SpriteSheet sheet( "smile_yellow" ); // <- something here crashes with glslDevil
-		Bite::Rect r = { 0,0,64,64 };
+		Bite::Rect r = { 32,32,32,32 };
 		sheet.CreateTemplate( "all", r );
 	
 		Bite::Sprite sprite = sheet.CreateSprite( "all" );
-		sprite.Position( 0,0 );
+		sprite.Position( 0, 100 );
 		sprite.ZIndex( 0 );
 		sprite.Visible( true );
 
@@ -67,8 +67,8 @@ void Run()
 			GLint result[queryCount];
 			glGetQueryObjectiv( glquery[0], GL_QUERY_RESULT, &result[0] );
 			glGetQueryObjectiv( glquery[1], GL_QUERY_RESULT, &result[1] );
-			std::cout << "Primitives passed: " << result[0] << std::endl;
-			std::cout << "Samples passed: " << result[1] << std::endl;
+			//std::cout << "Primitives passed: " << result[0] << std::endl;
+			//std::cout << "Samples passed: " << result[1] << std::endl;
 
 			SDL_GL_SwapBuffers();
 			}

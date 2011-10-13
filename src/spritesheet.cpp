@@ -44,7 +44,7 @@ namespace Bite
 
 		glActiveTexture( GL_TEXTURE1 ); // For template frame TBO
 		glBindTexture( GL_TEXTURE_BUFFER, texFrameTBO );
-		glTexBuffer( GL_TEXTURE_BUFFER, GL_RGBA32F, glufferFrameTBO );
+		glTexBuffer( GL_TEXTURE_BUFFER, GL_RGBA32UI, glufferFrameTBO );
 		glUniform1i( Shader::unilocSpriteFrame, 1 );
 		CHECK_GL_ERRORS( "Bind frameTBO, SpriteSheet::Render" )
 
@@ -66,27 +66,34 @@ namespace Bite
 		glUseProgram( GL_NONE );
 
 		CHECK_GL_ERRORS( "SpriteSheet::Render" );
+
+		
 		}
 
 
 	void
 	SpriteSheet::Synch()
 		{
+		glBindVertexArray( VAO );
+		//TODO: Why doesn't vertex attributes work?
 		// Update vertex arrays:
 		glBindBuffer( GL_ARRAY_BUFFER, glufferVertex );
-		glBufferSubData( GL_ARRAY_BUFFER, 0, spritePosition.size(), &spritePosition.front() );
+		glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(GLfloat)*spritePosition.size(), &spritePosition.front() );
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferTemplateID );
-		glBufferSubData( GL_ARRAY_BUFFER, 0, spriteTemplateID.size(), &spriteTemplateID.front() );
+		glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(GLuint)*spriteTemplateID.size(), &spriteTemplateID.front() );
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
-		glBufferSubData( GL_ARRAY_BUFFER, 0, spriteFlag.size(), &spriteFlag.front() );
+		glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(GLuint)*spriteFlag.size(), &spriteFlag.front() );
 
 		// Update uniform array texture buffer thingies:
-		glBindBuffer( GL_ARRAY_BUFFER, glufferFrameTBO );
-		glBufferSubData( GL_ARRAY_BUFFER, sizeof(GLuint)*4, frames.size(), &frames.front() );
-		
+		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
+		glBufferSubData( GL_TEXTURE_BUFFER, 0, sizeof(GLuint)*frames.size(), &frames.front() );
+				
 		CHECK_GL_ERRORS( "SpriteSheet::Synch" );
+
+		glBindBuffer( GL_TEXTURE_BUFFER, 0 );
+		glBindVertexArray( GL_NONE );
 		}
 
 
@@ -175,6 +182,10 @@ namespace Bite
 		
 		glBindVertexArray( VAO );
 
+		glEnableVertexAttribArray( Shader::attriblocVertex );
+		glEnableVertexAttribArray( Shader::attriblocTemplateID );
+		glEnableVertexAttribArray( Shader::attriblocFlags );
+
 		// Create buffer objects for the different vertex attributes.
 		// 1. Bind the buffer object that will hold attribute data.
 		// 2. Allocate the buffer memory, but no data uploaded (NULL passed).
@@ -186,15 +197,15 @@ namespace Bite
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferTemplateID );
 		glBufferData( GL_ARRAY_BUFFER, sizeof(GLuint)*bufferSize, NULL, GL_DYNAMIC_COPY );
-		glVertexAttribPointer( Shader::attriblocTemplateID, 1, GL_UNSIGNED_INT, GL_FALSE, 0,0);
+		glVertexAttribIPointer( Shader::attriblocTemplateID, 1, GL_UNSIGNED_INT, 0,0);
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
 		glBufferData( GL_ARRAY_BUFFER, sizeof(GLuint)*bufferSize, NULL, GL_DYNAMIC_COPY );
 		glVertexAttribPointer( Shader::attriblocFlags, 1, GL_UNSIGNED_INT, GL_FALSE, 0, 0 );
 
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
-		glBufferData( GL_TEXTURE_BUFFER, sizeof(GLfloat)*4*bufferSize, NULL, GL_DYNAMIC_COPY );
-
+		glBufferData( GL_TEXTURE_BUFFER, sizeof(GLuint)*4*bufferSize, NULL, GL_DYNAMIC_COPY );
+		
 		// Unbind any used GL objects to not corrupt state outside function.
 		glBindVertexArray( GL_NONE );
 		glBindBuffer( GL_ARRAY_BUFFER, GL_NONE );
