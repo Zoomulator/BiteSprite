@@ -128,8 +128,7 @@ namespace Source
 		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 0, 0 );\n"
 		"		EmitVertex();\n"
-
-		
+				
 		"		gl_Position = gl_in[0].gl_Position;"
 		"		gl_Position.xy += -size/2.0;\n"
 		"		gl_Position = projection * gl_Position;\n"
@@ -169,7 +168,7 @@ namespace Source
 		"void main(void)\n"
 		"	{\n"
 		"	vec2 sheetSize = textureSize( spriteSheet, 0 );\n"
-		"	vec4 frame = texelFetch( spriteFrame, 0 );\n"
+		"	vec4 frame = texelFetch( spriteFrame, int(fID) );\n"
 		"	vec2 spriteCoord = (frame.xy + texCoord * frame.zw) / sheetSize;\n"
 		"	fragColor = texture( spriteSheet, spriteCoord );\n"
 		"	\n"

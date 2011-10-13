@@ -29,13 +29,20 @@ void Run()
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
 		Bite::SpriteSheet sheet( "smile_yellow" ); // <- something here crashes with glslDevil
-		Bite::Rect r = { 32,32,32,32 };
+		Bite::Rect r2 = { 32,32,32,32 };
+		sheet.CreateTemplate( "corner", r2 );
+		Bite::Rect r = { 0,0,64,64 };
 		sheet.CreateTemplate( "all", r );
+	
 	
 		Bite::Sprite sprite = sheet.CreateSprite( "all" );
 		sprite.Position( 0, 100 );
 		sprite.ZIndex( 0 );
 		sprite.Visible( true );
+
+		Bite::Sprite sprite2 = sheet.CreateSprite( "corner" );
+		sprite2.Position( -50, -75 );
+
 
 		Bite::SetResolution( width, height );
 
