@@ -30,11 +30,23 @@ namespace Bite
 
 
 	void
-	Sprite::Position( float x, float y )
+	Sprite::Position( float x, float y, Anchor anchor )
 		{
-		SpriteSheet::BufferFloat& posBuf = sheet->spritePosition;
-		posBuf.at( id * 3 ) = x;
-		posBuf.at( id * 3 + 1 ) = y;
+		switch(anchor)
+			{
+		case Center:
+			break;
+		case TopLeft:
+				{
+				Rect frame = sheet->templates[ sheet->spriteTemplateID.at(id) ].frame;
+				x += std::ceil(frame.w/2.0f);
+				y -= std::ceil(frame.h/2.0f);
+				}
+			}
+
+			SpriteSheet::BufferFloat& posBuf = sheet->spritePosition;
+			posBuf.at( id * 3 ) = x;
+			posBuf.at( id * 3 + 1 ) = y;
 		}
 
 

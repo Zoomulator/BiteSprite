@@ -37,17 +37,16 @@ void Run()
 		sheet.CreateTemplate( "supermario", r3 );
 
 		
-		Bite::Sprite sprite = sheet.CreateSprite( "all" );
-		sprite.Position( 0, 100 );
-		sprite.ZIndex( 0 );
-		sprite.Visible( true );
-
-		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
-		sprite2.Position( -50, -75 );
+		//Bite::Sprite sprite = sheet.CreateSprite( "all" );
+		//sprite.Position( 0, 100 );
+		//sprite.ZIndex( 0 );
+		//sprite.Visible( true );
 
 		Bite::Sprite sprite3 = sheet.CreateSprite( "supermario" );
-		sprite3.Position( -100, -75 );
+		sprite3.Position( 0,0 );
 
+		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
+		sprite2.Position( 0, 0, Bite::TopLeft );
 
 		Bite::SetResolution( width, height );
 

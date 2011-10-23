@@ -6,11 +6,13 @@
 #include "BiteSprite/types.hpp"
 #include "BiteSprite/idgenerator.hpp"
 
+#include <cmath>
 
 
 namespace Bite
 	{
 	class SpriteSheet;
+	enum Anchor { Center=1, TopLeft=2 };
 
 	class Sprite
 		{
@@ -18,7 +20,7 @@ namespace Bite
 		public:
 
 		void Visible( bool );
-		void Position( float x, float y );
+		void Position( float x, float y, Anchor anchor=Center );
 		void ZIndex( float z );
 
 		private:
