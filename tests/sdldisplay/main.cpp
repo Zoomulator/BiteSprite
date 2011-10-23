@@ -11,7 +11,7 @@ int height = 480;
 void LoadBite()
 	{
 	Bite::Init();
-	Bite::Load::ImageFromFile( "test.bmp", "smile_yellow" );
+	Bite::Load::ImageFromFile( "smb3sheet.bmp", "mario" );
 	}
 
 
@@ -28,20 +28,25 @@ void Run()
 		LoadBite();
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
-		Bite::SpriteSheet sheet( "smile_yellow" ); // <- something here crashes with glslDevil
-		Bite::Rect r2 = { 32,32,32,32 };
-		sheet.CreateTemplate( "corner", r2 );
-		Bite::Rect r = { 0,0,64,64 };
+		Bite::SpriteSheet sheet( "mario" );
+		Bite::Rect r2 = { 11,5,13,15 };
+		sheet.CreateTemplate( "smallmario", r2 );
+		Bite::Rect r = { 0,0,468,283 };
 		sheet.CreateTemplate( "all", r );
-	
-	
+		Bite::Rect r3 = {11,26, 14,27};
+		sheet.CreateTemplate( "supermario", r3 );
+
+		
 		Bite::Sprite sprite = sheet.CreateSprite( "all" );
 		sprite.Position( 0, 100 );
 		sprite.ZIndex( 0 );
 		sprite.Visible( true );
 
-		Bite::Sprite sprite2 = sheet.CreateSprite( "corner" );
+		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
 		sprite2.Position( -50, -75 );
+
+		Bite::Sprite sprite3 = sheet.CreateSprite( "supermario" );
+		sprite3.Position( -100, -75 );
 
 
 		Bite::SetResolution( width, height );

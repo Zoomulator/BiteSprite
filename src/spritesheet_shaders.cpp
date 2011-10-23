@@ -91,7 +91,7 @@ namespace Source
 		"	{\n"
 		"	gID = templateID;\n"
 		"	gFlags = flags;\n"
-		"	gl_Position = vertex;//projection * view * vertex;\n"
+		"	gl_Position = ivec4(vertex);//projection * view * vertex;\n"
 		"	gl_Position.w = 1;\n"
 		"	}\n"
 		; // vertex end
@@ -124,25 +124,25 @@ namespace Source
 		"		vec2 size = frame.zw;\n"
 
 		"		gl_Position = gl_in[0].gl_Position;"
-		"		gl_Position.xy += vec2( -size.x / 2.0, size.y / 2.0 );\n"
+		"		gl_Position.xy += ceil( vec2(-size.x / 2, size.y / 2) );\n"
 		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 0, 0 );\n"
 		"		EmitVertex();\n"
 				
 		"		gl_Position = gl_in[0].gl_Position;"
-		"		gl_Position.xy += -size/2.0;\n"
+		"		gl_Position.xy += ceil(-size/2);\n"
 		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 0, 1 );\n"
 		"		EmitVertex();\n"
 
 		"		gl_Position = gl_in[0].gl_Position;\n"
-		"		gl_Position.xy += size/2.0;"
+		"		gl_Position.xy += ceil(size/2);"
 		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 1, 0 );\n"
 		"		EmitVertex();\n"
 
 		"		gl_Position = gl_in[0].gl_Position;"
-		"		gl_Position.xy += vec2( size.x/2.0f, -size.y/2.0f );\n"
+		"		gl_Position.xy += ceil( vec2( size.x/2, -size.y/2) );\n"
 		"		gl_Position = projection * gl_Position;\n"
 		"		texCoord = vec2( 1, 1 );\n"
 		"		EmitVertex();\n"

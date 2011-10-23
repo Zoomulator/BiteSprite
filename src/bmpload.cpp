@@ -68,7 +68,7 @@ namespace Bite
 					Uint32 pixel = ConvertColor( rawPixel, BMPmask, internalMask );
 					
 					//Uint32 pOffset = x + (data.height - y - 1) * (data.width - 1);
-					Uint32 pOffset = x + (data.width-y-1) * data.width;
+					Uint32 pOffset = x + (data.height-y-1) * data.width;
 					BASSERT( pOffset*4 <= data.Size() );
 
 					pixAllocation[pOffset] = pixel;
