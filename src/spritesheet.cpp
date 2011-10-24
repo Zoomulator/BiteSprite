@@ -201,7 +201,7 @@ namespace Bite
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
 		glBufferData( GL_ARRAY_BUFFER, sizeof(GLuint)*bufferSize, NULL, GL_DYNAMIC_COPY );
-		glVertexAttribPointer( Shader::attriblocFlags, 1, GL_UNSIGNED_INT, GL_FALSE, 0, 0 );
+		glVertexAttribIPointer( Shader::attriblocFlags, 1, GL_UNSIGNED_INT, 0, 0 );
 
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
 		glBufferData( GL_TEXTURE_BUFFER, sizeof(GLuint)*4*bufferSize, NULL, GL_DYNAMIC_COPY );

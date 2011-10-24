@@ -14,3 +14,6 @@ Switch between integer and float modes. Pixel vs Subsampling!
 
 Synchronization with the GL buffers so that not all data has to be uploaded each time.
 
+Color key uniform for the spritesheet batch.
+
+Animation class holding intervals and sprites

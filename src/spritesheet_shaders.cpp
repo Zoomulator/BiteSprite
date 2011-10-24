@@ -118,7 +118,7 @@ namespace Source
 		"	{\n"
 		"	fID = gID[0];\n"
 		"	fFlags = gFlags[0];\n"
-		//"	if( bool(gFlags[0] & 1u) ) // is visibility bit set?\n"
+		"	if( (gFlags[0] & 1u) == 1u ) // is visibility bit set?\n"
 		"		{\n"
 		"		vec4 frame = texelFetch( spriteFrame, int(gID[0]) );\n"
 		"		vec2 size = frame.zw;\n"

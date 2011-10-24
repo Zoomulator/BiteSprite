@@ -25,7 +25,7 @@ namespace Bite
 		if( v ) 
 			flagBuf.at(id) |= Shader::fVisible;
 		else
-			flagBuf.at(id) &= Shader::fVisible;
+			flagBuf.at(id) &= ~Shader::fVisible;
 		}
 
 
