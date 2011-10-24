@@ -120,7 +120,7 @@ namespace Source
 		"	{\n"
 		"	fID = gID[0];\n"
 		"	fFlags = gFlags[0];\n"
-		"	if( (gFlags[0] & 1u) == 1u ) // is visibility bit set?\n"
+		"	if( bool(gFlags[0] & 1u) ) // is visibility bit set?\n"
 		"		{\n"
 		"		vec4 frame = texelFetch( spriteFrame, int(gID[0]) );\n"
 		"		vec2 size = frame.zw;\n"
@@ -174,7 +174,8 @@ namespace Source
 		"	vec4 frame = texelFetch( spriteFrame, int(fID) );\n"
 		"	vec2 spriteCoord = (frame.xy + texCoord * frame.zw) / sheetSize;\n"
 		"	fragColor = texture( spriteSheet, spriteCoord );\n"
-		"	if( all( lessThan(colorKey.rgb-colorKey.a, fragColor.rgb) &&\n"
+		"	if( bool(fFlags & 2u) &&\n"
+		"		all( lessThan(colorKey.rgb-colorKey.a, fragColor.rgb) &&\n"
 		"		lessThan(fragColor.rgb, colorKey.rgb+colorKey.a) )  ) discard;\n"
 		"	}"
 		; // fragment end

@@ -20,6 +20,7 @@ namespace Bite
 		public:
 
 		void Visible( bool );
+		void UseColorKey( bool );
 		void Position( float x, float y, Anchor anchor=Center );
 		void ZIndex( float z );
 

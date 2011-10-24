@@ -25,6 +25,7 @@ void Run()
 		sdlFlags |= SDL_OPENGL;
 
 		screen = SDL_SetVideoMode( width, height, 32, sdlFlags );
+		SDL_WM_SetCaption( "BiteSprite!", NULL );
 		LoadBite();
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
@@ -36,18 +37,16 @@ void Run()
 		Bite::Rect r3 = {11,26, 14,27};
 		sheet.CreateTemplate( "supermario", r3 );
 				
-		//Bite::Sprite sprite = sheet.CreateSprite( "all" );
-		//sprite.Position( 0, 100 );
-		//sprite.ZIndex( 0 );
-		//sprite.Visible( true );
+		Bite::Sprite sprite = sheet.CreateSprite( "all" );
+		sprite.Position( 0, 100 );
+		sprite.ZIndex( 0 );
+		sprite.UseColorKey( false );
 
 		Bite::Sprite sprite3 = sheet.CreateSprite( "supermario" );
-		sprite3.Position( 0,0 );
-		sprite3.Visible( true );
+		sprite3.Position( 0,-70, Bite::TopLeft );
 
 		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
-		sprite2.Position( 0, 0, Bite::TopLeft );
-		sprite2.Visible( true );
+		sprite2.Position( 30, -70, Bite::TopLeft );
 
 		Bite::SetResolution( width, height );
 

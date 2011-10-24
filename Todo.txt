@@ -12,10 +12,12 @@ Delete specific sprites and templates
 
 Switch between integer and float modes. Pixel vs Subsampling!
 
-Synchronization with the GL buffers so that not all data has to be uploaded each time.
+x - Synchronization with the GL buffers so that not all data has to be uploaded each time.
 
-Color key uniform for the spritesheet batch.
+x - Color key uniform for the spritesheet batch.
 
 Animation class holding intervals and sprites
 
 Synch fragmentation may cause worse performance than full buffer update, due to multiple function calls. Worth testing to see if it's possible to detect synch fragmentation and set a threshold to go full update instead.
+
+Palette formats

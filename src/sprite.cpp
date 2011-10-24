@@ -14,6 +14,7 @@ namespace Bite
 		{
 		sheet->spriteTemplateID.at(id) = templateID;
 		Visible( true );
+		UseColorKey( true );
 		}
 
 
@@ -26,6 +27,20 @@ namespace Bite
 			flagBuf.at(id) |= Shader::fVisible;
 		else
 			flagBuf.at(id) &= ~Shader::fVisible;
+
+		sheet->UpdateSprite( id );
+		}
+
+
+	void
+	Sprite::UseColorKey( bool b )
+		{
+		SpriteSheet::BufferUint& flagBuf = sheet->spriteFlag;
+
+		if( b )
+			flagBuf.at(id) |= Shader::fUseColorKey;
+		else
+			flagBuf.at(id) &= ~Shader::fUseColorKey;
 
 		sheet->UpdateSprite( id );
 		}

@@ -23,7 +23,8 @@ namespace Shader
 
 	enum Flag {
 		fNone = 0,
-		fVisible = 1
+		fVisible = 1,
+		fUseColorKey = 2
 		};
 
 
