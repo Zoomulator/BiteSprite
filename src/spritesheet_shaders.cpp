@@ -13,6 +13,7 @@ namespace Shader
 	GLint _unilocView = 0;
 	GLint _unilocSpriteSheet = 0;
 	GLint _unilocSpriteFrame = 0;
+	GLint _unilocColorKey = 0;
 
 	const GLuint attriblocVertex = 0;
 	const GLuint attriblocTemplateID = 1;
@@ -23,6 +24,7 @@ namespace Shader
 	const GLint& unilocView = _unilocView;
 	const GLint& unilocSpriteSheet = _unilocSpriteSheet;
 	const GLint& unilocSpriteFrame = _unilocSpriteFrame;
+	const GLint& unilocColorKey = _unilocColorKey;
 
 
 namespace Source
@@ -159,6 +161,7 @@ namespace Source
 		"uniform usamplerBuffer spriteFrame;\n"
 		"uniform mat4 projection;\n"
 		"uniform mat4 view;\n"
+		"uniform vec4 colorKey;\n"
 		"\n"
 		"flat in uint fID;\n"
 		"flat in uint fFlags;\n"
@@ -171,7 +174,8 @@ namespace Source
 		"	vec4 frame = texelFetch( spriteFrame, int(fID) );\n"
 		"	vec2 spriteCoord = (frame.xy + texCoord * frame.zw) / sheetSize;\n"
 		"	fragColor = texture( spriteSheet, spriteCoord );\n"
-		"	\n"
+		"	if( all( lessThan(colorKey.rgb-colorKey.a, fragColor.rgb) &&\n"
+		"		lessThan(fragColor.rgb, colorKey.rgb+colorKey.a) )  ) discard;\n"
 		"	}"
 		; // fragment end
 
@@ -259,6 +263,7 @@ namespace Source
 		_unilocView = glGetUniformLocation( glsProgSprite, "view" );
 		_unilocSpriteSheet = glGetUniformLocation( glsProgSprite, "spriteSheet" );
 		_unilocSpriteFrame = glGetUniformLocation( glsProgSprite, "spriteFrame" );
+		_unilocColorKey = glGetUniformLocation( glsProgSprite, "colorKey" );
 
 		// Cleanup shader sources
 		glDeleteShader( glsVertex );

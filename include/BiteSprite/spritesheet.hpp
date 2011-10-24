@@ -55,6 +55,12 @@ namespace Bite
 		Sprite
 		CreateSprite( const std::string& templateName );
 
+		void
+		ColorKeyNorm( float r, float g, float b, float range=0.1f );
+
+		void
+		ColorKey( int r, int g, int b, int range=25 );
+
 		// TODO: OverflowMethod with options: Reallocate, Exception, Silent...
 
 		private:
@@ -84,7 +90,9 @@ namespace Bite
 		
 		// GL textures
 		GLuint texFrameTBO; // Texture for glufferFrameTBO to bind to
-
+		
+		//GL uniforms
+		GLfloat colorKey[4];
 		// SpriteTemplate IDs are the same as the index in this vector.
 		Templates templates;
 		IDGenerator idGenTemplate;

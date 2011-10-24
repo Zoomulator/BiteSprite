@@ -16,6 +16,7 @@ namespace Bite
 		texFrameTBO(0),
 		spriteCount(0)
 		{
+		ColorKeyNorm( 1.0, 1.0, 1.0 );
 		GLBufferSetup();
 
 		sheet = Load::Image( imageName );
@@ -52,6 +53,8 @@ namespace Bite
 		glUniformMatrix4fv( Shader::unilocProjection, 1, GL_FALSE, Projection::matrix );
 		glUniformMatrix4fv( Shader::unilocView, 1, GL_TRUE, View::matrix );
 		CHECK_GL_ERRORS( "Set uniform matrices, SpriteSheet::Render" );
+
+		glUniform4fv( Shader::unilocColorKey, 1, colorKey );
 
 		glDrawArrays( GL_POINTS, 0, spriteCount );
 		CHECK_GL_ERRORS( "Draw arrays, SpriteSheet::Render" );
@@ -195,6 +198,23 @@ namespace Bite
 		UpdateSprite( sid );
 
 		return Sprite( sid, tid, this );
+		}
+
+
+	void
+	SpriteSheet::ColorKeyNorm( float r, float g, float b, float range )
+		{
+		colorKey[0] = r;
+		colorKey[1] = b;
+		colorKey[2] = g;
+		colorKey[3] = range;
+		}
+
+
+	void
+	SpriteSheet::ColorKey( int r, int g, int b, int range )
+		{
+		ColorKeyNorm( r/255.0f, g/255.0f, b/255.0f, range/255.0f );
 		}
 
 	
