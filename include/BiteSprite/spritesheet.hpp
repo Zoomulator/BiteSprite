@@ -38,8 +38,17 @@ namespace Bite
 		Render() const;
 
 		void
+		SynchRange( ID first, Uint32 size );
+
+		void
 		Synch(); // Upload changed areas of the buffer to GL
 
+		void
+		SynchAll();
+		
+		void
+		UpdateSprite( ID id );
+		
 		void
 		CreateTemplate( const std::string& name, Rect frame );
 

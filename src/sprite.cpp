@@ -26,6 +26,8 @@ namespace Bite
 			flagBuf.at(id) |= Shader::fVisible;
 		else
 			flagBuf.at(id) &= ~Shader::fVisible;
+
+		sheet->UpdateSprite( id );
 		}
 
 
@@ -44,9 +46,11 @@ namespace Bite
 				}
 			}
 
-			SpriteSheet::BufferFloat& posBuf = sheet->spritePosition;
-			posBuf.at( id * 3 ) = x;
-			posBuf.at( id * 3 + 1 ) = y;
+		SpriteSheet::BufferFloat& posBuf = sheet->spritePosition;
+		posBuf.at( id * 3 ) = x;
+		posBuf.at( id * 3 + 1 ) = y;
+
+		sheet->UpdateSprite( id );
 		}
 
 
@@ -54,6 +58,8 @@ namespace Bite
 	Sprite::ZIndex( float z )
 		{
 		sheet->spritePosition.at( id * 3 + 2 ) = z;
+
+		sheet->UpdateSprite( id );
 		}
 
 

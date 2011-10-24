@@ -47,7 +47,7 @@ void Run()
 
 		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
 		sprite2.Position( 0, 0, Bite::TopLeft );
-		sprite2.Visible( false );
+		sprite2.Visible( true );
 
 		Bite::SetResolution( width, height );
 

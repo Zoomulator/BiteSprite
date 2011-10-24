@@ -3,6 +3,7 @@
 
 namespace Bite
 	{
+	const int VertexUnitSize = 3;
 	
 
 	SpriteSheet::SpriteSheet( const std::string imageName, Uint32 bufferSize_ ) :
@@ -72,28 +73,62 @@ namespace Bite
 
 
 	void
-	SpriteSheet::Synch()
+	SpriteSheet::SynchRange( ID first, Uint32 size )
 		{
 		glBindVertexArray( VAO );
-		//TODO: Why doesn't vertex attributes work?
+
 		// Update vertex arrays:
 		glBindBuffer( GL_ARRAY_BUFFER, glufferVertex );
-		glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(GLfloat)*spritePosition.size(), &spritePosition.front() );
+		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLfloat)* VertexUnitSize * size, &spritePosition[first*VertexUnitSize] );
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferTemplateID );
-		glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(GLuint)*spriteTemplateID.size(), &spriteTemplateID.front() );
+		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLuint) * size, &spriteTemplateID[first] );
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
-		glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(GLuint)*spriteFlag.size(), &spriteFlag.front() );
+		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLuint) * size, &spriteFlag[first] );
 
 		// Update uniform array texture buffer thingies:
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
-		glBufferSubData( GL_TEXTURE_BUFFER, 0, sizeof(GLuint)*frames.size(), &frames.front() );
+		glBufferSubData( GL_TEXTURE_BUFFER, first, sizeof(GLuint) * frames.size(), &frames.front() );
 				
 		CHECK_GL_ERRORS( "SpriteSheet::Synch" );
 
 		glBindBuffer( GL_TEXTURE_BUFFER, 0 );
 		glBindVertexArray( GL_NONE );
+		}
+
+
+	void
+	SpriteSheet::Synch()
+		{
+		// Sort the changed IDs into ranges and synch only those, instead of the whole buffer.		
+		while( !changeSet.empty() )
+			{
+			IDSet::iterator first = changeSet.begin();
+			IDSet::iterator last = first;
+			IDSet::iterator it = first;
+			// Find range that is without jumps between IDs.
+			for( ;it != changeSet.end() && *it <= *last+1; ++it )
+				{
+				last = it;
+				}
+			SynchRange( *first, *last-*first+1 );
+			changeSet.erase( first, ++last ); // Last needs to point beyond end here.
+			}
+		}
+
+
+	void
+	SpriteSheet::SynchAll()
+		{
+		SynchRange( 0, spriteCount );
+		}
+
+
+	void
+	SpriteSheet::UpdateSprite( ID id )
+		{
+		changeSet.insert( id );
 		}
 
 
@@ -157,6 +192,8 @@ namespace Bite
 			++spriteCount;
 			}
 
+		UpdateSprite( sid );
+
 		return Sprite( sid, tid, this );
 		}
 
@@ -192,8 +229,8 @@ namespace Bite
 		// 3. Create a pointer for the VAO so that you can access it in shader.
 		// Repeat per buffer...
 		glBindBuffer( GL_ARRAY_BUFFER, glufferVertex );
-		glBufferData( GL_ARRAY_BUFFER, sizeof(GLfloat)*3*bufferSize, NULL, GL_DYNAMIC_COPY );
-		glVertexAttribPointer( Shader::attriblocVertex, 3, GL_FLOAT, GL_FALSE, 0, 0 );
+		glBufferData( GL_ARRAY_BUFFER, sizeof(GLfloat) * VertexUnitSize * bufferSize, NULL, GL_DYNAMIC_COPY );
+		glVertexAttribPointer( Shader::attriblocVertex, VertexUnitSize, GL_FLOAT, GL_FALSE, 0, 0 );
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferTemplateID );
 		glBufferData( GL_ARRAY_BUFFER, sizeof(GLuint)*bufferSize, NULL, GL_DYNAMIC_COPY );
