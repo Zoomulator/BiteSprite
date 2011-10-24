@@ -17,3 +17,5 @@ Synchronization with the GL buffers so that not all data has to be uploaded each
 Color key uniform for the spritesheet batch.
 
 Animation class holding intervals and sprites
+
+Synch fragmentation may cause worse performance than full buffer update, due to multiple function calls. Worth testing to see if it's possible to detect synch fragmentation and set a threshold to go full update instead.
