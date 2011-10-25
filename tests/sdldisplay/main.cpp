@@ -32,7 +32,7 @@ void Run()
 		Bite::SpriteSheet sheet( "mario" );
 		Bite::Rect r2 = { 11,5,13,15 };
 		sheet.CreateTemplate( "smallmario", r2 );
-		Bite::Rect r = { 0,0,468,283 };
+		Bite::Rect r = { 0,0,466,282 };
 		sheet.CreateTemplate( "all", r );
 		Bite::Rect r3 = {11,26, 14,27};
 		sheet.CreateTemplate( "supermario", r3 );
@@ -44,9 +44,12 @@ void Run()
 
 		Bite::Sprite sprite3 = sheet.CreateSprite( "supermario" );
 		sprite3.Position( 0,-70, Bite::TopLeft );
+		sprite3.Rotation( -50.0f );
 
 		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
 		sprite2.Position( 30, -70, Bite::TopLeft );
+		sprite2.Rotation( 20.0f );
+		sprite2.Scale( 3.0f );
 
 		Bite::SetResolution( width, height );
 

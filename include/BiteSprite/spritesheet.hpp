@@ -86,6 +86,7 @@ namespace Bite
 		GLuint glufferVertex; // x,y,z
 		GLuint glufferTemplateID;
 		GLuint glufferFlag;
+		GLuint glufferRotScale; // rotation and scale floats
 		GLuint glufferFrameTBO; // Stores all the template's frames in ID order
 		
 		// GL textures
@@ -106,6 +107,7 @@ namespace Bite
 		BufferUint spriteFlag;
 		BufferFloat spritePosition;
 		BufferUint	spriteTemplateID;
+		BufferFloat spriteRotScale;
 		};
 
 

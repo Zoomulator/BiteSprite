@@ -15,6 +15,8 @@ namespace Bite
 		sheet->spriteTemplateID.at(id) = templateID;
 		Visible( true );
 		UseColorKey( true );
+		Scale( 1.0f );
+		Rotation( 0.0f );
 		}
 
 
@@ -73,6 +75,28 @@ namespace Bite
 	Sprite::ZIndex( float z )
 		{
 		sheet->spritePosition.at( id * 3 + 2 ) = z;
+
+		sheet->UpdateSprite( id );
+		}
+
+
+	void
+	Sprite::Rotation( float r )
+		{
+		SpriteSheet::BufferFloat& rotscaleBuf = sheet->spriteRotScale;
+
+		rotscaleBuf.at( id * 2 ) = r;
+
+		sheet->UpdateSprite( id );
+		}
+
+
+	void
+	Sprite::Scale( float s )
+		{
+		SpriteSheet::BufferFloat& rotscaleBuf = sheet->spriteRotScale;
+
+		rotscaleBuf.at( id * 2 + 1 ) = s;
 
 		sheet->UpdateSprite( id );
 		}

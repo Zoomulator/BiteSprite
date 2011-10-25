@@ -18,6 +18,7 @@ namespace Shader
 	const GLuint attriblocVertex = 0;
 	const GLuint attriblocTemplateID = 1;
 	const GLuint attriblocFlags = 2;
+	const GLuint attriblocRotScale = 3;
 
 	const GLint& glsProgSprite = _glsProgSprite;
 	const GLint& unilocProjection = _unilocProjection;
@@ -83,16 +84,21 @@ namespace Source
 		"uniform mat4 view;\n"
 		"\n"
 		"in vec4 vertex;\n"
+		"in vec2 rotscale;\n"
 		"in uint templateID;\n"
 		"in uint flags;\n"
 		"\n"
 		"out uint gID;\n"
 		"out uint gFlags;\n"
+		"out float rot;\n"
+		"out float scale;\n"
 		"\n"
 		"void main(void)\n"
 		"	{\n"
 		"	gID = templateID;\n"
 		"	gFlags = flags;\n"
+		"	rot = radians(rotscale.x);\n"
+		"	scale = rotscale.y;\n"
 		"	gl_Position = ivec4(vertex);//projection * view * vertex;\n"
 		"	gl_Position.w = 1;\n"
 		"	}\n"
@@ -105,9 +111,12 @@ namespace Source
 		"layout (points) in;\n"
 		"layout (triangle_strip) out;\n"
 		"layout (max_vertices = 4) out;"
+		"const float PI = 3.141592653589793;\n"
 		"\n"
 		"in uint gID[];\n"
 		"in uint gFlags[];\n"
+		"in float rot[];\n"
+		"in float scale[];\n"
 		"flat out uint fID;\n"
 		"flat out uint fFlags;\n"
 		"smooth out vec2 texCoord;\n"
@@ -124,28 +133,32 @@ namespace Source
 		"		{\n"
 		"		vec4 frame = texelFetch( spriteFrame, int(gID[0]) );\n"
 		"		vec2 size = frame.zw;\n"
+		"		mat4 trans = mat4( 1.0 );\n"
+		"		trans[0].xy = vec2( cos( rot[0]), sin( rot[0] ) ) * scale[0];\n"
+		"		trans[1].xy = vec2( cos( rot[0]+PI/2 ), sin( rot[0]+PI/2 ) ) * scale[0];\n"
+		"		trans[3].xyz = gl_in[0].gl_Position.xyz;\n"
 
 		"		gl_Position = gl_in[0].gl_Position;"
-		"		gl_Position.xy += ceil( vec2(-size.x / 2, size.y / 2) );\n"
-		"		gl_Position = projection * gl_Position;\n"
+		"		gl_Position.xy = ceil( vec2(-size.x / 2, size.y / 2) );\n"
+		"		gl_Position = projection * trans * gl_Position ;\n"
 		"		texCoord = vec2( 0, 0 );\n"
 		"		EmitVertex();\n"
 				
 		"		gl_Position = gl_in[0].gl_Position;"
-		"		gl_Position.xy += ceil(-size/2);\n"
-		"		gl_Position = projection * gl_Position;\n"
+		"		gl_Position.xy = ceil(-size/2);\n"
+		"		gl_Position = projection * trans * gl_Position;\n"
 		"		texCoord = vec2( 0, 1 );\n"
 		"		EmitVertex();\n"
 
 		"		gl_Position = gl_in[0].gl_Position;\n"
-		"		gl_Position.xy += ceil(size/2);"
-		"		gl_Position = projection * gl_Position;\n"
+		"		gl_Position.xy = ceil(size/2);"
+		"		gl_Position = projection * trans * gl_Position;\n"
 		"		texCoord = vec2( 1, 0 );\n"
 		"		EmitVertex();\n"
 
 		"		gl_Position = gl_in[0].gl_Position;"
-		"		gl_Position.xy += ceil( vec2( size.x/2, -size.y/2) );\n"
-		"		gl_Position = projection * gl_Position;\n"
+		"		gl_Position.xy = ceil( vec2( size.x/2, -size.y/2) );\n"
+		"		gl_Position = projection * trans * gl_Position;\n"
 		"		texCoord = vec2( 1, 1 );\n"
 		"		EmitVertex();\n"
 
@@ -173,7 +186,8 @@ namespace Source
 		"	vec2 sheetSize = textureSize( spriteSheet, 0 );\n"
 		"	vec4 frame = texelFetch( spriteFrame, int(fID) );\n"
 		"	vec2 spriteCoord = (frame.xy + texCoord * frame.zw) / sheetSize;\n"
-		"	fragColor = texture( spriteSheet, spriteCoord );\n"
+		//"	fragColor = texture( spriteSheet, spriteCoord );\n"
+		"	fragColor = texelFetch( spriteSheet, ivec2( spriteCoord * sheetSize ), 0 );\n"
 		"	if( bool(fFlags & 2u) &&\n"
 		"		all( lessThan(colorKey.rgb-colorKey.a, fragColor.rgb) &&\n"
 		"		lessThan(fragColor.rgb, colorKey.rgb+colorKey.a) )  ) discard;\n"
@@ -244,6 +258,8 @@ namespace Source
 			glBindAttribLocation( glsProgSprite, attriblocTemplateID, "templateID" );
 			CHECK_GL_ERRORS( "Attribute binding." )
 			glBindAttribLocation( glsProgSprite, attriblocFlags, "flags" );
+			CHECK_GL_ERRORS( "Attribute binding." )
+			glBindAttribLocation( glsProgSprite, attriblocRotScale, "rotscale" );
 			CHECK_GL_ERRORS( "Attribute binding." )
 
 			glLinkProgram( glsProgSprite );

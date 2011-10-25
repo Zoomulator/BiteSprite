@@ -90,6 +90,11 @@ namespace Bite
 		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
 		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLuint) * size, &spriteFlag[first] );
 
+		glBindBuffer( GL_ARRAY_BUFFER, glufferRotScale );
+		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLfloat)*2*size, &spriteRotScale[first] );
+
+		CHECK_GL_ERRORS( "SpriteSheet::Synch data upload" );
+
 		// Update uniform array texture buffer thingies:
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
 		glBufferSubData( GL_TEXTURE_BUFFER, first, sizeof(GLuint) * frames.size(), &frames.front() );
@@ -192,6 +197,7 @@ namespace Bite
 			spriteFlag.resize( spriteFlag.size() + 1, 0 );
 			spritePosition.resize( spritePosition.size() + 3, 0 );
 			spriteTemplateID.resize( spriteTemplateID.size() + 1, 0 );
+			spriteRotScale.resize( spriteRotScale.size() + 2, 0 );
 			++spriteCount;
 			}
 
@@ -234,6 +240,7 @@ namespace Bite
 		glGenBuffers( 1, &glufferVertex );
 		glGenBuffers( 1, &glufferTemplateID );
 		glGenBuffers( 1, &glufferFlag );
+		glGenBuffers( 1, &glufferRotScale );
 		glGenBuffers( 1, &glufferFrameTBO );
 		glGenTextures( 1, &texFrameTBO );
 		
@@ -242,6 +249,7 @@ namespace Bite
 		glEnableVertexAttribArray( Shader::attriblocVertex );
 		glEnableVertexAttribArray( Shader::attriblocTemplateID );
 		glEnableVertexAttribArray( Shader::attriblocFlags );
+		glEnableVertexAttribArray( Shader::attriblocRotScale );
 
 		// Create buffer objects for the different vertex attributes.
 		// 1. Bind the buffer object that will hold attribute data.
@@ -259,6 +267,10 @@ namespace Bite
 		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
 		glBufferData( GL_ARRAY_BUFFER, sizeof(GLuint)*bufferSize, NULL, GL_DYNAMIC_COPY );
 		glVertexAttribIPointer( Shader::attriblocFlags, 1, GL_UNSIGNED_INT, 0, 0 );
+
+		glBindBuffer( GL_ARRAY_BUFFER, glufferRotScale );
+		glBufferData( GL_ARRAY_BUFFER, sizeof(GLfloat)*2*bufferSize, NULL, GL_DYNAMIC_COPY );
+		glVertexAttribPointer( Shader::attriblocRotScale, 2, GL_FLOAT, GL_FALSE, 0, 0 );
 
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
 		glBufferData( GL_TEXTURE_BUFFER, sizeof(GLuint)*4*bufferSize, NULL, GL_DYNAMIC_COPY );
@@ -283,6 +295,9 @@ namespace Bite
 
 		glDeleteBuffers( 1, &glufferFrameTBO );
 		glufferFrameTBO = 0;
+
+		glDeleteBuffers( 1, &glufferRotScale );
+		glufferRotScale = 0;
 
 		glDeleteTextures( 1, &texFrameTBO );
 		texFrameTBO = 0;

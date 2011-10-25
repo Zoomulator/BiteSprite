@@ -23,6 +23,8 @@ namespace Bite
 		void UseColorKey( bool );
 		void Position( float x, float y, Anchor anchor=Center );
 		void ZIndex( float z );
+		void Rotation( float deg );
+		void Scale( float s );
 
 		private:
 		Sprite( ID id, ID templateID, SpriteSheet* sheet );
