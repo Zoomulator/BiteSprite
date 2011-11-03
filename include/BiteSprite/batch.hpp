@@ -4,7 +4,6 @@
 
 #include <set>
 
-
 namespace Bite
 	{
 
@@ -45,6 +44,8 @@ namespace Bite
 		typedef std::set<Batch*> BatchContainer;
 		BatchContainer batches;
 		};
+
+
 
 
 	} // namespace Bite

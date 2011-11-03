@@ -18,6 +18,7 @@ namespace Bite
 		{
 		ColorKeyNorm( 1.0, 1.0, 1.0 );
 		GLBufferSetup();
+		OverflowHandling( OverflowException );
 
 		sheet = Load::Image( imageName );
 		}
@@ -153,6 +154,7 @@ namespace Bite
 			spriteTemplate.id = id;
 			spriteTemplate.name = name;
 			spriteTemplate.frame = frame;
+			spriteTemplate.active = true;
 			
 			BASSERT( id <= templates.size() );
 			// Create new place in vector only if ID equal to length
@@ -179,10 +181,27 @@ namespace Bite
 		}
 
 
+	void
+	SpriteSheet::DropTemplate( const std::string& templateName )
+		{
+		// Check name validity.
+		StringID::const_iterator templateIt = nameToTemplateID.find( templateName );
+		if( templateIt == nameToTemplateID.end() ) throw BadTemplateName( templateName );
+
+		ID id = nameToTemplateID[ templateName ];
+		templates[id].active = false;
+		idGenTemplate.RecycleID( id );
+		}
+
+
 	Sprite
 	SpriteSheet::CreateSprite( const std::string& templateName )
 		{
-		Uint32 tid = nameToTemplateID[ templateName ];
+		// Check name validity.
+		StringID::const_iterator templateIt = nameToTemplateID.find( templateName );
+		if( templateIt == nameToTemplateID.end() ) throw BadTemplateName( templateName );
+
+		Uint32 tid = templateIt->second; 
 		ID sid = idGenSprite.NewID();
 
 		// Note: think of a better way to lay this out. Offsets and structures
@@ -192,6 +211,18 @@ namespace Bite
 		BASSERT( sid <= spriteTemplateID.size() );
 
 		if( sid == spriteFlag.size() )
+			IncrementBuffers();
+
+		UpdateSprite( sid );
+
+		return Sprite( sid, tid, this );
+		}
+
+
+	void
+	SpriteSheet::IncrementBuffers()
+		{
+		if( spriteCount < bufferSize )
 			{
 			// Expand vectors and fill with 0
 			spriteFlag.resize( spriteFlag.size() + 1, 0 );
@@ -200,10 +231,19 @@ namespace Bite
 			spriteRotScale.resize( spriteRotScale.size() + 2, 0 );
 			++spriteCount;
 			}
-
-		UpdateSprite( sid );
-
-		return Sprite( sid, tid, this );
+		else // overflow!
+			{
+			switch( overflowOption )
+				{
+				case OverflowException:
+					throw BufferOverflow( bufferSize );
+					break;
+				case OverflowReallocate:
+					GrowBuffers();
+					IncrementBuffers();
+					break;
+				}
+			}
 		}
 
 
@@ -221,6 +261,13 @@ namespace Bite
 	SpriteSheet::ColorKey( Uint8 r, Uint8 g, Uint8 b, Uint8 range )
 		{
 		ColorKeyNorm( r/255.0f, g/255.0f, b/255.0f, range/255.0f );
+		}
+
+
+	void
+	SpriteSheet::OverflowHandling( OverflowOptions option )
+		{
+		overflowOption = option;
 		}
 
 	
@@ -280,6 +327,15 @@ namespace Bite
 		glBindBuffer( GL_ARRAY_BUFFER, GL_NONE );
 		}
 
+
+	void
+	SpriteSheet::GrowBuffers()
+		{
+		GLDestroyBuffers();
+		bufferSize = bufferSize * 2;
+		GLBufferSetup();
+		}
+
 	
 	void
 	SpriteSheet::GLDestroyBuffers()
@@ -291,7 +347,10 @@ namespace Bite
 		glufferVertex = 0;
 
 		glDeleteBuffers( 1, &glufferTemplateID );
-		glufferVertex = 0;
+		glufferTemplateID = 0;
+
+		glDeleteBuffers( 1, &glufferFlag );
+		glufferFlag = 0;
 
 		glDeleteBuffers( 1, &glufferFrameTBO );
 		glufferFrameTBO = 0;

@@ -5,6 +5,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <sstream>
 
 #include <GL/glew.h>
 
@@ -55,6 +56,9 @@ namespace Bite
 		void
 		CreateTemplate( const std::string& name, Rect frame );
 
+		void
+		DropTemplate( const std::string& name );
+
 		Sprite
 		CreateSprite( const std::string& templateName );
 		
@@ -72,7 +76,17 @@ namespace Bite
 		void
 		ColorKey( Uint8 r, Uint8 g, Uint8 b, Uint8 range=25 );
 
-		// TODO: OverflowMethod with options: Reallocate, Exception, Silent...
+		enum OverflowOptions {
+			OverflowReallocate, OverflowException };
+
+		//! Let's you chose how overflows are handled.
+		/*! It should be preferred to set an appropriate buffer size
+		 *  when the SpriteSheet is initialized and have overflow handling
+		 *  set to throw exceptions. Reallocation is quite a heavy procedure.
+		 *	On reallocation, the buffer is doubled in size.
+		 *  The Bite::BufferOverflow exception is used when throwing.
+		 */
+		void OverflowHandling( OverflowOptions );
 
 		private:
 		typedef std::vector<SpriteTemplate> Templates;
@@ -84,7 +98,13 @@ namespace Bite
 		GLBufferSetup();
 
 		void
+		GrowBuffers();
+
+		void
 		GLDestroyBuffers();
+
+		void
+		IncrementBuffers();
 
 		Image sheet;
 
@@ -118,6 +138,8 @@ namespace Bite
 		BufferFloat spritePosition;
 		BufferUint	spriteTemplateID;
 		BufferFloat spriteRotScale;
+
+		OverflowOptions overflowOption;
 		};
 
 
@@ -145,6 +167,19 @@ namespace Bite
 			}
 		};
 
+
+
+	class BufferOverflow : public Exception
+		{
+		public:
+		BufferOverflow( int bufferSize )
+			{
+			std::stringstream sizestr;
+			sizestr << bufferSize;
+			errstr = "Buffer overflow. Size was: ";
+			errstr += sizestr.str();
+			}
+		};
 	} // namespace Bite
 
 

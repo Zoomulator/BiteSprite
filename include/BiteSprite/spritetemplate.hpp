@@ -16,6 +16,7 @@ namespace Bite
 		Uint32 id;
 		std::string name;
 		Rect frame;
+		bool active;
 		};
 
 
