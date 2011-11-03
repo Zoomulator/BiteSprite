@@ -83,22 +83,38 @@ namespace Bite
 
 		// Update vertex arrays:
 		glBindBuffer( GL_ARRAY_BUFFER, glufferVertex );
-		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLfloat)* VertexUnitSize * size, &spritePosition[first*VertexUnitSize] );
+		glBufferSubData(
+			GL_ARRAY_BUFFER, 
+			first * sizeof(GLfloat) * VertexUnitSize, 
+			sizeof(GLfloat)* VertexUnitSize * size, 
+			&spritePosition[first*VertexUnitSize] );
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferTemplateID );
-		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLuint) * size, &spriteTemplateID[first] );
+		glBufferSubData(
+			GL_ARRAY_BUFFER,
+			first * sizeof(GLuint), 
+			sizeof(GLuint) * size, 
+			&spriteTemplateID[first] );
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
-		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLuint) * size, &spriteFlag[first] );
+		glBufferSubData( 
+			GL_ARRAY_BUFFER, 
+			first * sizeof(GLuint), 
+			sizeof(GLuint) * size, 
+			&spriteFlag[first] );
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferRotScale );
-		glBufferSubData( GL_ARRAY_BUFFER, first, sizeof(GLfloat)*2*size, &spriteRotScale[first] );
+		glBufferSubData( 
+			GL_ARRAY_BUFFER, 
+			first * sizeof(GLfloat) * 2, 
+			sizeof(GLfloat)*2*size, 
+			&spriteRotScale[first*2] );
 
 		CHECK_GL_ERRORS( "SpriteSheet::Synch data upload" );
 
 		// Update uniform array texture buffer thingies:
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
-		glBufferSubData( GL_TEXTURE_BUFFER, first, sizeof(GLuint) * frames.size(), &frames.front() );
+		glBufferSubData( GL_TEXTURE_BUFFER, 0, sizeof(GLuint) * frames.size(), &frames.front() );
 				
 		CHECK_GL_ERRORS( "SpriteSheet::Synch" );
 

@@ -6,7 +6,7 @@
 SDL_Surface* screen;
 int width = 640;
 int height = 480;
-
+float marioRot = 0;
 
 void LoadBite()
 	{
@@ -48,7 +48,6 @@ void Run()
 
 		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
 		sprite2.Position( 30, -70, Bite::TopLeft );
-		sprite2.Rotation( 20.0f );
 		sprite2.Scale( 3.0f );
 
 		Bite::Rect r4 = { 342, 223, 16, 28 };
@@ -82,6 +81,10 @@ void Run()
 				if( event.type == SDL_QUIT )
 					running = false;
 				}
+
+			
+			marioRot = fmod(marioRot+0.5f, 360);
+			sprite2.Rotation( marioRot );
 
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
