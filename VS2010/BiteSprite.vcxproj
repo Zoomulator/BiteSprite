@@ -90,6 +90,7 @@
     <ClCompile Include="..\src\sprite.cpp" />
     <ClCompile Include="..\src\spritesheet.cpp" />
     <ClCompile Include="..\src\spritesheet_shaders.cpp" />
+    <ClCompile Include="..\src\tgaload.cpp" />
     <ClCompile Include="..\src\view.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +111,7 @@
     <ClInclude Include="..\include\BiteSprite\spritesheet.hpp" />
     <ClInclude Include="..\include\BiteSprite\spritesheet_shaders.hpp" />
     <ClInclude Include="..\include\BiteSprite\spritetemplate.hpp" />
+    <ClInclude Include="..\include\BiteSprite\tgaload.hpp" />
     <ClInclude Include="..\include\BiteSprite\types.hpp" />
     <ClInclude Include="..\include\BiteSprite\view.hpp" />
   </ItemGroup>

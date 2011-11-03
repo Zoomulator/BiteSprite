@@ -23,11 +23,13 @@ namespace Bite
 			stream.seekg( BMP::PixDataOffset );
 			stream.read( (Uint8*)&pixDataOffset, 4 ); // Read 4 bytes
 
+			Uint32 width = 0;
 			stream.seekg( BMP::PixWidth );
-			stream.read( (Uint8*)&data.width, 4 );
+			stream.read( (Uint8*)&width, 4 );
 
+			Uint32 height = 0;
 			stream.seekg( BMP::PixHeight );
-			stream.read( (Uint8*)&data.height, 4 );
+			stream.read( (Uint8*)&height, 4 );
 
 			Uint32 bitpp;
 			Uint32 bytepp;
@@ -42,17 +44,17 @@ namespace Bite
 			BMPmask.b = 0x000000FF;
 			BMPmask.a = 0xFF000000;
 
-			Uint32 bmpRowWidth = ( bitpp * data.width / 32 ) * 4; // Row bytes wide in stream with possible padding
+			Uint32 bmpRowWidth = ( bitpp * width / 32 ) * 4; // Row bytes wide in stream with possible padding
 					
-			pixAllocation = new Uint32[ data.width * data.height ]; // 4 bytes per Uint32
+			pixAllocation = new Uint32[ width * height ]; // 4 bytes per Uint32
 
 			// Now we know everything but the pixel data itself.
 			// Lets create an array that will fit it.
 		
 			// Read the pixel data from the stream!
-			for( Uint32 y = 0; y < data.height; ++y )
+			for( Uint32 y = 0; y < height; ++y )
 				{
-				for( Uint32 x = 0; x < data.width; ++x )
+				for( Uint32 x = 0; x < width; ++x )
 					{
 					// Read the pixel from the stream.
 					Uint32 fOffset = 
@@ -68,15 +70,15 @@ namespace Bite
 					Uint32 pixel = ConvertColor( rawPixel, BMPmask, internalMask );
 					
 					//Uint32 pOffset = x + (data.height - y - 1) * (data.width - 1);
-					Uint32 pOffset = x + (data.height-y-1) * data.width;
-					BASSERT( pOffset*4 <= data.Size() );
+					Uint32 pOffset = x + (height-y-1) * width;
+					BASSERT( pOffset <= width * height );
 
 					pixAllocation[pOffset] = pixel;
 					}
 				}
 
 			// Finally, point to the memory allocated earlier.
-			data.pixels = pixAllocation; 
+			data.SetPixels( pixAllocation, width, height ); 
 			}
 		catch(...)
 			{

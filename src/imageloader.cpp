@@ -128,8 +128,14 @@ namespace Load
 			throw FileError( path );
 			}
 
-		// TODO: Determine image type from suffix.
-		return Load::Image( file, name, BMP() );
+
+		if( path.find( ".bmp" ) != std::string::npos )
+			return Load::Image( file, name, BMP() );
+			
+		if( path.find( ".tga" ) != std::string::npos )
+			return Load::Image( file, name, TGA() );
+
+		throw BadImageName( path );
 		}
 
 

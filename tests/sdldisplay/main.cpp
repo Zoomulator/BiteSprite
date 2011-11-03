@@ -11,7 +11,7 @@ int height = 480;
 void LoadBite()
 	{
 	Bite::Init();
-	Bite::Load::ImageFromFile( "smb3sheet24bit.bmp", "mario" );
+	Bite::Load::ImageFromFile( "smb3sheet.tga", "mario" );
 	}
 
 
@@ -54,7 +54,7 @@ void Run()
 		Bite::Rect r4 = { 342, 223, 16, 28 };
 		sheet.CreateTemplate( "stonemario", r4 );
 
-		const int spriteCount = 2000;
+		const int spriteCount = 1000;
 		std::vector<Bite::Sprite> lottaSprites;
 
 		for( int i = 0; i < spriteCount; ++i )

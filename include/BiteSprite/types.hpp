@@ -6,6 +6,7 @@ namespace Bite
 	{
 
 	typedef char Uint8;
+	typedef unsigned short Uint16;
 	typedef unsigned int Uint32;
 	typedef int Int32;
 

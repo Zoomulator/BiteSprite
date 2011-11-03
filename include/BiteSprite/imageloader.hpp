@@ -10,6 +10,7 @@
 #include "BiteSprite/biteimage.hpp"
 #include "BiteSprite/imageloadbase.hpp"
 #include "BiteSprite/bmpload.hpp"
+#include "BiteSprite/tgaload.hpp"
 #include "BiteSprite/bexception.hpp"
 #include "BiteSprite/bassert.hpp"
 
@@ -71,6 +72,17 @@ namespace Load
 			{
 			errstr = 
 				"Image name already in use: " + name;
+			}
+		};
+
+
+	class BadFileFormat : public Exception
+		{
+		public:
+		BadFileFormat( const std::string& path )
+			{
+			errstr =
+				path + " is not a supported format.";
 			}
 		};
 

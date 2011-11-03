@@ -27,6 +27,7 @@ namespace Bite
 		// Drops ownership of the pixel map without deleting it.
 		// Returns a pointer to it's heap location.
 		Uint32* DropPixels() throw();
+		void SetPixels( Uint32* p, Uint32 w, Uint32 h );
 
 		Uint32* pixels; // Yay, pixels!
 

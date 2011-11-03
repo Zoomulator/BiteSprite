@@ -37,6 +37,16 @@ namespace Bite
 
 
 	void
+	ImageData::SetPixels( Uint32* p, Uint32 w, Uint32 h )
+		{
+		delete pixels;
+		pixels = p;
+		width = w;
+		height = h;
+		}
+
+
+	void
 	ImageData::ClearData()
 		{
 		delete[] pixels;
