@@ -9,7 +9,7 @@
 namespace Bite
 	{
 
-	// Holds some information about texture loaded to GL
+	//! Holds information about a texture loaded to GL
 	class Image
 		{
 		public:

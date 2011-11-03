@@ -5,6 +5,11 @@
 
 namespace Bite
 	{
+	
+	//! The Shader namespace works as a singleton for holding all the GL information about the SpriteSheet shaders.
+	/*!	The const references acts as a read only interface for the user without
+	 *	the use of Get functions, while still remaining non-const inside.
+	 */
 namespace Shader
 	{
 
@@ -29,6 +34,7 @@ namespace Shader
 		};
 
 
+	//! Base class for errors arising when setting up OpenGL shaders.
 	class ShaderError : public Exception
 		{
 		};

@@ -102,4 +102,13 @@ namespace Bite
 		}
 
 
+	void
+	Sprite::Drop()
+		{
+		Visible( false );
+		sheet->idGenSprite.RecycleID( id );
+		id = 0;
+		}
+
+
 	} // namespace Bite

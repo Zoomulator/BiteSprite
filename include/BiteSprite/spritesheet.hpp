@@ -40,12 +40,15 @@ namespace Bite
 		void
 		SynchRange( ID first, Uint32 size );
 
+		//! Upload any changed Sprites in the buffer to GL
 		void
-		Synch(); // Upload changed areas of the buffer to GL
+		Synch();
 
+		//! Upload full buffer to GL
 		void
 		SynchAll();
 		
+		//! Puts the Sprite in the update queue to be uploaded in the next synch call.
 		void
 		UpdateSprite( ID id );
 		
@@ -54,19 +57,26 @@ namespace Bite
 
 		Sprite
 		CreateSprite( const std::string& templateName );
-
+		
+		//! Set a color to be used as transparent with normalized float range (0.0->1.0).
+		/*! Sprites should have UseColorKey enabled. The range argument
+		 *	gives a sensitivity threshold, in case the color is "dirty".
+		 */
 		void
 		ColorKeyNorm( float r, float g, float b, float range=0.1f );
 
+		//! Set a color to be used as transparent with 8bit ranges.
+		/*! Sprites should have UseColorKey enabled. The range argument
+		 *	gives a sensitivity threshold, in case the color is "dirty".
+		 */
 		void
-		ColorKey( int r, int g, int b, int range=25 );
+		ColorKey( Uint8 r, Uint8 g, Uint8 b, Uint8 range=25 );
 
 		// TODO: OverflowMethod with options: Reallocate, Exception, Silent...
 
 		private:
 		typedef std::vector<SpriteTemplate> Templates;
 		typedef std::map<std::string, ID> StringID;
-		typedef std::vector<Sprite> Sprites; // Unused?
 		typedef std::vector<GLuint> BufferUint;
 		typedef std::vector<GLfloat> BufferFloat;
 

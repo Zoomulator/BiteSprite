@@ -218,7 +218,7 @@ namespace Bite
 
 
 	void
-	SpriteSheet::ColorKey( int r, int g, int b, int range )
+	SpriteSheet::ColorKey( Uint8 r, Uint8 g, Uint8 b, Uint8 range )
 		{
 		ColorKeyNorm( r/255.0f, g/255.0f, b/255.0f, range/255.0f );
 		}

@@ -8,6 +8,11 @@
 
 // TODO: Cleanup and throw exceptions
 
+//! BiteSprite uses this function to check for errors.
+/*!	The function is used indirectly via the CHECK_GL_ERRORS
+ *	function macro, that can be enabled or disabled by defining
+ *	BITE_GL_ERRORS in the preprocessor.
+ */
 inline
 void CheckGLErrors( const std::string& note )
 	{
@@ -44,5 +49,7 @@ void CheckGLErrors( const std::string& note )
 #else
 #define CHECK_GL_ERRORS(x) 0;
 #endif
+
+//! /def BITE_GL_ERRORS Use this to make BiteSprite check for GL errors.
 
 #endif // BITE_CHECKGLERROR_HPP

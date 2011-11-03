@@ -20,6 +20,6 @@ Animation class holding intervals and sprites
 
 Synch fragmentation may cause worse performance than full buffer update, due to multiple function calls. Worth testing to see if it's possible to detect synch fragmentation and set a threshold to go full update instead.
 
-Palette formats that are kept in buffer for on the fly switching in the shader.
+Palette formats that are kept in buffer for on the fly switching in the shader. OpenGL3.3 doesn't seem to support this anymore, so it will be implemented by the shader.
 
-Sprite rotation!
+x - Sprite rotation!
