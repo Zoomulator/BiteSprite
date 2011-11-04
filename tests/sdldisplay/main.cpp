@@ -4,8 +4,8 @@
 
 
 SDL_Surface* screen;
-int width = 640;
-int height = 480;
+int width = 800;
+int height = 600;
 float marioRot = 0;
 
 void LoadBite()
@@ -26,7 +26,9 @@ void Run()
 
 		screen = SDL_SetVideoMode( width, height, 32, sdlFlags );
 		SDL_WM_SetCaption( "BiteSprite!", NULL );
-		Bite::SetResolution( width, height, 2 );
+		//Bite::SetResolution( 1280, 960, 1 );
+		Bite::WindowSize( width, height );
+		Bite::SetResolution( width/3, height/3, 2 );
 		LoadBite();
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
@@ -48,8 +50,8 @@ void Run()
 		sprite3.Rotation( -50.0f );
 
 		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
-		sprite2.Position( 30, -70, Bite::TopLeft );
-		sprite2.Scale( 3.0f );
+		sprite2.Position( 0, 0, Bite::TopLeft );
+		sprite2.Scale( 2.0f );
 
 		Bite::Rect r4 = { 342, 223, 16, 28 };
 		sheet.CreateTemplate( "stonemario", r4 );

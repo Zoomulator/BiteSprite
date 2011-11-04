@@ -21,6 +21,8 @@ namespace Projection
 
 	int width = 0;
 	int height = 0;
+	int windowH = 0;
+	int windowW = 0;
 	float pixSize = 0;
 
 	void SetResolution( int w, int h, float ps )		
@@ -28,9 +30,18 @@ namespace Projection
 		width = w;
 		height = h;
 		pixSize = ps;
-		Projection::_matrix[0] = 2.0f / width;
-		Projection::_matrix[5] = 2.0f / height;
-		Projection::_matrix[10] = 1.0f / 1000.0f; // z depth of 1000
+
+
+		Projection::_matrix[0] = 2.0f / w;
+		Projection::_matrix[5] = 2.0f / h;
+		Projection::_matrix[10] = 2.0f / 1000.0f; // z depth of 1000
+		}
+
+
+	void WindowSize( int w, int h )
+		{
+		windowW = w;
+		windowH = h;
 		}
 
 
@@ -49,6 +60,18 @@ namespace Projection
 	float PixSize()
 		{
 		return pixSize;
+		}
+
+
+	int WindowWidth()
+		{
+		return windowW;
+		}
+
+
+	int WindowHeight()
+		{
+		return windowH;
 		}
 
 	} // namespace Bite
