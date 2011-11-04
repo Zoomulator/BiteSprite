@@ -9,7 +9,11 @@ namespace Bite
 	{
 
 
-	void SetResolution( int width, int height );
+	void SetResolution( int width, int height, float pixSize=1.0f );
+
+	int ResWidth();
+	int ResHeight();
+	float PixSize();
 
 
 namespace Projection

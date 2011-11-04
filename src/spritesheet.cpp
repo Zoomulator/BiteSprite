@@ -57,6 +57,8 @@ namespace Bite
 
 		glUniform4fv( Shader::unilocColorKey, 1, colorKey );
 
+		SetFramebufferForDraw();
+
 		glDrawArrays( GL_POINTS, 0, spriteCount );
 		CHECK_GL_ERRORS( "Draw arrays, SpriteSheet::Render" );
 

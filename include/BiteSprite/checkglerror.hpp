@@ -44,6 +44,39 @@ void CheckGLErrors( const std::string& note )
 	}
 
 
+inline
+void AnalyseBufferStatus( GLuint status )
+	{
+	switch( status )
+		{
+		case GL_FRAMEBUFFER_UNDEFINED:
+			std::cout << "GL error: Framebuffer undefined. No window?";
+			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+			std::cout << "GL error: Framebuffer incomplete attachment.";
+			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+			std::cout << "GL error: Frambuffer incomplete missing attachment.";
+			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+			std::cout << "GL error: incomplete draw buffer.";
+			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+			std::cout << "GL error: incomplete read buffer.";
+			break;
+		case GL_FRAMEBUFFER_UNSUPPORTED:
+			std::cout << "GL error: framebuffer unsupported.";
+			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+			std::cout << "GL error: framebuffer incomplete multisample.";
+			break;
+		case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
+			std::cout << "GL error: framebuffer incomplete layer targets.";
+			break;
+		}
+	}
+
+
 #ifdef BITE_GL_ERRORS
 #define CHECK_GL_ERRORS(x) CheckGLErrors(x);
 #else

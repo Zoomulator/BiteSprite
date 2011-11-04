@@ -26,6 +26,7 @@ void Run()
 
 		screen = SDL_SetVideoMode( width, height, 32, sdlFlags );
 		SDL_WM_SetCaption( "BiteSprite!", NULL );
+		Bite::SetResolution( width, height, 2 );
 		LoadBite();
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
@@ -64,8 +65,6 @@ void Run()
 
 		lottaSprites[7].Drop();
 
-		Bite::SetResolution( width, height );
-
 		glPointSize( 10.0f );
 		glDisable( GL_CULL_FACE );
 		const int queryCount = 2;
@@ -83,7 +82,7 @@ void Run()
 				}
 
 			
-			marioRot = fmod(marioRot+0.5f, 360);
+			marioRot = fmod(marioRot+1.31f, 360);
 			sprite2.Rotation( marioRot );
 
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -100,7 +99,7 @@ void Run()
 			glGetQueryObjectiv( glquery[1], GL_QUERY_RESULT, &result[1] );
 			//std::cout << "Primitives passed: " << result[0] << std::endl;
 			//std::cout << "Samples passed: " << result[1] << std::endl;
-
+			Bite::FlipFramebuffer();
 			SDL_GL_SwapBuffers();
 			}
 

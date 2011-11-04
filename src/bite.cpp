@@ -14,6 +14,7 @@ namespace Bite
 		fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 
 		InitImageLoader();
+		InitFramebuffer();
 		Shader::Init();
 		}
 

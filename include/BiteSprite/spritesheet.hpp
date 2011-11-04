@@ -19,6 +19,7 @@
 #include "BiteSprite\sprite.hpp"
 #include "BiteSprite\spritesheet_shaders.hpp"
 #include "BiteSprite\projection.hpp"
+#include "BiteSprite\framebuffer.hpp"
 #include "BiteSprite\view.hpp"
 #include "BiteSprite\idgenerator.hpp"
 #include "BiteSprite\checkglerror.hpp"

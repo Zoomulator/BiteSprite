@@ -83,6 +83,7 @@
     <ClCompile Include="..\src\batch.cpp" />
     <ClCompile Include="..\src\bite.cpp" />
     <ClCompile Include="..\src\bmpload.cpp" />
+    <ClCompile Include="..\src\framebuffer.cpp" />
     <ClCompile Include="..\src\idgenerator.cpp" />
     <ClCompile Include="..\src\imagedata.cpp" />
     <ClCompile Include="..\src\imageloader.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="..\include\BiteSprite\bmpload.hpp" />
     <ClInclude Include="..\include\BiteSprite\checkglerror.hpp" />
     <ClInclude Include="..\include\BiteSprite\colormask.hpp" />
+    <ClInclude Include="..\include\BiteSprite\framebuffer.hpp" />
     <ClInclude Include="..\include\BiteSprite\idgenerator.hpp" />
     <ClInclude Include="..\include\BiteSprite\imagedata.hpp" />
     <ClInclude Include="..\include\BiteSprite\imageloadbase.hpp" />
