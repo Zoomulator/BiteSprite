@@ -2,6 +2,9 @@
 #include "GL/glew.h"
 #include "BiteSprite/bexception.hpp"
 #include "BiteSprite/checkglerror.hpp"
+#include "BiteSprite/shaderloader.hpp"
+#include "BiteSprite/shaderhandle.hpp"
+#include "BiteSprite/programhandle.hpp"
 
 namespace Bite
 	{
@@ -13,7 +16,7 @@ namespace Bite
 namespace Shader
 	{
 
-	extern const GLint& glsProgSprite;
+	extern const ProgramHandle& glsProgSprite;
 	extern const GLint& unilocProjection;
 	extern const GLint& unilocView;
 	extern const GLint& unilocSpriteSheet;
@@ -34,31 +37,7 @@ namespace Shader
 		};
 
 
-	//! Base class for errors arising when setting up OpenGL shaders.
-	class ShaderError : public Exception
-		{
-		};
-
-
- 	class ShaderCompileError : public ShaderError
-		{
-		public:
-		ShaderCompileError( const std::string& errorLog )
-			{
-			errstr = "Shader returned following compile error:\n";
-			errstr += errorLog;
-			}
-		};
-
-	class ShaderLinkError : public ShaderError
-		{
-		public:
-		ShaderLinkError( const std::string& errorLog )
-			{
-			errstr = "Shader returned follow linking error:\n";
-			errstr += errorLog;
-			}
-		};
+	
 
 	} // namespace Shader
 	} // namespace Bite

@@ -87,7 +87,10 @@
     <ClCompile Include="..\src\idgenerator.cpp" />
     <ClCompile Include="..\src\imagedata.cpp" />
     <ClCompile Include="..\src\imageloader.cpp" />
+    <ClCompile Include="..\src\programhandle.cpp" />
     <ClCompile Include="..\src\projection.cpp" />
+    <ClCompile Include="..\src\shaderhandle.cpp" />
+    <ClCompile Include="..\src\shaderloader.cpp" />
     <ClCompile Include="..\src\sprite.cpp" />
     <ClCompile Include="..\src\spritesheet.cpp" />
     <ClCompile Include="..\src\spritesheet_shaders.cpp" />
@@ -108,7 +111,10 @@
     <ClInclude Include="..\include\BiteSprite\imagedata.hpp" />
     <ClInclude Include="..\include\BiteSprite\imageloadbase.hpp" />
     <ClInclude Include="..\include\BiteSprite\imageloader.hpp" />
+    <ClInclude Include="..\include\BiteSprite\programhandle.hpp" />
     <ClInclude Include="..\include\BiteSprite\projection.hpp" />
+    <ClInclude Include="..\include\BiteSprite\shaderhandle.hpp" />
+    <ClInclude Include="..\include\BiteSprite\shaderloader.hpp" />
     <ClInclude Include="..\include\BiteSprite\sprite.hpp" />
     <ClInclude Include="..\include\BiteSprite\spritesheet.hpp" />
     <ClInclude Include="..\include\BiteSprite\spritesheet_shaders.hpp" />
