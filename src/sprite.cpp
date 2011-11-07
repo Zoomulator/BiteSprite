@@ -10,7 +10,7 @@ namespace Bite
 
 
 	Sprite::Sprite( ID id_, ID templateID, SpriteSheet* sheet_ ) : 
-		id(id_), sheet(sheet_)	
+		id(id_), sheet(sheet_), alive(true)	
 		{
 		sheet->spriteTemplateID.at(id) = templateID;
 		Visible( true );
@@ -23,6 +23,8 @@ namespace Bite
 	void
 	Sprite::Visible( bool v )
 		{
+		if( !alive ) return;
+
 		SpriteSheet::BufferUint& flagBuf = sheet->spriteFlag;
 		
 		if( v ) 
@@ -37,6 +39,8 @@ namespace Bite
 	void
 	Sprite::UseColorKey( bool b )
 		{
+		if( !alive ) return;
+
 		SpriteSheet::BufferUint& flagBuf = sheet->spriteFlag;
 
 		if( b )
@@ -51,6 +55,8 @@ namespace Bite
 	void
 	Sprite::Position( float x, float y, Anchor anchor )
 		{
+		if( !alive ) return;
+
 		switch(anchor)
 			{
 		case Center:
@@ -74,6 +80,8 @@ namespace Bite
 	void
 	Sprite::ZIndex( float z )
 		{
+		if( !alive ) return;
+
 		sheet->spritePosition.at( id * 3 + 2 ) = z;
 
 		sheet->UpdateSprite( id );
@@ -83,6 +91,8 @@ namespace Bite
 	void
 	Sprite::Rotation( float r )
 		{
+		if( !alive ) return;
+
 		SpriteSheet::BufferFloat& rotscaleBuf = sheet->spriteRotScale;
 
 		rotscaleBuf.at( id * 2 ) = r;
@@ -94,6 +104,7 @@ namespace Bite
 	void
 	Sprite::Scale( float s )
 		{
+		if( !alive ) return;
 		SpriteSheet::BufferFloat& rotscaleBuf = sheet->spriteRotScale;
 
 		rotscaleBuf.at( id * 2 + 1 ) = s;
@@ -105,9 +116,10 @@ namespace Bite
 	void
 	Sprite::Drop()
 		{
+		if( !alive ) return;
 		Visible( false );
 		sheet->idGenSprite.RecycleID( id );
-		id = 0;
+		alive = false;
 		}
 
 

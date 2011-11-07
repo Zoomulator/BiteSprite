@@ -7,6 +7,13 @@ SDL_Surface* screen;
 int width = 800;
 int height = 600;
 float marioRot = 0;
+int marioPos = 0;
+
+int circX = 150;
+int circY = 0;
+int circR = 100;
+float circRot = 0;
+const float PI = 3.141592;
 
 void LoadBite()
 	{
@@ -55,13 +62,13 @@ void Run()
 		Bite::Rect r4 = { 342, 223, 16, 28 };
 		sheet.CreateTemplate( "stonemario", r4 );
 
-		const int spriteCount = 1000;
+		const int spriteCount = 20;
 		std::vector<Bite::Sprite> lottaSprites;
 
 		for( int i = 0; i < spriteCount; ++i )
 			{
 			lottaSprites.push_back( sheet.CreateSprite( "stonemario" ) );
-			lottaSprites[i].Position( (-300 + (i*10)%600), 200 - (i/60)*10 );
+			//lottaSprites[i].Position( (-300 + (i*10)%600), 200 - (i/60)*10 );
 			}
 
 		lottaSprites[7].Drop();
@@ -82,24 +89,22 @@ void Run()
 					running = false;
 				}
 
+			for( int i = 0; i < spriteCount; ++i )
+				{
+				lottaSprites[i].Position(
+					circX + cos( circRot + i * PI * 2 / (float)spriteCount ) * circR,
+					circY + sin( circRot + i * PI * 2 / (float)spriteCount ) * circR );
+				}
+			circRot += fmod( PI * 2 / 1000.0f, PI*2);
 			
 			marioRot = fmod(marioRot+1.31f, 360);
 			sprite2.Rotation( marioRot );
 
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-			glBeginQuery( GL_PRIMITIVES_GENERATED, glquery[0] );
-			glBeginQuery( GL_SAMPLES_PASSED, glquery[1] );
 			sheet.Synch();
 			sheet.Render();
 
-			glEndQuery( GL_PRIMITIVES_GENERATED );
-			glEndQuery( GL_SAMPLES_PASSED );
-			GLint result[queryCount];
-			glGetQueryObjectiv( glquery[0], GL_QUERY_RESULT, &result[0] );
-			glGetQueryObjectiv( glquery[1], GL_QUERY_RESULT, &result[1] );
-			//std::cout << "Primitives passed: " << result[0] << std::endl;
-			//std::cout << "Samples passed: " << result[1] << std::endl;
 			Bite::Framebuffer::Flip();
 			SDL_GL_SwapBuffers();
 			}

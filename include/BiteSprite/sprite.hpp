@@ -43,6 +43,7 @@ namespace Bite
 
 		ID id;
 		SpriteSheet* sheet;
+		bool alive;
 	
 		};
 

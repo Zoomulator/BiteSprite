@@ -84,12 +84,15 @@ namespace Bite
 		glBindVertexArray( VAO );
 
 		// Update vertex arrays:
+
+
 		glBindBuffer( GL_ARRAY_BUFFER, glufferVertex );
 		glBufferSubData(
 			GL_ARRAY_BUFFER, 
 			first * sizeof(GLfloat) * VertexUnitSize, 
 			sizeof(GLfloat)* VertexUnitSize * size, 
 			&spritePosition[first*VertexUnitSize] );
+		CHECK_GL_ERRORS("Vertex buffer data");
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferTemplateID );
 		glBufferSubData(
@@ -97,6 +100,7 @@ namespace Bite
 			first * sizeof(GLuint), 
 			sizeof(GLuint) * size, 
 			&spriteTemplateID[first] );
+		CHECK_GL_ERRORS("Template ID data");
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
 		glBufferSubData( 
@@ -104,6 +108,7 @@ namespace Bite
 			first * sizeof(GLuint), 
 			sizeof(GLuint) * size, 
 			&spriteFlag[first] );
+		CHECK_GL_ERRORS("Flag data");
 
 		glBindBuffer( GL_ARRAY_BUFFER, glufferRotScale );
 		glBufferSubData( 
@@ -111,8 +116,7 @@ namespace Bite
 			first * sizeof(GLfloat) * 2, 
 			sizeof(GLfloat)*2*size, 
 			&spriteRotScale[first*2] );
-
-		CHECK_GL_ERRORS( "SpriteSheet::Synch data upload" );
+		CHECK_GL_ERRORS( "RotScale data" );
 
 		// Update uniform array texture buffer thingies:
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <GL/glew.h>
 
 
@@ -78,7 +79,10 @@ void AnalyseBufferStatus( GLuint status )
 
 
 #ifdef BITE_GL_ERRORS
-#define CHECK_GL_ERRORS(x) CheckGLErrors(x);
+#define CHECK_GL_ERRORS(x) \
+	{ std::stringstream ss; ss << "Error at " << __FILE__ \
+	<< " " << __LINE__ << std::endl << #x; \
+	CheckGLErrors( ss.str() ) ;}
 #else
 #define CHECK_GL_ERRORS(x) 0;
 #endif
