@@ -12,6 +12,8 @@ namespace Bite
 	void Init();
 	void Quit();
 
+	bool HasInit();
+
 	}
 
 

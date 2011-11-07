@@ -10,7 +10,9 @@ float marioRot = 0;
 
 void LoadBite()
 	{
-	Bite::Init();
+	Bite::WindowSize( width, height );
+	Bite::SetResolution( width/3, height/3, 2 );
+	Bite::Init();	
 	Bite::Load::ImageFromFile( "smb3sheet.tga", "mario" );
 	}
 
@@ -26,9 +28,6 @@ void Run()
 
 		screen = SDL_SetVideoMode( width, height, 32, sdlFlags );
 		SDL_WM_SetCaption( "BiteSprite!", NULL );
-		//Bite::SetResolution( 1280, 960, 1 );
-		Bite::WindowSize( width, height );
-		Bite::SetResolution( width/3, height/3, 2 );
 		LoadBite();
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
@@ -101,7 +100,7 @@ void Run()
 			glGetQueryObjectiv( glquery[1], GL_QUERY_RESULT, &result[1] );
 			//std::cout << "Primitives passed: " << result[0] << std::endl;
 			//std::cout << "Samples passed: " << result[1] << std::endl;
-			Bite::FlipFramebuffer();
+			Bite::Framebuffer::Flip();
 			SDL_GL_SwapBuffers();
 			}
 

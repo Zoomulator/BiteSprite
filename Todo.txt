@@ -18,7 +18,8 @@ x - Synchronization with the GL buffers so that not all data has to be uploaded 
 
 x - Color key uniform for the spritesheet batch.
 
-Animation class holding intervals and sprites
+Animation class holding intervals and template ids.
+Templates should have an origin point that is the offset from top left corner.
 
 Synch fragmentation may cause worse performance than full buffer update, due to multiple function calls. Worth testing to see if it's possible to detect synch fragmentation and set a threshold to go full update instead.
 

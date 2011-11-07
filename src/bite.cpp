@@ -3,6 +3,9 @@
 
 namespace Bite
 	{
+	bool hasInit = false;
+
+
 	void Init()
 		{
 		GLenum err = glewInit();
@@ -14,8 +17,9 @@ namespace Bite
 		fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 
 		InitImageLoader();
-		InitFramebuffer();
+		Framebuffer::Init();
 		Shader::Init();
+		hasInit = true;
 		}
 
 
@@ -23,5 +27,12 @@ namespace Bite
 		{
 		QuitImageLoader();
 		Shader::Quit();
+		hasInit = false;
+		}
+
+
+	bool HasInit()
+		{
+		return hasInit;
 		}
 	}

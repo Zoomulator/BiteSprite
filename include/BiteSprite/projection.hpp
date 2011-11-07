@@ -4,6 +4,7 @@
 
 #include <GL/glew.h>
 
+#include "BiteSprite\framebuffer.hpp"
 
 namespace Bite
 	{

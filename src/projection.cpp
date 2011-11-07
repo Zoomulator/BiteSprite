@@ -31,10 +31,11 @@ namespace Projection
 		height = h;
 		pixSize = ps;
 
-
 		Projection::_matrix[0] = 2.0f / w;
 		Projection::_matrix[5] = 2.0f / h;
 		Projection::_matrix[10] = 2.0f / 1000.0f; // z depth of 1000
+
+		Framebuffer::Reload();
 		}
 
 

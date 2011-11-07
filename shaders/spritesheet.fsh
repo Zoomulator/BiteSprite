@@ -16,7 +16,7 @@ void main(void)
 	vec2 sheetSize = textureSize( spriteSheet, 0 );
 	vec4 frame = texelFetch( spriteFrame, int(fID) );
 	vec2 spriteCoord = (frame.xy + texCoord * frame.zw) / sheetSize;
-//	fragColor = texture( spriteSheet, spriteCoord );
+
 	fragColor = texelFetch( spriteSheet, ivec2( spriteCoord * sheetSize ), 0 );
 	if( bool(fFlags & 2u) &&
 		all( lessThan(colorKey.rgb-colorKey.a, fragColor.rgb) &&

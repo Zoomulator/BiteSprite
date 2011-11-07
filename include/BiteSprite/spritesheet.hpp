@@ -36,6 +36,11 @@ namespace Bite
 		SpriteSheet( const std::string imageName, Uint32 bufferSize=1024 );
 		~SpriteSheet();
 
+		//! Draws all sprites currently in GL buffers.
+		/*! Synch will have to be called separately.
+		 *	Draws to BiteSprite's own framebuffer. Use
+		 *	Bite::Framebuffer::Flip() to display in window.
+		 */
 		void
 		Render() const;
 
