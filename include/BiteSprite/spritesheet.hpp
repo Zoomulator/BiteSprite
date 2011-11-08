@@ -23,6 +23,7 @@
 #include "BiteSprite\view.hpp"
 #include "BiteSprite\idgenerator.hpp"
 #include "BiteSprite\checkglerror.hpp"
+#include "BiteSprite\palettebuffer.hpp"
 
 namespace Bite
 	{
@@ -127,7 +128,7 @@ namespace Bite
 		
 		// GL textures
 		GLuint texFrameTBO; // Texture for glufferFrameTBO to bind to
-		
+		GLuint texPaletteTBO; // Texture for paletteBuffer.
 		//GL uniforms
 		GLfloat colorKey[4];
 		// SpriteTemplate IDs are the same as the index in this vector.
@@ -144,6 +145,8 @@ namespace Bite
 		BufferFloat spritePosition;
 		BufferUint	spriteTemplateID;
 		BufferFloat spriteRotScale;
+
+		PaletteBuffer paletteBuffer;
 
 		OverflowOptions overflowOption;
 		};

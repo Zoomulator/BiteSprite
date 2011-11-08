@@ -13,14 +13,15 @@ int circX = 150;
 int circY = 0;
 int circR = 100;
 float circRot = 0;
-const float PI = 3.141592;
+const float PI = 3.141592f;
 
 void LoadBite()
 	{
 	Bite::WindowSize( width, height );
 	Bite::SetResolution( width/3, height/3, 2 );
 	Bite::Init();	
-	Bite::Load::ImageFromFile( "smb3sheet.tga", "mario" );
+	Bite::Load::ImageFromFile( "smb3sheet8bitPal.tga", "mario" );
+	Bite::Load::ImageFromFile( "smb3sheet.tga", "marioTrue" );
 	}
 
 
@@ -39,8 +40,10 @@ void Run()
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
 		Bite::SpriteSheet sheet( "mario" );
+		Bite::SpriteSheet sheet2( "marioTrue" );
 		Bite::Rect r2 = { 11,5,13,15 };
 		sheet.CreateTemplate( "smallmario", r2 );
+		sheet2.CreateTemplate( "smallmario", r2 );
 		Bite::Rect r = { 0,0,466,282 };
 		sheet.CreateTemplate( "all", r );
 		Bite::Rect r3 = {11,26, 14,27};
@@ -55,7 +58,7 @@ void Run()
 		sprite3.Position( 0,-70, Bite::TopLeft );
 		sprite3.Rotation( -50.0f );
 
-		Bite::Sprite sprite2 = sheet.CreateSprite( "smallmario" );
+		Bite::Sprite sprite2 = sheet2.CreateSprite( "smallmario" );
 		sprite2.Position( 0, 0, Bite::TopLeft );
 		sprite2.Scale( 2.0f );
 
@@ -98,12 +101,15 @@ void Run()
 			circRot += fmod( PI * 2 / 1000.0f, PI*2);
 			
 			marioRot = fmod(marioRot+1.31f, 360);
-			sprite2.Rotation( marioRot );
+			//sprite2.Rotation( marioRot );
 
 			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 			sheet.Synch();
 			sheet.Render();
+
+			sheet2.Synch();
+			sheet2.Render();
 
 			Bite::Framebuffer::Flip();
 			SDL_GL_SwapBuffers();

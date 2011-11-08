@@ -158,19 +158,28 @@ namespace Load
 
 		// Now it's ready to upload the image to OpenGL as a texture.
 		Bite::Image image;
+		if( data.palette != 0 ) 
+			{
+			image.usesPalette = true;
+			image.palette = *data.palette;
+			}
+		image.name = name;
+		image.width = data.width;
+		image.height = data.height;
+
 		glGenTextures( 1, &image.textureID );
 		glBindTexture( GL_TEXTURE_2D, image.textureID );
 
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, data.width, data.height, 0,
-			GL_RGBA, GL_UNSIGNED_BYTE, data.pixels );
-
-		image.name = name;
-		image.width = data.width;
-		image.height = data.height;
-
+		if( image.usesPalette )
+			glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, data.width, data.height, 0,
+				GL_RGBA, GL_UNSIGNED_BYTE, data.pixels );
+		else
+			glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, data.width, data.height, 0,
+				GL_RGBA, GL_UNSIGNED_BYTE, data.pixels );
+		
 		imageStorage->Add( image );
 
 		return image;

@@ -2,6 +2,7 @@
 
 uniform sampler2D spriteSheet;
 uniform usamplerBuffer spriteFrame;
+uniform usamplerBuffer palette;
 uniform mat4 projection;
 uniform mat4 view;
 

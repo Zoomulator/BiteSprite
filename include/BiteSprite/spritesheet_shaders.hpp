@@ -22,6 +22,8 @@ namespace Shader
 	extern const GLint& unilocSpriteSheet;
 	extern const GLint& unilocSpriteFrame;
 	extern const GLint& unilocColorKey;
+	extern const GLint& unilocPalette;
+	extern const GLint& unilocUsePalette;
 	extern const GLuint attriblocVertex;
 	extern const GLuint attriblocTemplateID;
 	extern const GLuint attriblocFlags;

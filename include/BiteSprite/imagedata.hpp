@@ -10,6 +10,7 @@
 #include "BiteSprite/types.hpp"
 #include "BiteSprite/colormask.hpp"
 #include "BiteSprite/bassert.hpp"
+#include "BiteSprite/palette.hpp"
 
 namespace Bite
 	{
@@ -28,8 +29,10 @@ namespace Bite
 		// Returns a pointer to it's heap location.
 		Uint32* DropPixels() throw();
 		void SetPixels( Uint32* p, Uint32 w, Uint32 h );
+		void SetPalette( Palette* pal );
 
 		Uint32* pixels; // Yay, pixels!
+		Palette* palette;
 
 		// Metadata:
 		Uint32 width; // in pixels

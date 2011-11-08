@@ -14,6 +14,8 @@ namespace Shader
 	GLint _unilocSpriteSheet = 0;
 	GLint _unilocSpriteFrame = 0;
 	GLint _unilocColorKey = 0;
+	GLint _unilocPalette = 0;
+	GLint _unilocUsePalette = 0;
 
 	const GLuint attriblocVertex = 0;
 	const GLuint attriblocTemplateID = 1;
@@ -26,57 +28,9 @@ namespace Shader
 	const GLint& unilocSpriteSheet = _unilocSpriteSheet;
 	const GLint& unilocSpriteFrame = _unilocSpriteFrame;
 	const GLint& unilocColorKey = _unilocColorKey;
+	const GLint& unilocPalette = _unilocPalette;
+	const GLint& unilocUsePalette = _unilocUsePalette;
 
-//
-//namespace Source
-//	{
-//
-//	const char * vertexPassthrough =
-//		"#version 330\n"
-//		"\n"
-//		"in vec4 vertex;"
-//		"\n"
-//		"void main(void)\n"
-//		"	{\n"
-//		"	gl_Position = vertex;\n"
-//		"	}"
-//		; // vertexPassthrough
-//
-//	const char * geometryPassthrough =
-//		"#version 330\n"
-//		"\n"
-//		"layout (points) in;\n"
-//		"layout (triangle_strip) out;\n"
-//		"layout (max_vertices = 4) out;"
-//		"\n"
-//		"void main(void)\n"
-//		"	{\n"
-//		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( -0.1, -0.1 );\n"
-//		"	EmitVertex();\n"
-//		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( 0.1, -0.1 );\n"
-//		"	EmitVertex();\n"
-//		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( 0.1, 0.1 );\n"
-//		"	EmitVertex();\n"
-//		"	gl_Position.xy = gl_in[0].gl_Position.xy + vec2( -0.1, 0.1 );\n"
-//		"	EmitVertex();\n"
-//		"	EndPrimitive();\n"
-//		"	}"
-//		; // geometryPassthrough
-//
-//
-//	const char* fragmentPassthrough =
-//		"#version 330\n"
-//		"\n"
-//		"out vec4 fragColor;\n"
-//		"\n"
-//		"void main(void)\n"
-//		"	{\n"
-//		"	fragColor = vec4(0.8, 0.1, 0.1, 1.0);\n"
-//		"	}"
-//		; // fragmentPassthrough
-//
-//	} // namespace Source
-//	
 
 	void
 	Init()
@@ -124,6 +78,8 @@ namespace Shader
 		_unilocSpriteSheet = glGetUniformLocation( glsProgSprite, "spriteSheet" );
 		_unilocSpriteFrame = glGetUniformLocation( glsProgSprite, "spriteFrame" );
 		_unilocColorKey = glGetUniformLocation( glsProgSprite, "colorKey" );
+		_unilocPalette = glGetUniformLocation( glsProgSprite, "palette" );
+		_unilocUsePalette = glGetUniformLocation( glsProgSprite, "usePalette" );
 		}
 
 

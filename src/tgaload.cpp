@@ -15,6 +15,14 @@ namespace Bite
 
 		stream.seekg( 0 ); // Set cursor to beginning.
 
+		ColorMask TGAmask;
+		TGAmask.r = 0x00FF0000;
+		TGAmask.g = 0x0000FF00;
+		TGAmask.b = 0x000000FF;
+		TGAmask.a = 0xFF000000;
+
+		
+
 		// Read header
 		READ( stream, header.idLength );
 		READ( stream, header.colorMapType );
@@ -36,11 +44,27 @@ namespace Bite
 		stream.read( imageID, header.idLength );
 
 		// Color Map data
+		Uint8 mapPixDepth = header.colorMapSpec.colorMapEntrySize / 8;
 		Uint32 colorMapSize = header.colorMapType == 0 ? 0 :
-			header.colorMapSpec.colorMapLength * header.colorMapSpec.colorMapEntrySize / 8;
+			header.colorMapSpec.colorMapLength * mapPixDepth;
 		Uint8* colorMapData = new Uint8[ colorMapSize ];
-		// TODO: Support for color palettes/maps!
 		stream.read( colorMapData, colorMapSize );
+
+		bool usingPal = colorMapSize != 0;
+		Palette* pal = 0;
+
+		if( usingPal )
+			{
+			pal = new Palette();
+			for( int i = 0; i < header.colorMapSpec.colorMapLength; ++i )
+				{
+				Uint32 rawpix = 0xFFAAAAAA;
+				memcpy( &rawpix, &colorMapData[i*mapPixDepth], mapPixDepth );
+
+				Uint32 pix = ConvertColor( rawpix, TGAmask, internalMask );
+				(*pal)[i] = pix;
+				}
+			}
 
 		// Image data
 		Uint32 pixCount = header.imageSpec.width * header.imageSpec.height;
@@ -49,12 +73,7 @@ namespace Bite
 		Uint8* pixels = new Uint8[ pixelMapSize ];
 		stream.read( pixels, pixelMapSize );
 
-		ColorMask TGAmask;
-		TGAmask.r = 0x00FF0000;
-		TGAmask.g = 0x0000FF00;
-		TGAmask.b = 0x000000FF;
-		TGAmask.a = 0xFF000000;
-
+		// Get pixels
 		pixAllocation = new Uint32[ pixCount ];
 		for( Uint32 i = 0; i < pixCount; ++i )
 			{
@@ -62,11 +81,17 @@ namespace Bite
 			BASSERT( i*pixDepth < pixelMapSize );
 			memcpy( &rawpix, &pixels[i*pixDepth], pixDepth );
 
-			Uint32 pix = ConvertColor( rawpix, TGAmask, internalMask );
+			Uint32 pix = 0;
+			if( !usingPal )
+				pix = ConvertColor( rawpix, TGAmask, internalMask );
+			else
+				pix = rawpix;
+
 			pixAllocation[i] = pix;
 			}
 
 		data.SetPixels( pixAllocation, header.imageSpec.width, header.imageSpec.height );
+		data.SetPalette( pal );
 
 		delete[] imageID;
 		delete[] colorMapData;
@@ -91,7 +116,7 @@ namespace Bite
 			case 0:
 				throw UnsupportedImageFormat( "TGA no image type" );
 			case 1:
-				throw UnsupportedImageFormat( "TGA color mapped" );
+				break;
 			case 2:
 				break; // Supported
 			case 3:
@@ -102,6 +127,19 @@ namespace Bite
 				throw UnsupportedImageFormat( "TGA RLE encoded" );
 			default:
 				throw UnsupportedImageFormat( "TGA unkown format" );
+			}
+
+		if( header.colorMapSpec.colorMapLength > 256 )
+			throw UnsupportedImageFormat( "TGA palette bigger than 256" );
+
+		switch( header.colorMapSpec.colorMapEntrySize )
+			{
+			case 0:
+			case 24:
+			case 32:
+				break; // supported
+			default:
+				throw UnsupportedImageFormat( "TGA palette entry size has to be 24bit or 32bit" );
 			}
 		}
 

@@ -21,6 +21,7 @@ namespace Bite
 		OverflowHandling( OverflowException );
 
 		sheet = Load::Image( imageName );
+		paletteBuffer.Add( sheet.palette );
 		}
 
 
@@ -51,8 +52,15 @@ namespace Bite
 		glUniform1i( Shader::unilocSpriteFrame, 1 );
 		CHECK_GL_ERRORS( "Bind frameTBO, SpriteSheet::Render" )
 
+		glActiveTexture( GL_TEXTURE2 );
+		glBindTexture( GL_TEXTURE_BUFFER, texPaletteTBO );
+		glTexBuffer( GL_TEXTURE_BUFFER, GL_RGBA8UI, paletteBuffer );
+		glUniform1i( Shader::unilocPalette, 2 );
+		CHECK_GL_ERRORS( "Bind paletteTBO, SpriteSheet::Render" );
+
 		glUniformMatrix4fv( Shader::unilocProjection, 1, GL_FALSE, Projection::matrix );
 		glUniformMatrix4fv( Shader::unilocView, 1, GL_TRUE, View::matrix );
+		glUniform1ui( Shader::unilocUsePalette, sheet.usesPalette );
 		CHECK_GL_ERRORS( "Set uniform matrices, SpriteSheet::Render" );
 
 		glUniform4fv( Shader::unilocColorKey, 1, colorKey );
@@ -83,9 +91,8 @@ namespace Bite
 		{
 		glBindVertexArray( VAO );
 
+		CHECK_GL_ERRORS( "Error before SpriteSheet::SynchRange" );
 		// Update vertex arrays:
-
-
 		glBindBuffer( GL_ARRAY_BUFFER, glufferVertex );
 		glBufferSubData(
 			GL_ARRAY_BUFFER, 
@@ -312,6 +319,7 @@ namespace Bite
 		glGenBuffers( 1, &glufferRotScale );
 		glGenBuffers( 1, &glufferFrameTBO );
 		glGenTextures( 1, &texFrameTBO );
+		glGenTextures( 1, &texPaletteTBO );
 		
 		glBindVertexArray( VAO );
 
@@ -382,6 +390,9 @@ namespace Bite
 
 		glDeleteTextures( 1, &texFrameTBO );
 		texFrameTBO = 0;
+
+		glDeleteTextures( 1, &texPaletteTBO );
+		texPaletteTBO = 0;
 		}
 
 

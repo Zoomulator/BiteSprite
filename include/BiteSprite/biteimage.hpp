@@ -2,8 +2,9 @@
 #define BITE_IMAGE_HPP
 
 
-
+#include <memory>
 #include "BiteSprite/types.hpp"
+#include "BiteSprite/palette.hpp"
 
 
 namespace Bite
@@ -18,6 +19,16 @@ namespace Bite
 
 		Uint32 width;
 		Uint32 height;
+
+		bool usesPalette;
+		Palette palette;
+
+		Image() :
+			textureID(0),
+			width(0),
+			height(0),
+			usesPalette(false)
+			{}
 		};
 	
 

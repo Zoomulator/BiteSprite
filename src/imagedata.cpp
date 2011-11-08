@@ -9,8 +9,9 @@ namespace Bite
 
 	ImageData::ImageData() :
 		pixels( 0 ),
-			width( 0 ),
-			height( 0 )
+		width( 0 ),
+		height( 0 ),
+		palette( 0 )
 		{}
 
 
@@ -43,6 +44,14 @@ namespace Bite
 		pixels = p;
 		width = w;
 		height = h;
+		}
+
+
+	void
+	ImageData::SetPalette( Palette* pal )
+		{
+		delete palette;
+		palette = pal;
 		}
 
 

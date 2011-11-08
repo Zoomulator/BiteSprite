@@ -69,6 +69,12 @@
     <ClCompile Include="..\src\bmpload.cpp">
       <Filter>Source Files\Image loading</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\palette.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\palettebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\BiteSprite\bassert.hpp">
@@ -142,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\imageloader.hpp">
       <Filter>Header Files\Image loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BiteSprite\palette.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BiteSprite\palettebuffer.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

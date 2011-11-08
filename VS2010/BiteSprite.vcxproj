@@ -87,6 +87,8 @@
     <ClCompile Include="..\src\idgenerator.cpp" />
     <ClCompile Include="..\src\imagedata.cpp" />
     <ClCompile Include="..\src\imageloader.cpp" />
+    <ClCompile Include="..\src\palette.cpp" />
+    <ClCompile Include="..\src\palettebuffer.cpp" />
     <ClCompile Include="..\src\programhandle.cpp" />
     <ClCompile Include="..\src\projection.cpp" />
     <ClCompile Include="..\src\shaderhandle.cpp" />
@@ -111,6 +113,8 @@
     <ClInclude Include="..\include\BiteSprite\imagedata.hpp" />
     <ClInclude Include="..\include\BiteSprite\imageloadbase.hpp" />
     <ClInclude Include="..\include\BiteSprite\imageloader.hpp" />
+    <ClInclude Include="..\include\BiteSprite\palette.hpp" />
+    <ClInclude Include="..\include\BiteSprite\palettebuffer.hpp" />
     <ClInclude Include="..\include\BiteSprite\programhandle.hpp" />
     <ClInclude Include="..\include\BiteSprite\projection.hpp" />
     <ClInclude Include="..\include\BiteSprite\shaderhandle.hpp" />
