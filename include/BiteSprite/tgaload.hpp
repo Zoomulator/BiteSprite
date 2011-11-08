@@ -35,7 +35,8 @@ namespace Bite
 				} imageSpec;
 
 			};
-
+		
+		void CheckSupport( Header ) const;
 
 		public:
 		// Loads a TGA file into the ImageData struct.

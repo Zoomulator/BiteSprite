@@ -29,6 +29,8 @@ namespace Bite
 		READ( stream, header.imageSpec.pixelDepth );
 		READ( stream, header.imageSpec.imageDescriptor );
 
+		CheckSupport( header );
+
 		// Image ID
 		Uint8* imageID = new Uint8[ header.idLength ];
 		stream.read( imageID, header.idLength );
@@ -69,6 +71,38 @@ namespace Bite
 		delete[] imageID;
 		delete[] colorMapData;
 		delete[] pixels;
+		}
+
+
+	void
+	TGA::CheckSupport( Header header ) const
+		{
+		switch( header.colorMapType )
+			{
+			case 0:
+			case 1:
+				break; // Standard color-map data is supported.
+			default:
+				throw UnsupportedImageFormat( "TGA unknown palette/colormap type." );
+			}
+
+		switch( header.imageType )
+			{
+			case 0:
+				throw UnsupportedImageFormat( "TGA no image type" );
+			case 1:
+				throw UnsupportedImageFormat( "TGA color mapped" );
+			case 2:
+				break; // Supported
+			case 3:
+				throw UnsupportedImageFormat( "TGA black-and-white" );
+			case 9:
+			case 10:
+			case 11:
+				throw UnsupportedImageFormat( "TGA RLE encoded" );
+			default:
+				throw UnsupportedImageFormat( "TGA unkown format" );
+			}
 		}
 
 

@@ -13,18 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Image loading">
+      <UniqueIdentifier>{43e06635-082f-4f11-8263-47acb4672cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Image loading">
+      <UniqueIdentifier>{d0a32c6e-ee31-474d-800f-50f55feffe78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\imageloader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\bite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\imagedata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\bmpload.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\batch.cpp">
@@ -48,9 +48,6 @@
     <ClCompile Include="..\src\spritesheet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\tgaload.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -62,6 +59,15 @@
     </ClCompile>
     <ClCompile Include="..\src\programhandle.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tgaload.cpp">
+      <Filter>Source Files\Image loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\imageloader.cpp">
+      <Filter>Source Files\Image loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bmpload.cpp">
+      <Filter>Source Files\Image loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +86,6 @@
     <ClInclude Include="..\include\BiteSprite\biteimage.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\BiteSprite\bmpload.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\BiteSprite\colormask.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,12 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\imagedata.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\BiteSprite\imageloadbase.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\BiteSprite\imageloader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\projection.hpp">
@@ -122,9 +119,6 @@
     <ClInclude Include="..\include\BiteSprite\checkglerror.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\BiteSprite\tgaload.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\BiteSprite\framebuffer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -136,6 +130,18 @@
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\programhandle.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BiteSprite\bmpload.hpp">
+      <Filter>Header Files\Image loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BiteSprite\tgaload.hpp">
+      <Filter>Header Files\Image loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BiteSprite\imageloadbase.hpp">
+      <Filter>Header Files\Image loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BiteSprite\imageloader.hpp">
+      <Filter>Header Files\Image loading</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

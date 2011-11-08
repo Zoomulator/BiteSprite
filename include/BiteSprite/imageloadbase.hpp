@@ -9,6 +9,7 @@
 
 #include <istream>
 #include "BiteSprite/imagedata.hpp"
+#include "BiteSprite/bexception.hpp"
 
 namespace Bite
 	{
@@ -36,6 +37,16 @@ namespace Bite
 			}
 		};
 
+
+	class UnsupportedImageFormat : Bite::Exception
+		{
+		public:
+			UnsupportedImageFormat( const std::string& format )
+				{
+				errstr = "BiteSprite cannot load images of format: ";
+				errstr += format;
+				}
+		};
 	} //namespace Bite
 
 #endif // BITE_IMAGELOADBASE_HPP

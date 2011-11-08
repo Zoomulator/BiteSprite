@@ -1,29 +1,30 @@
 Make BiteSprite logo. Bitten off sprite? Omnom
 
-BMP bitmask information currently broken and simply not used. 32bit ARGB mask is assumed
+Palette formats that are kept in buffer for on the fly switching in the shader. OpenGL3.3 doesn't seem to support this anymore, so it will be implemented by the shader. One standard palette that comes with the file. More palettes can be loaded to a sprite sheet, given IDs, which sprites refer to in the shader.
 
-Use an FBO to simulate lower resolutions. Could call it pixel size or what ever.
-Also an option of turning it off so that it writes directly to context buffer.
+Animation class holding intervals and template ids.
+Templates should have an origin point that is the offset from top left corner.
+
+Offset anchor for Templates, so that frames can be aligned.
+
+BMP bitmask information currently broken and simply not used. 32bit ARGB mask is assumed
 
 FBO can also be used for mouse click lookup. Let the user give sprites IDs that are drawn out in one of the FBO layers, which can then be queried.
 
 Have an alpha buffer that can be read from the shader to blend transparency independently of z-depth order.
 May also work with just using the BlendFuncSeparate, dunno
 
-x- Delete specific sprites and templates
-
 Switch between integer and float modes. Pixel vs Subsampling!
+
+Synch fragmentation may cause worse performance than full buffer update, due to multiple function calls. Worth testing to see if it's possible to detect synch fragmentation and set a threshold to go full update instead.
+
+x - Sprite rotation!
+
+x - Use an FBO to simulate lower resolutions. Could call it pixel size or what ever.
+Also an option of turning it off so that it writes directly to context buffer.
 
 x - Synchronization with the GL buffers so that not all data has to be uploaded each time.
 
 x - Color key uniform for the spritesheet batch.
 
-Animation class holding intervals and template ids.
-Templates should have an origin point that is the offset from top left corner.
-
-Synch fragmentation may cause worse performance than full buffer update, due to multiple function calls. Worth testing to see if it's possible to detect synch fragmentation and set a threshold to go full update instead.
-
-Palette formats that are kept in buffer for on the fly switching in the shader. OpenGL3.3 doesn't seem to support this anymore, so it will be implemented by the shader.
-
-x - Sprite rotation!
-
+x- Delete specific sprites and templates
