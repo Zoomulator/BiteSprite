@@ -8,7 +8,7 @@
 //different load types inherits from the ImageLoadBase class
 
 #include <istream>
-#include "BiteSprite/imagedata.hpp"
+#include "BiteSprite/biteimage.hpp"
 #include "BiteSprite/bexception.hpp"
 
 namespace Bite
@@ -22,19 +22,9 @@ namespace Bite
 
 		public:
 		
-		// Load into existing ImageData object.
+		// Load into existing Image object.
 		virtual void
-		operator() (std::istream& stream, ImageData& target) const = 0;
-
-		// Creates a new heap ImageData object and load the file into it.
-		// Merely a convinience.
-		ImageData* 
-		operator() (std::istream& stream) const
-			{
-			ImageData* data = new ImageData();
-			(*this)( stream, *data );
-			return data;
-			}
+		operator() (std::istream& stream, Image& target) const = 0;
 		};
 
 

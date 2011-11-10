@@ -8,7 +8,7 @@ namespace Bite
 	#define READ(s, x) s.read( (char*)&x, sizeof(x) )
 
 	void
-	TGA::operator() ( std::istream& stream, ImageData& data ) const
+	TGA::operator() ( std::istream& stream, Image& data ) const
 		{
 		Header header;
 		Uint32* pixAllocation = 0;
@@ -90,8 +90,11 @@ namespace Bite
 			pixAllocation[i] = pix;
 			}
 
-		data.SetPixels( pixAllocation, header.imageSpec.width, header.imageSpec.height );
-		data.SetPalette( pal );
+		data.AdoptPixels( 
+			pixAllocation, 
+			header.imageSpec.width, 
+			header.imageSpec.height, 
+			pal );
 
 		delete[] imageID;
 		delete[] colorMapData;

@@ -28,6 +28,7 @@ namespace Shader
 	extern const GLuint attriblocTemplateID;
 	extern const GLuint attriblocFlags;
 	extern const GLuint attriblocRotScale;
+	extern const GLuint attriblocPaletteID;
 
 	void Init();
 	void Quit();

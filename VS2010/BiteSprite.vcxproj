@@ -40,6 +40,7 @@
     <TargetName>$(ProjectName)_d</TargetName>
     <OutDir>$(SolutionDir)..\lib\</OutDir>
     <LibraryPath>D:\dev\lib\glew-1.7.0\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>D:\dev\BiteSprite\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\lib</OutDir>
@@ -82,10 +83,9 @@
   <ItemGroup>
     <ClCompile Include="..\src\batch.cpp" />
     <ClCompile Include="..\src\bite.cpp" />
-    <ClCompile Include="..\src\bmpload.cpp" />
+    <ClCompile Include="..\src\biteimage.cpp" />
     <ClCompile Include="..\src\framebuffer.cpp" />
     <ClCompile Include="..\src\idgenerator.cpp" />
-    <ClCompile Include="..\src\imagedata.cpp" />
     <ClCompile Include="..\src\imageloader.cpp" />
     <ClCompile Include="..\src\palette.cpp" />
     <ClCompile Include="..\src\palettebuffer.cpp" />
@@ -105,12 +105,10 @@
     <ClInclude Include="..\include\BiteSprite\bexception.hpp" />
     <ClInclude Include="..\include\BiteSprite\bite.hpp" />
     <ClInclude Include="..\include\BiteSprite\biteimage.hpp" />
-    <ClInclude Include="..\include\BiteSprite\bmpload.hpp" />
     <ClInclude Include="..\include\BiteSprite\checkglerror.hpp" />
     <ClInclude Include="..\include\BiteSprite\colormask.hpp" />
     <ClInclude Include="..\include\BiteSprite\framebuffer.hpp" />
     <ClInclude Include="..\include\BiteSprite\idgenerator.hpp" />
-    <ClInclude Include="..\include\BiteSprite\imagedata.hpp" />
     <ClInclude Include="..\include\BiteSprite\imageloadbase.hpp" />
     <ClInclude Include="..\include\BiteSprite\imageloader.hpp" />
     <ClInclude Include="..\include\BiteSprite\palette.hpp" />

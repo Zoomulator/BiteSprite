@@ -5,9 +5,9 @@
 
 #include "BiteSprite/types.hpp"
 
-
 namespace Bite
 	{
+	class Image;
 
 
 	class Palette
@@ -16,6 +16,10 @@ namespace Bite
 		Palette();
 
 		Uint32& operator[] ( size_t index );
+
+		//! Makes a palette from the 256 first pixels in a true color image.
+		static Palette
+		FromTrueColor( const Image* );
 
 		private:
 		typedef std::vector<Uint32> Colormap;

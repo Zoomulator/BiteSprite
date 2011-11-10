@@ -9,8 +9,10 @@ in uint gID[];
 in uint gFlags[];
 in float rot[];
 in float scale[];
+in uint gPaletteID[];
 flat out uint fID;
 flat out uint fFlags;
+flat out uint fPaletteID;
 smooth out vec2 texCoord;
 
 uniform usamplerBuffer spriteFrame;
@@ -21,6 +23,7 @@ void main(void)
 	{
 	fID = gID[0];
 	fFlags = gFlags[0];
+	fPaletteID = gPaletteID[0];
 	if( bool(gFlags[0] & 1u) ) // is visibility bit set?
 		{
 		vec4 frame = texelFetch( spriteFrame, int(gID[0]) );

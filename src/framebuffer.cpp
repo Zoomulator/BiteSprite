@@ -71,8 +71,8 @@ namespace Bite
 			glDrawBuffers( 1, drawbuffs );
 			SetForRead();
 
-			int dstWidth =  ResWidth() * PixSize();
-			int dstHeight = ResHeight() * PixSize();
+			int dstWidth = int( ResWidth() * PixSize() );
+			int dstHeight = int( ResHeight() * PixSize() );
 			int dstLeft = WindowWidth()/2 - dstWidth/2;
 			int dstBottom = WindowHeight()/2 - dstHeight/2;
 			int dstRight = dstLeft + dstWidth;

@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include "BiteSprite/imagedata.hpp"
 #include "BiteSprite/bmpload.hpp"
 
 

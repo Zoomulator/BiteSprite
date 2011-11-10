@@ -24,9 +24,6 @@
     <ClCompile Include="..\src\bite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\imagedata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\batch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,13 +63,13 @@
     <ClCompile Include="..\src\imageloader.cpp">
       <Filter>Source Files\Image loading</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\bmpload.cpp">
-      <Filter>Source Files\Image loading</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\palette.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\palettebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\biteimage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -96,9 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\idgenerator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\BiteSprite\imagedata.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\projection.hpp">
@@ -136,9 +130,6 @@
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\programhandle.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\BiteSprite\bmpload.hpp">
-      <Filter>Header Files\Image loading</Filter>
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\tgaload.hpp">
       <Filter>Header Files\Image loading</Filter>

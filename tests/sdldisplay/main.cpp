@@ -7,7 +7,10 @@ SDL_Surface* screen;
 int width = 800;
 int height = 600;
 float marioRot = 0;
-int marioPos = 0;
+int marioPosX = 0;
+int marioPosY = 0;
+int palette = 0;
+int pcount = 0;
 
 int circX = 150;
 int circY = 0;
@@ -18,8 +21,9 @@ const float PI = 3.141592f;
 void LoadBite()
 	{
 	Bite::WindowSize( width, height );
-	Bite::SetResolution( width/3, height/3, 2 );
+	Bite::SetResolution( width, height, 2 );
 	Bite::Init();	
+	Bite::Load::ImageFromFile( "paltest.tga", "palTest" );
 	Bite::Load::ImageFromFile( "smb3sheet8bitPal.tga", "mario" );
 	Bite::Load::ImageFromFile( "smb3sheet.tga", "marioTrue" );
 	}
@@ -40,6 +44,9 @@ void Run()
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
 		Bite::SpriteSheet sheet( "mario" );
+		Bite::Palette pal = 
+			Bite::Palette::FromTrueColor( Bite::Load::Image( "palTest" ) );
+		sheet.AddPalette( pal );
 		Bite::SpriteSheet sheet2( "marioTrue" );
 		Bite::Rect r2 = { 11,5,13,15 };
 		sheet.CreateTemplate( "smallmario", r2 );
@@ -60,12 +67,13 @@ void Run()
 
 		Bite::Sprite sprite2 = sheet2.CreateSprite( "smallmario" );
 		sprite2.Position( 0, 0, Bite::TopLeft );
-		sprite2.Scale( 2.0f );
+		//sprite2.Scale( 2.0f );
 
 		Bite::Rect r4 = { 342, 223, 16, 28 };
 		sheet.CreateTemplate( "stonemario", r4 );
 
-		const int spriteCount = 20;
+		const int spriteCount = 1000;
+		sheet.OverflowHandling( Bite::SpriteSheet::OverflowReallocate );
 		std::vector<Bite::Sprite> lottaSprites;
 
 		for( int i = 0; i < spriteCount; ++i )
@@ -73,7 +81,7 @@ void Run()
 			lottaSprites.push_back( sheet.CreateSprite( "stonemario" ) );
 			//lottaSprites[i].Position( (-300 + (i*10)%600), 200 - (i/60)*10 );
 			}
-
+		
 		lottaSprites[7].Drop();
 
 		glPointSize( 10.0f );
@@ -88,16 +96,33 @@ void Run()
 			SDL_Event event;
 			while( SDL_PollEvent( &event ) )
 				{
-				if( event.type == SDL_QUIT )
+				if( event.type == SDL_QUIT ||
+					(event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE) )
 					running = false;
 				}
-
+							
 			for( int i = 0; i < spriteCount; ++i )
 				{
 				lottaSprites[i].Position(
 					circX + cos( circRot + i * PI * 2 / (float)spriteCount ) * circR,
 					circY + sin( circRot + i * PI * 2 / (float)spriteCount ) * circR );
 				}
+			
+			Uint8* keystate = SDL_GetKeyState(NULL);
+			if( keystate[SDLK_LEFT] ) marioPosX -= 1;
+			if( keystate[SDLK_RIGHT] ) marioPosX += 1;
+			if( keystate[SDLK_UP] ) marioPosY += 1;
+			if( keystate[SDLK_DOWN] ) marioPosY -= 1;
+			sprite2.Position( float(marioPosX), float(marioPosY) );
+
+			++pcount;
+			if( pcount > 10 )
+				{
+				palette = !palette;
+				pcount = 0;
+				sprite.PaletteID( palette );
+				}
+
 			circRot += fmod( PI * 2 / 1000.0f, PI*2);
 			
 			marioRot = fmod(marioRot+1.31f, 360);

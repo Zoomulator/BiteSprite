@@ -35,6 +35,7 @@ namespace Bite
 		//! Rotates the sprite around it's center in degrees.
 		void Rotation( float deg );
 		void Scale( float s );
+		void PaletteID( ID pal );
 		//! Notifies the SpriteSheet that this Sprite is now garbage.
 		void Drop();
 

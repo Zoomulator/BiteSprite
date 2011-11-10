@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BiteSprite", "BiteSprite.vcxproj", "{D9780B9B-F519-4070-B1F6-4FE30ABD483F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BMPLoaderTest", "BMPLoaderTest\BMPLoaderTest.vcxproj", "{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL_DisplayTest", "SDL_DisplayTest\SDL_DisplayTest.vcxproj", "{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}"
 EndProject
 Global
@@ -17,10 +15,6 @@ Global
 		{D9780B9B-F519-4070-B1F6-4FE30ABD483F}.Debug|Win32.Build.0 = Debug|Win32
 		{D9780B9B-F519-4070-B1F6-4FE30ABD483F}.Release|Win32.ActiveCfg = Release|Win32
 		{D9780B9B-F519-4070-B1F6-4FE30ABD483F}.Release|Win32.Build.0 = Release|Win32
-		{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}.Debug|Win32.Build.0 = Debug|Win32
-		{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}.Release|Win32.ActiveCfg = Release|Win32
-		{0FA800A1-A1EB-4F93-8BB0-82F33A6F8793}.Release|Win32.Build.0 = Release|Win32
 		{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}.Debug|Win32.Build.0 = Debug|Win32
 		{29F0A7E6-BFC9-49E2-806C-206C7F094B7C}.Release|Win32.ActiveCfg = Release|Win32

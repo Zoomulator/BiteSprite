@@ -39,9 +39,9 @@ namespace Bite
 		void CheckSupport( Header ) const;
 
 		public:
-		// Loads a TGA file into the ImageData struct.
+		// Loads a TGA file into the Image instance.
 		virtual void
-		operator() ( std::istream& stream, ImageData& target ) const;
+		operator() ( std::istream& stream, Image& target ) const;
 
 		};
 

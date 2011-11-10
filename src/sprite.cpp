@@ -17,6 +17,7 @@ namespace Bite
 		UseColorKey( true );
 		Scale( 1.0f );
 		Rotation( 0.0f );
+		PaletteID( 0 );
 		}
 
 
@@ -108,6 +109,18 @@ namespace Bite
 		SpriteSheet::BufferFloat& rotscaleBuf = sheet->spriteRotScale;
 
 		rotscaleBuf.at( id * 2 + 1 ) = s;
+
+		sheet->UpdateSprite( id );
+		}
+
+
+	void
+	Sprite::PaletteID( ID pal )
+		{
+		if( !alive ) return;
+		SpriteSheet::BufferUint& paletteIDBuf = sheet->spritePalette;
+
+		paletteIDBuf.at( id ) = pal;
 
 		sheet->UpdateSprite( id );
 		}

@@ -83,6 +83,9 @@ namespace Bite
 		void
 		ColorKey( Uint8 r, Uint8 g, Uint8 b, Uint8 range=25 );
 
+		void
+		AddPalette( const Palette& pal );
+
 		enum OverflowOptions {
 			OverflowReallocate, OverflowException };
 
@@ -113,7 +116,7 @@ namespace Bite
 		void
 		IncrementBuffers();
 
-		Image sheet;
+		const Image* sheet;
 
 		// GL data
 		GLuint VAO; // Vertex array object.
@@ -124,8 +127,8 @@ namespace Bite
 		GLuint glufferTemplateID;
 		GLuint glufferFlag;
 		GLuint glufferRotScale; // rotation and scale floats
+		GLuint glufferPaletteID; // Which palette to use.
 		GLuint glufferFrameTBO; // Stores all the template's frames in ID order
-		
 		// GL textures
 		GLuint texFrameTBO; // Texture for glufferFrameTBO to bind to
 		GLuint texPaletteTBO; // Texture for paletteBuffer.
@@ -145,6 +148,7 @@ namespace Bite
 		BufferFloat spritePosition;
 		BufferUint	spriteTemplateID;
 		BufferFloat spriteRotScale;
+		BufferUint spritePalette;
 
 		PaletteBuffer paletteBuffer;
 

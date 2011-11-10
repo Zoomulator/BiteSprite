@@ -61,7 +61,6 @@ namespace Bite
 			{
 			glBindBuffer( GL_TEXTURE_BUFFER, glufferID );
 			CHECK_GL_ERRORS( __FUNCTION__ );
-
 			glBufferSubData(
 				GL_TEXTURE_BUFFER,
 				i * elementSize,

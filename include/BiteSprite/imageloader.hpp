@@ -9,7 +9,6 @@
 #include "GL/glew.h"
 #include "BiteSprite/biteimage.hpp"
 #include "BiteSprite/imageloadbase.hpp"
-#include "BiteSprite/bmpload.hpp"
 #include "BiteSprite/tgaload.hpp"
 #include "BiteSprite/bexception.hpp"
 #include "BiteSprite/bassert.hpp"
@@ -38,14 +37,14 @@ namespace Load
 	// Returns the loaded image and names it.
 	// If the name already exist, that is returned. It will
 	// duplicate paths with different names however.
-	const Bite::Image
+	const Bite::Image*
 	ImageFromFile( const std::string& path, const std::string& name );
 
-	const Bite::Image
+	const Bite::Image*
 	Image( std::istream& imgData, const std::string& name, ImageLoadBase& loadType  );
 
 	// Gets the image with this name.
-	const Bite::Image
+	const Bite::Image*
 	Image( const std::string& name );
 
 	} // namespace Load

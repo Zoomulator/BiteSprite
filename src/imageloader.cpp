@@ -13,12 +13,12 @@ namespace Bite
 		~ImageStorage();
 		void Clear();
 		
-		void Add( Bite::Image& image );
+		Bite::Image* NewImage( const std::string& name );
 		bool Has( const std::string& name ) const;
-		const Bite::Image Get( const std::string& name ) const;
+		const Bite::Image* Get( const std::string& name ) const;
 		void Remove( const std::string& name );
 
-		typedef std::map<std::string, Image> NameImageMap;
+		typedef std::map<std::string, Image*> NameImageMap;
 		NameImageMap nameToImage;
 		};
 
@@ -38,17 +38,19 @@ namespace Bite
 			it != nameToImage.end();
 			++it )
 			{
-			glDeleteTextures( 1, &it->second.textureID );
+			delete it->second;
 			}
-
 		nameToImage.clear();
 		}
 
 
-	void
-	ImageStorage::Add( Bite::Image& image )
+	Bite::Image*
+	ImageStorage::NewImage( const std::string& name )
 		{
-		nameToImage[ image.name ] = image;
+		// Note: should there be a name collision check?
+		nameToImage[ name ] = new Bite::Image( name );
+		Bite::Image* image = nameToImage[ name ];
+		return image;
 		}
 
 
@@ -59,7 +61,7 @@ namespace Bite
 		}
 
 
-	const Bite::Image
+	const Bite::Image*
 	ImageStorage::Get( const std::string& name ) const
 		{
 		NameImageMap::const_iterator it = nameToImage.find( name );
@@ -115,7 +117,7 @@ namespace Unload
 namespace Load
 	{
 	// Loads an image from file and uploads it to OpenGL.
-	const Bite::Image
+	const Bite::Image*
 	ImageFromFile( const std::string& path, const std::string& name ) 
 		{
 		BASSERT( imageStorage != 0 );
@@ -128,10 +130,6 @@ namespace Load
 			throw FileError( path );
 			}
 
-
-		if( path.find( ".bmp" ) != std::string::npos )
-			return Load::Image( file, name, BMP() );
-			
 		if( path.find( ".tga" ) != std::string::npos )
 			return Load::Image( file, name, TGA() );
 
@@ -140,7 +138,7 @@ namespace Load
 
 
 	// Interprets a data stream as the given image type and uploads it to OpenGL.
-	const Bite::Image
+	const Bite::Image*
 	Image( std::istream& imgData, const std::string& name, ImageLoadBase& loadType )
 		{
 		BASSERT( imageStorage != 0 );
@@ -153,40 +151,16 @@ namespace Load
 			throw ImageNameAlreadyInUse( name );
 			}
 
-		ImageData data;
-		loadType( imgData, data ); // Feed the data into the ImageData class.
+		Bite::Image* image = imageStorage->NewImage( name );
+		loadType( imgData, *image ); // Feed the data into the Image class.
 
-		// Now it's ready to upload the image to OpenGL as a texture.
-		Bite::Image image;
-		if( data.palette != 0 ) 
-			{
-			image.usesPalette = true;
-			image.palette = *data.palette;
-			}
-		image.name = name;
-		image.width = data.width;
-		image.height = data.height;
-
-		glGenTextures( 1, &image.textureID );
-		glBindTexture( GL_TEXTURE_2D, image.textureID );
-
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-
-		if( image.usesPalette )
-			glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, data.width, data.height, 0,
-				GL_RGBA, GL_UNSIGNED_BYTE, data.pixels );
-		else
-			glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, data.width, data.height, 0,
-				GL_RGBA, GL_UNSIGNED_BYTE, data.pixels );
-		
-		imageStorage->Add( image );
+		image->UpdateTexture();
 
 		return image;
 		}
 
 
-	const Bite::Image
+	const Bite::Image*
 	Image( const std::string& name )
 		{
 		BASSERT( imageStorage != 0 );

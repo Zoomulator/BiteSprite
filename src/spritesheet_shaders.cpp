@@ -21,6 +21,7 @@ namespace Shader
 	const GLuint attriblocTemplateID = 1;
 	const GLuint attriblocFlags = 2;
 	const GLuint attriblocRotScale = 3;
+	const GLuint attriblocPaletteID = 4;
 
 	const ProgramHandle& glsProgSprite = _glsProgSprite;
 	const GLint& unilocProjection = _unilocProjection;
@@ -68,6 +69,7 @@ namespace Shader
 		CHECK_GL_ERRORS( "Attribute binding." )
 		glBindAttribLocation( glsProgSprite, attriblocRotScale, "rotscale" );
 		CHECK_GL_ERRORS( "Attribute binding." )
+		glBindAttribLocation( glsProgSprite, attriblocPaletteID, "paletteID" );
 
 		glLinkProgram( glsProgSprite );
 		Shader::CheckLink( glsProgSprite );
