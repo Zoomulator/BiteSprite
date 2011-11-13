@@ -6,6 +6,7 @@
 #include <set>
 #include <map>
 #include <sstream>
+#include <memory>
 
 #include <GL/glew.h>
 
@@ -24,6 +25,8 @@
 #include "BiteSprite\idgenerator.hpp"
 #include "BiteSprite\checkglerror.hpp"
 #include "BiteSprite\palettebuffer.hpp"
+
+#include "BiteSprite\vertexbuffer.hpp"
 
 namespace Bite
 	{
@@ -45,21 +48,10 @@ namespace Bite
 		void
 		Render() const;
 
-		void
-		SynchRange( ID first, Uint32 size );
-
 		//! Upload any changed Sprites in the buffer to GL
 		void
 		Synch();
-
-		//! Upload full buffer to GL
-		void
-		SynchAll();
-		
-		//! Puts the Sprite in the update queue to be uploaded in the next synch call.
-		void
-		UpdateSprite( ID id );
-		
+				
 		void
 		CreateTemplate( const std::string& name, Rect frame );
 
@@ -86,18 +78,6 @@ namespace Bite
 		void
 		AddPalette( const Palette& pal );
 
-		enum OverflowOptions {
-			OverflowReallocate, OverflowException };
-
-		//! Let's you chose how overflows are handled.
-		/*! It should be preferred to set an appropriate buffer size
-		 *  when the SpriteSheet is initialized and have overflow handling
-		 *  set to throw exceptions. Reallocation is quite a heavy procedure.
-		 *	On reallocation, the buffer is doubled in size.
-		 *  The Bite::BufferOverflow exception is used when throwing.
-		 */
-		void OverflowHandling( OverflowOptions );
-
 		private:
 		typedef std::vector<SpriteTemplate> Templates;
 		typedef std::map<std::string, ID> StringID;
@@ -106,9 +86,6 @@ namespace Bite
 
 		void
 		GLBufferSetup();
-
-		void
-		GrowBuffers();
 
 		void
 		GLDestroyBuffers();
@@ -123,11 +100,6 @@ namespace Bite
 		Uint32 bufferSize; // Amount of units allocated for.
 
 		// GL buffer (gluffer) names
-		GLuint glufferVertex; // x,y,z
-		GLuint glufferTemplateID;
-		GLuint glufferFlag;
-		GLuint glufferRotScale; // rotation and scale floats
-		GLuint glufferPaletteID; // Which palette to use.
 		GLuint glufferFrameTBO; // Stores all the template's frames in ID order
 		// GL textures
 		GLuint texFrameTBO; // Texture for glufferFrameTBO to bind to
@@ -141,18 +113,20 @@ namespace Bite
 		StringID nameToTemplateID;
 
 		IDGenerator idGenSprite;
-		IDSet changeSet; // ID of sprites that needs to synch.
 		Uint32 spriteCount; // Number of sprites fed to the buffer.
 		
-		BufferUint spriteFlag;
-		BufferFloat spritePosition;
-		BufferUint	spriteTemplateID;
-		BufferFloat spriteRotScale;
-		BufferUint spritePalette;
+		std::auto_ptr<VertexBuffer<GLuint>>
+			spriteFlag;
+		std::auto_ptr<VertexBuffer<GLfloat>>
+			spritePosition;
+		std::auto_ptr<VertexBuffer<GLuint>>
+			spriteTemplateID;
+		std::auto_ptr<VertexBuffer<GLfloat>>
+			spriteRotScale;
+		std::auto_ptr<VertexBuffer<GLuint>>
+			spritePalette;
 
 		PaletteBuffer paletteBuffer;
-
-		OverflowOptions overflowOption;
 		};
 
 
@@ -182,17 +156,7 @@ namespace Bite
 
 
 
-	class BufferOverflow : public Exception
-		{
-		public:
-		BufferOverflow( int bufferSize )
-			{
-			std::stringstream sizestr;
-			sizestr << bufferSize;
-			errstr = "Buffer overflow. Size was: ";
-			errstr += sizestr.str();
-			}
-		};
+	
 	} // namespace Bite
 
 

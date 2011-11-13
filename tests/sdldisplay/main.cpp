@@ -73,7 +73,6 @@ void Run()
 		sheet.CreateTemplate( "stonemario", r4 );
 
 		const int spriteCount = 1000;
-		sheet.OverflowHandling( Bite::SpriteSheet::OverflowReallocate );
 		std::vector<Bite::Sprite> lottaSprites;
 
 		for( int i = 0; i < spriteCount; ++i )

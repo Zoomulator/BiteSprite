@@ -123,6 +123,8 @@
     <ClInclude Include="..\include\BiteSprite\spritetemplate.hpp" />
     <ClInclude Include="..\include\BiteSprite\tgaload.hpp" />
     <ClInclude Include="..\include\BiteSprite\types.hpp" />
+    <ClInclude Include="..\include\BiteSprite\vertexbuffer.hpp" />
+    <ClInclude Include="..\include\BiteSprite\vertexbuffer_impl.hpp" />
     <ClInclude Include="..\include\BiteSprite\view.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

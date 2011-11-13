@@ -12,7 +12,7 @@ namespace Bite
 	Sprite::Sprite( ID id_, ID templateID, SpriteSheet* sheet_ ) : 
 		id(id_), sheet(sheet_), alive(true)	
 		{
-		sheet->spriteTemplateID.at(id) = templateID;
+		sheet->spriteTemplateID->Element(id) = templateID;
 		Visible( true );
 		UseColorKey( true );
 		Scale( 1.0f );
@@ -26,14 +26,12 @@ namespace Bite
 		{
 		if( !alive ) return;
 
-		SpriteSheet::BufferUint& flagBuf = sheet->spriteFlag;
+		VertexBuffer<GLuint>& flagBuf = *sheet->spriteFlag;
 		
 		if( v ) 
-			flagBuf.at(id) |= Shader::fVisible;
+			flagBuf.Element(id) |= Shader::fVisible;
 		else
-			flagBuf.at(id) &= ~Shader::fVisible;
-
-		sheet->UpdateSprite( id );
+			flagBuf.Element(id) &= ~Shader::fVisible;
 		}
 
 
@@ -42,14 +40,12 @@ namespace Bite
 		{
 		if( !alive ) return;
 
-		SpriteSheet::BufferUint& flagBuf = sheet->spriteFlag;
+		VertexBuffer<GLuint>& flagBuf = *sheet->spriteFlag;
 
 		if( b )
-			flagBuf.at(id) |= Shader::fUseColorKey;
+			flagBuf.Element(id) |= Shader::fUseColorKey;
 		else
-			flagBuf.at(id) &= ~Shader::fUseColorKey;
-
-		sheet->UpdateSprite( id );
+			flagBuf.Element(id) &= ~Shader::fUseColorKey;
 		}
 
 
@@ -64,17 +60,16 @@ namespace Bite
 			break;
 		case TopLeft:
 				{
-				Rect frame = sheet->templates[ sheet->spriteTemplateID.at(id) ].frame;
+				const VertexBuffer<GLuint>& spriteTID = *sheet->spriteTemplateID;
+				Rect frame = sheet->templates[ spriteTID.Element(id) ].frame;
 				x += std::ceil(frame.w/2.0f);
 				y -= std::ceil(frame.h/2.0f);
 				}
 			}
 
-		SpriteSheet::BufferFloat& posBuf = sheet->spritePosition;
-		posBuf.at( id * 3 ) = x;
-		posBuf.at( id * 3 + 1 ) = y;
-
-		sheet->UpdateSprite( id );
+		VertexBuffer<GLfloat>& posBuf = *sheet->spritePosition;
+		posBuf.Element( id ) = x;
+		posBuf.Element( id, 1 ) = y;
 		}
 
 
@@ -83,9 +78,7 @@ namespace Bite
 		{
 		if( !alive ) return;
 
-		sheet->spritePosition.at( id * 3 + 2 ) = z;
-
-		sheet->UpdateSprite( id );
+		sheet->spritePosition->Element( id, 2 ) = z;
 		}
 
 
@@ -94,11 +87,9 @@ namespace Bite
 		{
 		if( !alive ) return;
 
-		SpriteSheet::BufferFloat& rotscaleBuf = sheet->spriteRotScale;
+		VertexBuffer<GLfloat>& rotscaleBuf = *sheet->spriteRotScale;
 
-		rotscaleBuf.at( id * 2 ) = r;
-
-		sheet->UpdateSprite( id );
+		rotscaleBuf.Element( id ) = r;
 		}
 
 
@@ -106,11 +97,9 @@ namespace Bite
 	Sprite::Scale( float s )
 		{
 		if( !alive ) return;
-		SpriteSheet::BufferFloat& rotscaleBuf = sheet->spriteRotScale;
+		VertexBuffer<GLfloat>& rotscaleBuf = *sheet->spriteRotScale;
 
-		rotscaleBuf.at( id * 2 + 1 ) = s;
-
-		sheet->UpdateSprite( id );
+		rotscaleBuf.Element( id, 1 ) = s;
 		}
 
 
@@ -118,11 +107,9 @@ namespace Bite
 	Sprite::PaletteID( ID pal )
 		{
 		if( !alive ) return;
-		SpriteSheet::BufferUint& paletteIDBuf = sheet->spritePalette;
+		VertexBuffer<GLuint>& paletteIDBuf = *sheet->spritePalette;
 
-		paletteIDBuf.at( id ) = pal;
-
-		sheet->UpdateSprite( id );
+		paletteIDBuf.Element( id ) = pal;
 		}
 
 

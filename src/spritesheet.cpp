@@ -10,16 +10,12 @@ namespace Bite
 		sheet(0),
 		VAO(0),
 		bufferSize( bufferSize_ ),
-		glufferVertex(0),
-		glufferTemplateID(0),
-		glufferFlag(0),
 		glufferFrameTBO(0),
 		texFrameTBO(0),
 		spriteCount(0)
 		{
 		ColorKeyNorm( 1.0, 1.0, 1.0 );
 		GLBufferSetup();
-		OverflowHandling( OverflowException );
 
 		sheet = Load::Image( imageName );
 		paletteBuffer.Add( *sheet );
@@ -82,100 +78,23 @@ namespace Bite
 		glUseProgram( GL_NONE );
 
 		CHECK_GL_ERRORS( "SpriteSheet::Render" );
-
-		
-		}
-
-
-	void
-	SpriteSheet::SynchRange( ID first, Uint32 size )
-		{
-		glBindVertexArray( VAO );
-
-		CHECK_GL_ERRORS( "Error before SpriteSheet::SynchRange" );
-		// Update vertex arrays:
-		glBindBuffer( GL_ARRAY_BUFFER, glufferVertex );
-		glBufferSubData(
-			GL_ARRAY_BUFFER, 
-			first * sizeof(GLfloat) * VertexUnitSize, 
-			sizeof(GLfloat)* VertexUnitSize * size, 
-			&spritePosition[first*VertexUnitSize] );
-		CHECK_GL_ERRORS("Vertex buffer data");
-
-		glBindBuffer( GL_ARRAY_BUFFER, glufferTemplateID );
-		glBufferSubData(
-			GL_ARRAY_BUFFER,
-			first * sizeof(GLuint), 
-			sizeof(GLuint) * size, 
-			&spriteTemplateID[first] );
-		CHECK_GL_ERRORS("Template ID data");
-
-		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
-		glBufferSubData( 
-			GL_ARRAY_BUFFER, 
-			first * sizeof(GLuint), 
-			sizeof(GLuint) * size, 
-			&spriteFlag[first] );
-		CHECK_GL_ERRORS("Flag data");
-
-		glBindBuffer( GL_ARRAY_BUFFER, glufferRotScale );
-		glBufferSubData( 
-			GL_ARRAY_BUFFER, 
-			first * sizeof(GLfloat) * 2, 
-			sizeof(GLfloat)*2*size, 
-			&spriteRotScale[first*2] );
-		CHECK_GL_ERRORS( "RotScale data" );
-
-		glBindBuffer( GL_ARRAY_BUFFER, glufferPaletteID );
-		glBufferSubData(
-			GL_ARRAY_BUFFER,
-			first * sizeof(GLuint),
-			size * sizeof(GLuint),
-			&spritePalette[first] );
-		CHECK_GL_ERRORS( "PaletteID" );
-
-		// Update uniform array texture buffer thingies:
-		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
-		glBufferSubData( GL_TEXTURE_BUFFER, 0, sizeof(GLuint) * frames.size(), &frames.front() );
-				
-		CHECK_GL_ERRORS( "SpriteSheet::Synch" );
-
-		glBindBuffer( GL_TEXTURE_BUFFER, 0 );
-		glBindVertexArray( GL_NONE );
 		}
 
 
 	void
 	SpriteSheet::Synch()
 		{
-		// Sort the changed IDs into ranges and synch only those, instead of the whole buffer.		
-		while( !changeSet.empty() )
-			{
-			IDSet::iterator first = changeSet.begin();
-			IDSet::iterator last = first;
-			IDSet::iterator it = first;
-			// Find range that is without jumps between IDs.
-			for( ;it != changeSet.end() && *it <= *last+1; ++it )
-				{
-				last = it;
-				}
-			SynchRange( *first, *last-*first+1 );
-			changeSet.erase( first, ++last ); // Last needs to point beyond end here.
-			}
-		}
+		spriteFlag->Synch();
+		spritePosition->Synch();
+		spriteTemplateID->Synch();
+		spriteRotScale->Synch();
+		spritePalette->Synch();
 
-
-	void
-	SpriteSheet::SynchAll()
-		{
-		SynchRange( 0, spriteCount );
-		}
-
-
-	void
-	SpriteSheet::UpdateSprite( ID id )
-		{
-		changeSet.insert( id );
+		// Update uniform array texture buffer thingies:
+		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
+		CHECK_GL_ERRORS( "SpriteSheet::Synch, Bind Buffer" );
+		glBufferSubData( GL_TEXTURE_BUFFER, 0, sizeof(GLuint) * frames.size(), &frames.front() );
+		CHECK_GL_ERRORS( "SpriteSheet::Synch" );
 		}
 
 
@@ -244,14 +163,13 @@ namespace Bite
 
 		// Note: think of a better way to lay this out. Offsets and structures
 		// in a single vector perhaps. Or a reusable buffer object, or something.
-		BASSERT( sid <= spriteFlag.size() );
-		BASSERT( sid <= spritePosition.size() );
-		BASSERT( sid <= spriteTemplateID.size() );
+		BASSERT( sid <= spriteFlag->Size() );
+		BASSERT( sid <= spritePosition->Size() );
+		BASSERT( sid <= spriteTemplateID->Size() );
+		BASSERT( sid <= spriteRotScale->Size() );
+		BASSERT( sid <= spritePalette->Size() );
 
-		if( sid == spriteFlag.size() )
-			IncrementBuffers();
-
-		UpdateSprite( sid );
+		IncrementBuffers();
 
 		return Sprite( sid, tid, this );
 		}
@@ -260,29 +178,13 @@ namespace Bite
 	void
 	SpriteSheet::IncrementBuffers()
 		{
-		if( spriteCount < bufferSize )
-			{
-			// Expand vectors and fill with 0
-			spriteFlag.resize( spriteFlag.size() + 1, 0 );
-			spritePosition.resize( spritePosition.size() + 3, 0 );
-			spriteTemplateID.resize( spriteTemplateID.size() + 1, 0 );
-			spriteRotScale.resize( spriteRotScale.size() + 2, 0 );
-			spritePalette.resize( spritePalette.size() + 1, 0 );
-			++spriteCount;
-			}
-		else // overflow!
-			{
-			switch( overflowOption )
-				{
-				case OverflowException:
-					throw BufferOverflow( bufferSize );
-					break;
-				case OverflowReallocate:
-					GrowBuffers();
-					IncrementBuffers();
-					break;
-				}
-			}
+		// Expand vectors and fill with 0
+		spriteFlag->Grow( 1 );
+		spritePosition->Grow( 1 );
+		spriteTemplateID->Grow( 1 );
+		spriteRotScale->Grow( 1 );
+		spritePalette->Grow( 1 );
+		++spriteCount;	
 		}
 
 
@@ -309,68 +211,38 @@ namespace Bite
 		paletteBuffer.Add( pal );
 		}
 
-
-	void
-	SpriteSheet::OverflowHandling( OverflowOptions option )
-		{
-		overflowOption = option;
-		}
-
 	
 	void
 	SpriteSheet::GLBufferSetup()
 		{
 		BASSERT( VAO == 0 );
-		BASSERT( glufferVertex == 0 );
-		BASSERT( glufferTemplateID == 0 );
-		BASSERT( glufferFlag == 0 );
 		BASSERT( glufferFrameTBO == 0 );
 		BASSERT( texFrameTBO == 0 );
 				
 		glGenVertexArrays( 1, &VAO );
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 				
-		glGenBuffers( 1, &glufferVertex );
-		glGenBuffers( 1, &glufferTemplateID );
-		glGenBuffers( 1, &glufferFlag );
-		glGenBuffers( 1, &glufferRotScale );
-		glGenBuffers( 1, &glufferPaletteID );
 		glGenBuffers( 1, &glufferFrameTBO );
 		glGenTextures( 1, &texFrameTBO );
 		glGenTextures( 1, &texPaletteTBO );
 		
 		glBindVertexArray( VAO );
 
-		glEnableVertexAttribArray( Shader::attriblocVertex );
-		glEnableVertexAttribArray( Shader::attriblocTemplateID );
-		glEnableVertexAttribArray( Shader::attriblocFlags );
-		glEnableVertexAttribArray( Shader::attriblocRotScale );
-		glEnableVertexAttribArray( Shader::attriblocPaletteID );
-
 		// Create buffer objects for the different vertex attributes.
 		// 1. Bind the buffer object that will hold attribute data.
 		// 2. Allocate the buffer memory, but no data uploaded (NULL passed).
 		// 3. Create a pointer for the VAO so that you can access it in shader.
 		// Repeat per buffer...
-		glBindBuffer( GL_ARRAY_BUFFER, glufferVertex );
-		glBufferData( GL_ARRAY_BUFFER, sizeof(GLfloat) * VertexUnitSize * bufferSize, NULL, GL_DYNAMIC_COPY );
-		glVertexAttribPointer( Shader::attriblocVertex, VertexUnitSize, GL_FLOAT, GL_FALSE, 0, 0 );
-
-		glBindBuffer( GL_ARRAY_BUFFER, glufferTemplateID );
-		glBufferData( GL_ARRAY_BUFFER, sizeof(GLuint)*bufferSize, NULL, GL_DYNAMIC_COPY );
-		glVertexAttribIPointer( Shader::attriblocTemplateID, 1, GL_UNSIGNED_INT, 0,0);
-
-		glBindBuffer( GL_ARRAY_BUFFER, glufferFlag );
-		glBufferData( GL_ARRAY_BUFFER, sizeof(GLuint)*bufferSize, NULL, GL_DYNAMIC_COPY );
-		glVertexAttribIPointer( Shader::attriblocFlags, 1, GL_UNSIGNED_INT, 0, 0 );
-
-		glBindBuffer( GL_ARRAY_BUFFER, glufferRotScale );
-		glBufferData( GL_ARRAY_BUFFER, sizeof(GLfloat)*2*bufferSize, NULL, GL_DYNAMIC_COPY );
-		glVertexAttribPointer( Shader::attriblocRotScale, 2, GL_FLOAT, GL_FALSE, 0, 0 );
-
-		glBindBuffer( GL_ARRAY_BUFFER, glufferPaletteID );
-		glBufferData( GL_ARRAY_BUFFER, sizeof(GLuint)*bufferSize, NULL, GL_DYNAMIC_COPY );
-		glVertexAttribIPointer( Shader::attriblocPaletteID, 1, GL_UNSIGNED_INT, 0, 0 ); 
+		spritePosition.reset( new VertexBuffer<GLfloat>( 
+			VAO, Shader::attriblocVertex, GL_FLOAT, bufferSize, VertexUnitSize ) );
+		spriteTemplateID.reset( new VertexBuffer<GLuint>(
+			VAO, Shader::attriblocTemplateID, GL_UNSIGNED_INT, bufferSize ) );
+		spriteFlag.reset( new VertexBuffer<GLuint>(
+			VAO, Shader::attriblocFlags, GL_UNSIGNED_INT, bufferSize ) );
+		spriteRotScale.reset( new VertexBuffer<GLfloat>(
+			VAO, Shader::attriblocRotScale, GL_FLOAT, bufferSize, 2 ) );
+		spritePalette.reset( new VertexBuffer<GLuint>(
+			VAO, Shader::attriblocPaletteID, GL_UNSIGNED_INT, bufferSize ) );
 
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
 		glBufferData( GL_TEXTURE_BUFFER, sizeof(GLuint)*4*bufferSize, NULL, GL_DYNAMIC_COPY );
@@ -382,34 +254,10 @@ namespace Bite
 
 
 	void
-	SpriteSheet::GrowBuffers()
-		{
-		GLDestroyBuffers();
-		bufferSize = bufferSize * 2;
-		GLBufferSetup();
-		}
-
-	
-	void
 	SpriteSheet::GLDestroyBuffers()
 		{
 		glDeleteVertexArrays( 1, &VAO );
 		VAO = 0;
-
-		glDeleteBuffers( 1, &glufferVertex );
-		glufferVertex = 0;
-
-		glDeleteBuffers( 1, &glufferTemplateID );
-		glufferTemplateID = 0;
-
-		glDeleteBuffers( 1, &glufferFlag );
-		glufferFlag = 0;
-
-		glDeleteBuffers( 1, &glufferFrameTBO );
-		glufferFrameTBO = 0;
-
-		glDeleteBuffers( 1, &glufferRotScale );
-		glufferRotScale = 0;
 
 		glDeleteTextures( 1, &texFrameTBO );
 		texFrameTBO = 0;
