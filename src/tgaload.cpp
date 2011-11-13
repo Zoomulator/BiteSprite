@@ -73,27 +73,47 @@ namespace Bite
 		Uint8* pixels = new Uint8[ pixelMapSize ];
 		stream.read( pixels, pixelMapSize );
 
+		// Get bits for pixelmap orientation.
+		bool startRight = (header.imageSpec.imageDescriptor >> 4) & 1;
+		bool startTop = (header.imageSpec.imageDescriptor >> 5 ) & 1;
+
 		// Get pixels
 		pixAllocation = new Uint32[ pixCount ];
-		for( Uint32 i = 0; i < pixCount; ++i )
+		
+		const Uint16& width = header.imageSpec.width;
+		const Uint16& height = header.imageSpec.height;
+
+		for( Uint32 x = 0; x < width; ++x )
 			{
-			Uint32 rawpix = 0;
-			BASSERT( i*pixDepth < pixelMapSize );
-			memcpy( &rawpix, &pixels[i*pixDepth], pixDepth );
+			for( Uint32 y = 0; y < height; ++y )
+				{
+				// Source index
+				Uint32 i = x + y*width;
+				// Destination index
+				Uint32 di = 0;
+				if( startRight ) di += width - (x+1);
+				else di += x;
+				if( startTop ) di += y * width;
+				else di += width * height - (y+1) * width;
 
-			Uint32 pix = 0;
-			if( !usingPal )
-				pix = ConvertColor( rawpix, TGAmask, internalMask );
-			else
-				pix = rawpix;
+				Uint32 rawpix = 0;
+				BASSERT( i*pixDepth < pixelMapSize );
+				memcpy( &rawpix, &pixels[i*pixDepth], pixDepth );
 
-			pixAllocation[i] = pix;
+				Uint32 pix = 0;
+				if( !usingPal )
+					pix = ConvertColor( rawpix, TGAmask, internalMask );
+				else
+					pix = rawpix;
+
+				pixAllocation[di] = pix;
+				}
 			}
 
 		data.AdoptPixels( 
 			pixAllocation, 
-			header.imageSpec.width, 
-			header.imageSpec.height, 
+			width, 
+			height, 
 			pal );
 
 		delete[] imageID;
