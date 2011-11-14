@@ -96,7 +96,7 @@ namespace Bite
 				if( startTop ) di += y * width;
 				else di += width * height - (y+1) * width;
 
-				Uint32 rawpix = 0;
+				Uint32 rawpix = 0xFF000000;
 				BASSERT( i*pixDepth < pixelMapSize );
 				memcpy( &rawpix, &pixels[i*pixDepth], pixDepth );
 

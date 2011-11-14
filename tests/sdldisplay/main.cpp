@@ -41,6 +41,7 @@ void Run()
 		screen = SDL_SetVideoMode( width, height, 32, sdlFlags );
 		SDL_WM_SetCaption( "BiteSprite!", NULL );
 		LoadBite();
+
 		glClearColor( 0.2f, 0.8f, 0.2f, 1.0f );
 		
 		Bite::SpriteSheet sheet( "mario" );
@@ -71,7 +72,7 @@ void Run()
 		Bite::Rect r4 = { 342, 223, 16, 28 };
 		sheet.CreateTemplate( "stonemario", r4 );
 
-		const int spriteCount = 10000;
+		const int spriteCount = 50000;
 		std::vector<Bite::Sprite> lottaSprites;
 
 		for( int i = 0; i < spriteCount; ++i )
