@@ -66,10 +66,13 @@ namespace Bite
 		GLuint bufferWidth; //!< Room for #elements in buffer.
 		GLuint elementSize; //!< Number of components per element
 		
+		void* bufferMap;
+		bool useBufferMapping;
+
 		typedef std::vector<T> Data;
 		Data data;
-		IDSet changeSet; // IDs that needs to synch.
-
+		bool hasChanged;
+		
 		OverflowOptions overflowOption;
 		};
 

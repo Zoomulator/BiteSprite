@@ -161,8 +161,6 @@ namespace Bite
 		Uint32 tid = templateIt->second; 
 		ID sid = idGenSprite.NewID();
 
-		// Note: think of a better way to lay this out. Offsets and structures
-		// in a single vector perhaps. Or a reusable buffer object, or something.
 		BASSERT( sid <= spriteFlag->Size() );
 		BASSERT( sid <= spritePosition->Size() );
 		BASSERT( sid <= spriteTemplateID->Size() );

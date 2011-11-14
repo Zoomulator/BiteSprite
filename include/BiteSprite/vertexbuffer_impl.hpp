@@ -22,6 +22,7 @@ namespace Bite
 		typeSize( 0 ),
 		bufferWidth( bufW ),
 		elementSize( size ),
+		hasChanged( true ),
 		overflowOption( OverflowReallocate )
 		{
 		CalculateTypeSize();
@@ -54,13 +55,22 @@ namespace Bite
 	void
 	VertexBuffer<T>::SynchRange( ID first, Uint32 size )
 		{
-		glBindBuffer( GL_ARRAY_BUFFER, bufferID );
-		glBufferSubData(
-			GL_ARRAY_BUFFER, 
-			first * typeSize * elementSize, 
-			size * typeSize * elementSize, 
-			&data[first * elementSize] );
-		CHECK_GL_ERRORS("Synch range");
+		if( useBufferMapping )
+			{
+			memcpy( 
+				&((char*)bufferMap)[ typeSize * first * elementSize],
+				&data[ first * elementSize],
+				size * typeSize * elementSize );
+			}
+		else
+			{
+			glBufferSubData(
+				GL_ARRAY_BUFFER, 
+				first * typeSize * elementSize, 
+				size * typeSize * elementSize, 
+				&data[first * elementSize] );
+			CHECK_GL_ERRORS("Synch range");
+			}
 		}
 
 
@@ -68,20 +78,25 @@ namespace Bite
 	void
 	VertexBuffer<T>::Synch()
 		{
-		// Sort the changed IDs into ranges and synch only those, instead of the whole buffer.		
-		while( !changeSet.empty() )
+		if( !hasChanged ) return;
+		hasChanged = false;
+					
+		glBindBuffer( GL_ARRAY_BUFFER, bufferID );
+
+		useBufferMapping = true;
+		if( useBufferMapping )
 			{
-			IDSet::iterator first = changeSet.begin();
-			IDSet::iterator last = first;
-			IDSet::iterator it = first;
-			// Find range that is without jumps between IDs.
-			for( ;it != changeSet.end() && *it <= *last+1; ++it )
-				{
-				last = it;
-				}
-			SynchRange( *first, *last-*first+1 );
-			changeSet.erase( first, ++last ); // Last needs to point beyond end here.
+			bufferMap = glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
 			}
+			
+		SynchRange( 0, Size() );
+
+		if( useBufferMapping )
+			{
+			glUnmapBuffer( GL_ARRAY_BUFFER );
+			}
+
+		glBindBuffer( GL_ARRAY_BUFFER, GL_NONE );
 		}
 
 
@@ -118,7 +133,7 @@ namespace Bite
 	T&
 	VertexBuffer<T>::Element( ID id, Uint8 component=0 )
 		{
-		changeSet.insert( id );
+		hasChanged = true;
 		return data[ id*elementSize + component ];
 		}
 

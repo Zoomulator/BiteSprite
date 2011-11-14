@@ -63,8 +63,7 @@ void Run()
 
 		Bite::Sprite sprite3 = sheet.CreateSprite( "supermario" );
 		sprite3.Position( 0,-70, Bite::TopLeft );
-		sprite3.Rotation( -50.0f );
-
+		
 		Bite::Sprite sprite2 = sheet2.CreateSprite( "smallmario" );
 		sprite2.Position( 0, 0, Bite::TopLeft );
 		//sprite2.Scale( 2.0f );
@@ -72,7 +71,7 @@ void Run()
 		Bite::Rect r4 = { 342, 223, 16, 28 };
 		sheet.CreateTemplate( "stonemario", r4 );
 
-		const int spriteCount = 1000;
+		const int spriteCount = 10000;
 		std::vector<Bite::Sprite> lottaSprites;
 
 		for( int i = 0; i < spriteCount; ++i )
@@ -134,6 +133,8 @@ void Run()
 
 			sheet2.Synch();
 			sheet2.Render();
+
+			glFlush();
 
 			Bite::Framebuffer::Flip();
 			SDL_GL_SwapBuffers();
