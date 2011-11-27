@@ -55,7 +55,8 @@ void Run()
 		Bite::Rect r = { 0,0,466,282 };
 		sheet.CreateTemplate( "all", r );
 		Bite::Rect r3 = {11,26, 14,27};
-		sheet.CreateTemplate( "supermario", r3 );
+		Bite::Point anchor( 14,27 );
+		sheet.CreateTemplate( "supermario", r3, anchor );
 				
 		Bite::Sprite sprite = sheet.CreateSprite( "all" );
 		sprite.Position( 0, 100 );
@@ -63,10 +64,11 @@ void Run()
 		sprite.UseColorKey( false );
 
 		Bite::Sprite sprite3 = sheet.CreateSprite( "supermario" );
-		sprite3.Position( 0,-70, Bite::TopLeft );
+		sprite3.Position( 0,0 );
 		
 		Bite::Sprite sprite2 = sheet2.CreateSprite( "smallmario" );
-		sprite2.Position( 0, 0, Bite::TopLeft );
+		sprite2.Position( 0, 0 );
+		sprite2.Flip( false, false );
 		//sprite2.Scale( 2.0f );
 
 		Bite::Rect r4 = { 342, 223, 16, 28 };

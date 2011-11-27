@@ -36,7 +36,9 @@ namespace Shader
 	enum Flag {
 		fNone = 0,
 		fVisible = 1,
-		fUseColorKey = 2
+		fUseColorKey = 2,
+		fFlipX = 4,
+		fFlipY = 8
 		};
 
 

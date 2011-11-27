@@ -15,6 +15,13 @@ namespace Bite
 		Uint32 x,y,w,h;
 		};
 
+	struct Point
+		{
+		Point( Uint32 x_, Uint32 y_ ) : x(x_), y(y_) {}
+		Point() : x(0), y(0) {}
+		Uint32 x,y;
+		};
+
 	} // namespace Bite
 
 #endif // BITE_TYPES_HPP

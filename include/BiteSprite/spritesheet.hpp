@@ -53,7 +53,7 @@ namespace Bite
 		Synch();
 				
 		void
-		CreateTemplate( const std::string& name, Rect frame );
+		CreateTemplate( const std::string& name, Rect frame, Point anchor = Point(0,0) );
 
 		void
 		DropTemplate( const std::string& name );
@@ -108,6 +108,7 @@ namespace Bite
 		GLfloat colorKey[4];
 		// SpriteTemplate IDs are the same as the index in this vector.
 		Templates templates;
+		Uint32 templBufSize;
 		IDGenerator idGenTemplate;
 		BufferUint frames;
 		StringID nameToTemplateID;

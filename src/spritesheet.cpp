@@ -12,6 +12,8 @@ namespace Bite
 		bufferSize( bufferSize_ ),
 		glufferFrameTBO(0),
 		texFrameTBO(0),
+		texPaletteTBO(0),
+		templBufSize(6),
 		spriteCount(0)
 		{
 		ColorKeyNorm( 1.0, 1.0, 1.0 );
@@ -49,7 +51,7 @@ namespace Bite
 
 		glActiveTexture( GL_TEXTURE1 ); // For template frame TBO
 		glBindTexture( GL_TEXTURE_BUFFER, texFrameTBO );
-		glTexBuffer( GL_TEXTURE_BUFFER, GL_RGBA32UI, glufferFrameTBO );
+		glTexBuffer( GL_TEXTURE_BUFFER, GL_R32UI, glufferFrameTBO );
 		glUniform1i( Shader::unilocSpriteFrame, 1 );
 		CHECK_GL_ERRORS( "Bind frameTBO, SpriteSheet::Render" )
 
@@ -103,7 +105,7 @@ namespace Bite
 
 
 	void
-	SpriteSheet::CreateTemplate( const std::string& name, Rect frame )
+	SpriteSheet::CreateTemplate( const std::string& name, Rect frame, Point anchor )
 		{
 		StringID::const_iterator it = nameToTemplateID.find( name );
 
@@ -115,6 +117,7 @@ namespace Bite
 			spriteTemplate.id = id;
 			spriteTemplate.name = name;
 			spriteTemplate.frame = frame;
+			spriteTemplate.anchor = anchor;
 			spriteTemplate.active = true;
 			
 			BASSERT( id <= templates.size() );
@@ -122,17 +125,19 @@ namespace Bite
 			if( id == templates.size() )
 				{
 				templates.push_back( spriteTemplate );
-				frames.resize( frames.size() + 4 );
+				frames.resize( frames.size() + templBufSize );
 				}
 			else
 				{
 				templates[id] = spriteTemplate;
 				}			
 
-			frames[ id*4 ] = frame.x;
-			frames[ id*4 + 1 ] = frame.y;
-			frames[ id*4 + 2 ] = frame.w;
-			frames[ id*4 + 3 ] = frame.h;
+			frames[ id*templBufSize     ] = frame.x;
+			frames[ id*templBufSize + 1 ] = frame.y;
+			frames[ id*templBufSize + 2 ] = frame.w;
+			frames[ id*templBufSize + 3 ] = frame.h;
+			frames[ id*templBufSize + 4 ] = anchor.x;
+			frames[ id*templBufSize + 5 ] = anchor.y;
 			nameToTemplateID[name] = id; 
 			}
 		else // name is taken
@@ -247,7 +252,9 @@ namespace Bite
 			VAO, Shader::attriblocPaletteID, GL_UNSIGNED_INT, bufferSize ) );
 
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
-		glBufferData( GL_TEXTURE_BUFFER, sizeof(GLuint)*4*bufferSize, NULL, GL_DYNAMIC_COPY );
+		glBufferData( GL_TEXTURE_BUFFER, 
+			sizeof(GLuint)*templBufSize*bufferSize, 
+			NULL, GL_DYNAMIC_COPY );
 		
 		// Unbind any used GL objects to not corrupt state outside function.
 		glBindVertexArray( GL_NONE );

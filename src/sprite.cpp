@@ -36,6 +36,24 @@ namespace Bite
 
 
 	void
+	Sprite::Flip( bool x, bool y )
+		{
+		if( !alive ) return;
+
+		VertexBuffer<GLuint>& flagBuf = *sheet->spriteFlag;
+
+		if( x )
+			flagBuf.Element(id) |= Shader::fFlipX;
+		else
+			flagBuf.Element(id) &= ~Shader::fFlipX;
+		if( y )
+			flagBuf.Element(id) |= Shader::fFlipY;
+		else
+			flagBuf.Element(id) &= ~Shader::fFlipY;
+		}
+
+
+	void
 	Sprite::UseColorKey( bool b )
 		{
 		if( !alive ) return;
@@ -50,22 +68,9 @@ namespace Bite
 
 
 	void
-	Sprite::Position( float x, float y, Anchor anchor )
+	Sprite::Position( float x, float y )
 		{
 		if( !alive ) return;
-
-		switch(anchor)
-			{
-		case Center:
-			break;
-		case TopLeft:
-				{
-				const VertexBuffer<GLuint>& spriteTID = *sheet->spriteTemplateID;
-				Rect frame = sheet->templates[ spriteTID.Element(id) ].frame;
-				x += std::ceil(frame.w/2.0f);
-				y -= std::ceil(frame.h/2.0f);
-				}
-			}
 
 		VertexBuffer<GLfloat>& posBuf = *sheet->spritePosition;
 		posBuf.Element( id ) = x;

@@ -12,7 +12,6 @@
 namespace Bite
 	{
 	class SpriteSheet;
-	enum Anchor { Center=1, TopLeft=2 };
 
 
 	//! Handle interface for data in a SpriteSheet.
@@ -28,9 +27,10 @@ namespace Bite
 		public:
 
 		void Visible( bool );
+		void Flip( bool x, bool y );
 		//! Whether or not to use the colorkey provided by the SpriteSheet.
 		void UseColorKey( bool );
-		void Position( float x, float y, Anchor anchor=Center );
+		void Position( float x, float y );
 		void ZIndex( float z );
 		//! Rotates the sprite around it's center in degrees.
 		void Rotation( float deg );
