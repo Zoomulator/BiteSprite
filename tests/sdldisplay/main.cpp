@@ -50,13 +50,13 @@ void Run()
 		sheet.AddPalette( pal );
 		Bite::SpriteSheet sheet2( "marioTrue" );
 		Bite::Rect r2 = { 11,5,13,15 };
-		sheet.CreateTemplate( "smallmario", r2 );
-		sheet2.CreateTemplate( "smallmario", r2 );
+		sheet.CreateFrame( "smallmario", r2 );
+		sheet2.CreateFrame( "smallmario", r2 );
 		Bite::Rect r = { 0,0,466,282 };
-		sheet.CreateTemplate( "all", r );
+		sheet.CreateFrame( "all", r );
 		Bite::Rect r3 = {11,26, 14,27};
 		Bite::Point anchor( 14,27 );
-		sheet.CreateTemplate( "supermario", r3, anchor );
+		sheet.CreateFrame( "supermario", r3, anchor );
 				
 		Bite::Sprite sprite = sheet.CreateSprite( "all" );
 		sprite.Position( 0, 100 );
@@ -72,18 +72,18 @@ void Run()
 		//sprite2.Scale( 2.0f );
 
 		Bite::Rect r4 = { 342, 223, 16, 28 };
-		sheet.CreateTemplate( "stonemario", r4 );
+		sheet.CreateFrame( "stonemario", r4 );
 
 		const int spriteCount = 50000;
 		std::vector<Bite::Sprite> lottaSprites;
 
-		for( int i = 0; i < spriteCount; ++i )
-			{
-			lottaSprites.push_back( sheet.CreateSprite( "stonemario" ) );
-			//lottaSprites[i].Position( (-300 + (i*10)%600), 200 - (i/60)*10 );
-			}
+		//for( int i = 0; i < spriteCount; ++i )
+		//	{
+		//	lottaSprites.push_back( sheet.CreateSprite( "stonemario" ) );
+		//	//lottaSprites[i].Position( (-300 + (i*10)%600), 200 - (i/60)*10 );
+		//	}
 		
-		lottaSprites[7].Drop();
+		//lottaSprites[7].Drop();
 
 		glPointSize( 10.0f );
 		glDisable( GL_CULL_FACE );
@@ -102,12 +102,12 @@ void Run()
 					running = false;
 				}
 							
-			for( int i = 0; i < spriteCount; ++i )
+			/*for( int i = 0; i < spriteCount; ++i )
 				{
 				lottaSprites[i].Position(
 					circX + cos( circRot + i * PI * 2 / (float)spriteCount ) * circR,
 					circY + sin( circRot + i * PI * 2 / (float)spriteCount ) * circR );
-				}
+				}*/
 			
 			Uint8* keystate = SDL_GetKeyState(NULL);
 			if( keystate[SDLK_LEFT] ) marioPosX -= 1;

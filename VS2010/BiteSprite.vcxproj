@@ -129,7 +129,7 @@
     <ClInclude Include="..\include\BiteSprite\sprite.hpp" />
     <ClInclude Include="..\include\BiteSprite\spritesheet.hpp" />
     <ClInclude Include="..\include\BiteSprite\spritesheet_shaders.hpp" />
-    <ClInclude Include="..\include\BiteSprite\spritetemplate.hpp" />
+    <ClInclude Include="..\include\BiteSprite\frame.hpp" />
     <ClInclude Include="..\include\BiteSprite\tgaload.hpp" />
     <ClInclude Include="..\include\BiteSprite\types.hpp" />
     <ClInclude Include="..\include\BiteSprite\vertexbuffer.hpp" />

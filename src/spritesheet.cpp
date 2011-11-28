@@ -13,7 +13,7 @@ namespace Bite
 		glufferFrameTBO(0),
 		texFrameTBO(0),
 		texPaletteTBO(0),
-		templBufSize(6),
+		frameBufSize(6),
 		spriteCount(0)
 		{
 		ColorKeyNorm( 1.0, 1.0, 1.0 );
@@ -99,75 +99,76 @@ namespace Bite
 		// Update uniform array texture buffer thingies:
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
 		CHECK_GL_ERRORS( "SpriteSheet::Synch, Bind Buffer" );
-		glBufferSubData( GL_TEXTURE_BUFFER, 0, sizeof(GLuint) * frames.size(), &frames.front() );
+		glBufferSubData( GL_TEXTURE_BUFFER, 0, 
+			sizeof(GLuint) * framePositions.size(), &framePositions.front() );
 		CHECK_GL_ERRORS( "SpriteSheet::Synch" );
 		}
 
 
 	void
-	SpriteSheet::CreateTemplate( const std::string& name, Rect frame, Point anchor )
+	SpriteSheet::CreateFrame( const std::string& name, Rect frameRect, Point anchor )
 		{
-		StringID::const_iterator it = nameToTemplateID.find( name );
+		StringID::const_iterator it = nameToFrameID.find( name );
 
-		if( it == nameToTemplateID.end() ) // If name's not taken
+		if( it == nameToFrameID.end() ) // If name's not taken
 			{
-			ID id = idGenTemplate.NewID();
+			ID id = idGenFrame.NewID();
 
-			SpriteTemplate spriteTemplate;
-			spriteTemplate.id = id;
-			spriteTemplate.name = name;
-			spriteTemplate.frame = frame;
-			spriteTemplate.anchor = anchor;
-			spriteTemplate.active = true;
+			Frame frame;
+			frame.id = id;
+			frame.name = name;
+			frame.rect = frameRect;
+			frame.anchor = anchor;
+			frame.active = true;
 			
-			BASSERT( id <= templates.size() );
+			BASSERT( id <= frames.size() );
 			// Create new place in vector only if ID equal to length
-			if( id == templates.size() )
+			if( id == frames.size() )
 				{
-				templates.push_back( spriteTemplate );
-				frames.resize( frames.size() + templBufSize );
+				frames.push_back( frame );
+				framePositions.resize( framePositions.size() + frameBufSize );
 				}
 			else
 				{
-				templates[id] = spriteTemplate;
+				frames[id] = frame;
 				}			
 
-			frames[ id*templBufSize     ] = frame.x;
-			frames[ id*templBufSize + 1 ] = frame.y;
-			frames[ id*templBufSize + 2 ] = frame.w;
-			frames[ id*templBufSize + 3 ] = frame.h;
-			frames[ id*templBufSize + 4 ] = anchor.x;
-			frames[ id*templBufSize + 5 ] = anchor.y;
-			nameToTemplateID[name] = id; 
+			framePositions[ id*frameBufSize     ] = frameRect.x;
+			framePositions[ id*frameBufSize + 1 ] = frameRect.y;
+			framePositions[ id*frameBufSize + 2 ] = frameRect.w;
+			framePositions[ id*frameBufSize + 3 ] = frameRect.h;
+			framePositions[ id*frameBufSize + 4 ] = anchor.x;
+			framePositions[ id*frameBufSize + 5 ] = anchor.y;
+			nameToFrameID[name] = id; 
 			}
 		else // name is taken
 			{
-			throw TemplateNameAlreadyInUse( name );
+			throw FrameNameAlreadyInUse( name );
 			}
 		}
 
 
 	void
-	SpriteSheet::DropTemplate( const std::string& templateName )
+	SpriteSheet::DropFrame( const std::string& templateName )
 		{
 		// Check name validity.
-		StringID::const_iterator templateIt = nameToTemplateID.find( templateName );
-		if( templateIt == nameToTemplateID.end() ) throw BadTemplateName( templateName );
+		StringID::const_iterator templateIt = nameToFrameID.find( templateName );
+		if( templateIt == nameToFrameID.end() ) throw BadFrameName( templateName );
 
-		ID id = nameToTemplateID[ templateName ];
-		templates[id].active = false;
-		idGenTemplate.RecycleID( id );
+		ID id = nameToFrameID[ templateName ];
+		frames[id].active = false;
+		idGenFrame.RecycleID( id );
 		}
 
 
 	Sprite
-	SpriteSheet::CreateSprite( const std::string& templateName )
+	SpriteSheet::CreateSprite( const std::string& frameName )
 		{
 		// Check name validity.
-		StringID::const_iterator templateIt = nameToTemplateID.find( templateName );
-		if( templateIt == nameToTemplateID.end() ) throw BadTemplateName( templateName );
+		StringID::const_iterator frameIt = nameToFrameID.find( frameName );
+		if( frameIt == nameToFrameID.end() ) throw BadFrameName( frameName );
 
-		Uint32 tid = templateIt->second; 
+		Uint32 tid = frameIt->second; 
 		ID sid = idGenSprite.NewID();
 
 		BASSERT( sid <= spriteFlag->Size() );
@@ -253,7 +254,7 @@ namespace Bite
 
 		glBindBuffer( GL_TEXTURE_BUFFER, glufferFrameTBO );
 		glBufferData( GL_TEXTURE_BUFFER, 
-			sizeof(GLuint)*templBufSize*bufferSize, 
+			sizeof(GLuint) * frameBufSize * bufferSize, 
 			NULL, GL_DYNAMIC_COPY );
 		
 		// Unbind any used GL objects to not corrupt state outside function.

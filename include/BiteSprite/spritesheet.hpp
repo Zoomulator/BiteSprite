@@ -16,7 +16,7 @@
 #include "BiteSprite\imageloader.hpp"
 #include "BiteSprite\biteimage.hpp"
 #include "BiteSprite\batch.hpp"
-#include "BiteSprite\spritetemplate.hpp"
+#include "BiteSprite\frame.hpp"
 #include "BiteSprite\sprite.hpp"
 #include "BiteSprite\spritesheet_shaders.hpp"
 #include "BiteSprite\projection.hpp"
@@ -53,13 +53,13 @@ namespace Bite
 		Synch();
 				
 		void
-		CreateTemplate( const std::string& name, Rect frame, Point anchor = Point(0,0) );
+		CreateFrame( const std::string& name, Rect frame, Point anchor = Point(0,0) );
 
 		void
-		DropTemplate( const std::string& name );
+		DropFrame( const std::string& name );
 
 		Sprite
-		CreateSprite( const std::string& templateName );
+		CreateSprite( const std::string& frameName );
 		
 		//! Set a color to be used as transparent with normalized float range (0.0->1.0).
 		/*! Sprites should have UseColorKey enabled. The range argument
@@ -79,7 +79,7 @@ namespace Bite
 		AddPalette( const Palette& pal );
 
 		private:
-		typedef std::vector<SpriteTemplate> Templates;
+		typedef std::vector<Frame> Frames;
 		typedef std::map<std::string, ID> StringID;
 		typedef std::vector<GLuint> BufferUint;
 		typedef std::vector<GLfloat> BufferFloat;
@@ -107,51 +107,51 @@ namespace Bite
 		//GL uniforms
 		GLfloat colorKey[4];
 		// SpriteTemplate IDs are the same as the index in this vector.
-		Templates templates;
-		Uint32 templBufSize;
-		IDGenerator idGenTemplate;
-		BufferUint frames;
-		StringID nameToTemplateID;
+		Frames frames;
+		Uint32 frameBufSize;
+		IDGenerator idGenFrame;
+		BufferUint framePositions;
+		StringID nameToFrameID;
 
 		IDGenerator idGenSprite;
 		Uint32 spriteCount; // Number of sprites fed to the buffer.
 		
-		std::auto_ptr<VertexBuffer<GLuint>>
+		std::auto_ptr< VertexBuffer<GLuint> >
 			spriteFlag;
-		std::auto_ptr<VertexBuffer<GLfloat>>
+		std::auto_ptr< VertexBuffer<GLfloat> >
 			spritePosition;
-		std::auto_ptr<VertexBuffer<GLuint>>
+		std::auto_ptr< VertexBuffer<GLuint> >
 			spriteTemplateID;
-		std::auto_ptr<VertexBuffer<GLfloat>>
+		std::auto_ptr< VertexBuffer<GLfloat> >
 			spriteRotScale;
-		std::auto_ptr<VertexBuffer<GLuint>>
+		std::auto_ptr< VertexBuffer<GLuint> >
 			spritePalette;
 
 		PaletteBuffer paletteBuffer;
 		};
 
 
-	class BadTemplateName : public Exception
+	class BadFrameName : public Exception
 		{
 		public:
-		BadTemplateName( const std::string& name )
+		BadFrameName( const std::string& name )
 			{
 			errstr =
-				"Bad template name: " + name;
+				"Bad frame name: " + name;
 			}
 
 		protected:
-		BadTemplateName() {}
+		BadFrameName() {}
 		};
 
 
-	class TemplateNameAlreadyInUse : public BadTemplateName
+	class FrameNameAlreadyInUse : public BadFrameName
 		{
 		public:
-		TemplateNameAlreadyInUse( const std::string& name )
+		FrameNameAlreadyInUse( const std::string& name )
 			{
 			errstr =
-				"Template name already in use: " + name;
+				"Frame name already in use: " + name;
 			}
 		};
 

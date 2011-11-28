@@ -107,9 +107,6 @@
     <ClInclude Include="..\include\BiteSprite\spritesheet_shaders.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\BiteSprite\spritetemplate.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\BiteSprite\types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -150,6 +147,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\BiteSprite\vertexbuffer_impl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\BiteSprite\frame.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

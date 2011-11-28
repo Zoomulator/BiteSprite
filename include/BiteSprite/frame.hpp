@@ -9,15 +9,17 @@
 namespace Bite
 	{
 
-
-	class SpriteTemplate
+	class Frame
 		{
 		public:
 		Uint32 id;
 		std::string name;
-		Rect frame;
+
+		Rect rect;
 		Point anchor;
-		bool active;
+
+		//! In use or not. Made false when dropped
+		bool active; 
 		};
 
 
