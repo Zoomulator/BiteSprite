@@ -90,6 +90,9 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\animation.cpp" />
+    <ClCompile Include="..\src\animationsheet.cpp" />
+    <ClCompile Include="..\src\animationtemplate.cpp" />
     <ClCompile Include="..\src\batch.cpp" />
     <ClCompile Include="..\src\bite.cpp" />
     <ClCompile Include="..\src\biteimage.cpp" />
@@ -109,6 +112,9 @@
     <ClCompile Include="..\src\view.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\BiteSprite\animation.hpp" />
+    <ClInclude Include="..\include\BiteSprite\animationsheet.hpp" />
+    <ClInclude Include="..\include\BiteSprite\animationtemplate.hpp" />
     <ClInclude Include="..\include\BiteSprite\bassert.hpp" />
     <ClInclude Include="..\include\BiteSprite\batch.hpp" />
     <ClInclude Include="..\include\BiteSprite\bexception.hpp" />

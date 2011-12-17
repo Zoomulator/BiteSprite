@@ -1,6 +1,7 @@
 #ifndef BITE_TYPES_HPP
 #define BITE_TYPES_HPP
 
+#include <map>
 
 namespace Bite
 	{
@@ -9,6 +10,7 @@ namespace Bite
 	typedef unsigned short Uint16;
 	typedef unsigned int Uint32;
 	typedef int Int32;
+
 
 	struct Rect
 		{

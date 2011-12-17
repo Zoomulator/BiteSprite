@@ -38,7 +38,7 @@ namespace Bite
 
 		public:
 		SpriteSheet( const std::string imageName, Uint32 bufferSize=1024 );
-		~SpriteSheet();
+		virtual ~SpriteSheet();
 
 		//! Draws all sprites currently in GL buffers.
 		/*! Synch will have to be called separately.
@@ -60,6 +60,9 @@ namespace Bite
 
 		Sprite
 		CreateSprite( const std::string& frameName );
+
+		Sprite
+		GetSprite( ID id );
 		
 		//! Set a color to be used as transparent with normalized float range (0.0->1.0).
 		/*! Sprites should have UseColorKey enabled. The range argument
@@ -80,7 +83,6 @@ namespace Bite
 
 		private:
 		typedef std::vector<Frame> Frames;
-		typedef std::map<std::string, ID> StringID;
 		typedef std::vector<GLuint> BufferUint;
 		typedef std::vector<GLfloat> BufferFloat;
 

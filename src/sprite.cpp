@@ -8,11 +8,16 @@
 namespace Bite
 	{
 
+	Sprite::Sprite( ID id_, SpriteSheet* sheet_ ) :
+		id(id_), sheet(sheet_), alive(true)
+		{
+		}
 
-	Sprite::Sprite( ID id_, ID templateID, SpriteSheet* sheet_ ) : 
+
+	Sprite::Sprite( ID id_, const std::string& frameName, SpriteSheet* sheet_ ) : 
 		id(id_), sheet(sheet_), alive(true)	
 		{
-		sheet->spriteTemplateID->Element(id) = templateID;
+		Frame( frameName );
 		Visible( true );
 		UseColorKey( true );
 		Scale( 1.0f );
@@ -115,6 +120,26 @@ namespace Bite
 		VertexBuffer<GLuint>& paletteIDBuf = *sheet->spritePalette;
 
 		paletteIDBuf.Element( id ) = pal;
+		}
+
+
+	void
+	Sprite::Frame( const std::string& frameName )
+		{
+		if( frameName.empty() ){
+			sheet->spriteTemplateID->Element(id) = 0;
+			return;
+			}
+		// Check name validity.
+		StringID::const_iterator frameIt = 
+			sheet->nameToFrameID.find( frameName );
+
+		if( frameIt == sheet->nameToFrameID.end() ) 
+			throw BadFrameName( frameName );
+
+		Uint32 tid = frameIt->second; 
+
+		sheet->spriteTemplateID->Element(id) = tid;
 		}
 
 

@@ -4,13 +4,14 @@
 
 
 #include <set>
+#include <map>
 
 namespace Bite
 	{
 
-
 	typedef unsigned int ID;
 	typedef std::set<ID> IDSet;
+	typedef std::map<std::string, ID> StringID;
 
 	class IDGenerator
 		{

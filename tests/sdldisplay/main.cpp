@@ -1,5 +1,8 @@
 #include <SDL/SDL.h>
+
 #include <BiteSprite/bite.hpp>
+#include <BiteSprite/animationsheet.hpp>
+
 #include <GL/glew.h>
 
 
@@ -48,15 +51,27 @@ void Run()
 		Bite::Palette pal = 
 			Bite::Palette::FromTrueColor( Bite::Load::Image( "palTest" ) );
 		sheet.AddPalette( pal );
-		Bite::SpriteSheet sheet2( "marioTrue" );
+		Bite::AnimationSheet sheet2( "marioTrue" );
 		Bite::Rect r2 = { 11,5,13,15 };
 		sheet.CreateFrame( "smallmario", r2 );
 		sheet2.CreateFrame( "smallmario", r2 );
+		Bite::Rect r4 = { 114, 4, 15, 16 };
+		sheet2.CreateFrame( "smallmario2", r4 );
+		Bite::Rect r5 = { 72, 4, 16, 16 };
+		sheet2.CreateFrame( "smallmario3", r5 );
 		Bite::Rect r = { 0,0,466,282 };
 		sheet.CreateFrame( "all", r );
 		Bite::Rect r3 = {11,26, 14,27};
 		Bite::Point anchor( 14,27 );
 		sheet.CreateFrame( "supermario", r3, anchor );
+
+		Bite::AnimationFrames animFrames;
+		animFrames.push_back( Bite::AnimationFrame( "smallmario3", 0.2f ) );
+		animFrames.push_back( Bite::AnimationFrame( "smallmario2", 0.2f ) );
+		animFrames.push_back( Bite::AnimationFrame( "smallmario", 0.2f ) );
+
+		sheet2.CreateAnimationTemplate( "smallmariowalk", animFrames );
+		Bite::Animation animMario = sheet2.CreateAnimation( "smallmariowalk" );
 				
 		Bite::Sprite sprite = sheet.CreateSprite( "all" );
 		sprite.Position( 0, 100 );
@@ -69,10 +84,11 @@ void Run()
 		Bite::Sprite sprite2 = sheet2.CreateSprite( "smallmario" );
 		sprite2.Position( 0, 0 );
 		sprite2.Flip( false, false );
+		sprite2.Visible(false);
 		//sprite2.Scale( 2.0f );
 
-		Bite::Rect r4 = { 342, 223, 16, 28 };
-		sheet.CreateFrame( "stonemario", r4 );
+		Bite::Rect r6 = { 342, 223, 16, 28 };
+		sheet.CreateFrame( "stonemario", r6 );
 
 		const int spriteCount = 50000;
 		std::vector<Bite::Sprite> lottaSprites;
@@ -115,6 +131,7 @@ void Run()
 			if( keystate[SDLK_UP] ) marioPosY += 1;
 			if( keystate[SDLK_DOWN] ) marioPosY -= 1;
 			sprite2.Position( float(marioPosX), float(marioPosY) );
+			animMario.Progress( 0.001f );
 
 			++pcount;
 			if( pcount > 10 )

@@ -164,11 +164,6 @@ namespace Bite
 	Sprite
 	SpriteSheet::CreateSprite( const std::string& frameName )
 		{
-		// Check name validity.
-		StringID::const_iterator frameIt = nameToFrameID.find( frameName );
-		if( frameIt == nameToFrameID.end() ) throw BadFrameName( frameName );
-
-		Uint32 tid = frameIt->second; 
 		ID sid = idGenSprite.NewID();
 
 		BASSERT( sid <= spriteFlag->Size() );
@@ -179,7 +174,14 @@ namespace Bite
 
 		IncrementBuffers();
 
-		return Sprite( sid, tid, this );
+		return Sprite( sid, frameName, this );
+		}
+
+
+	Sprite
+	SpriteSheet::GetSprite( ID id )
+		{
+		return Sprite( id, this );
 		}
 
 

@@ -36,11 +36,16 @@ namespace Bite
 		void Rotation( float deg );
 		void Scale( float s );
 		void PaletteID( ID pal );
+		void Frame( const std::string& name );
 		//! Notifies the SpriteSheet that this Sprite is now garbage.
-		void Drop();
+		virtual void Drop();
+		ID GetID() { return id; }
 
-		private:
-		Sprite( ID id, ID templateID, SpriteSheet* sheet );
+
+		protected:
+		Sprite( ID id, const std::string& name, SpriteSheet* sheet );
+		Sprite( ID id, SpriteSheet* sheet );
+		
 
 		ID id;
 		SpriteSheet* sheet;
